@@ -1,6 +1,6 @@
 # FSFM-CVPR25 CPU-Only Setup Guide
 
-This guide outlines the steps to set up and run the FSFM-CVPR25 project in a CPU-only environment using Docker and WSL 2, following the "Plano de Implementação Remodelado para WSL 2 com Docker (CPU-Only)".
+Este guia descreve os passos para configurar e executar o projeto FSFM-CVPR25 em um ambiente somente de CPU usando Docker e WSL 2, seguindo o "Plano de Implementação Remodelado para WSL 2 com Docker (CPU-Only)".
 
 ---
 
@@ -252,23 +252,70 @@ Para demonstrar a capacidade de fine-tuning do modelo, prepare um pequeno datase
     python /app/src/util/generate_fake_images.py --real_images_dir /app/datasets/finetune/val/real --fake_images_dir /app/datasets/finetune/val/fake
     ```
 
-2.  **Execute o script de Fine-Tuning:**
-    Navegue até o diretório do script de fine-tuning e execute-o, apontando para o checkpoint do pré-treinamento e os dados de fine-tuning.
-
+2.  **Crie o arquivo de configuração `config_finetune.sh` na raiz do seu projeto:**
     ```bash
-    cd /app/src/fsfm-3c/finuetune/cross_dataset_DfD/
-    python main_finetune_DfD.py \
-      --batch_size 4 \
-      --epochs 5 \
-      --finetune /app/src/fsfm-3c/pretrain/output_cpu_test/checkpoint-4.pth \
-      --finetune_data_path /app/datasets/finetune \
-      --output_dir /app/src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_cpu_test \
-      --device cpu \
-      --num_workers 0
+    #!/bin/bash
+
+    # Configuration for fine-tuning the FSFM model on CPU
+
+    # Batch size
+    export FT_BATCH_SIZE=4
+
+    # Number of epochs
+    export FT_EPOCHS=5
+
+    # Path to the pre-trained checkpoint
+    export FT_FINETUNE_CHECKPOINT="/app/src/fsfm-3c/pretrain/output_cpu_test/checkpoint-4.pth"
+
+    # Path to the fine-tuning dataset
+    export FT_DATA_PATH="/app/datasets/finetune"
+
+    # Output directory for fine-tuning checkpoints and logs
+    export FT_OUTPUT_DIR="/app/src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_cpu_test"
+
+    # Device to use (cpu)
+    export FT_DEVICE="cpu"
+
+    # Number of data loading workers (0 for CPU emulation)
+    export FT_NUM_WORKERS=0
     ```
 
-    *   **`--finetune`**: Especifica o caminho para o checkpoint do pré-treinamento (`checkpoint-4.pth` é usado para simular 5 épocas completas).
-    *   **`--finetune_data_path`**: Aponta para o diretório base do dataset de fine-tuning que contém as subpastas `train` e `val`.
-    *   **`--output_dir`**: Define o diretório onde os logs e checkpoints do fine-tuning serão salvos.
-    *   **`--device cpu`**: Garante que o fine-tuning seja executado na CPU.
-    *   **`--num_workers 0`**: Desativa o paralelismo na leitura de dados para evitar problemas em ambientes CPU e WSL/Docker.
+3.  **Crie o script de execução `run_finetune.sh` na raiz do seu projeto:**
+    ```bash
+    #!/bin/bash
+
+    # Source the configuration file
+    source /app/config_finetune.sh
+
+    echo "Starting FSFM Fine-Tuning..."
+    echo "Batch Size: ${FT_BATCH_SIZE}"
+    echo "Epochs: ${FT_EPOCHS}"
+    echo "Finetune Checkpoint: ${FT_FINETUNE_CHECKPOINT}"
+    echo "Data Path: ${FT_DATA_PATH}"
+    echo "Output Directory: ${FT_OUTPUT_DIR}"
+    echo "Device: ${FT_DEVICE}"
+    echo "Num Workers: ${FT_NUM_WORKERS}"
+
+    # Ensure output directory exists
+    mkdir -p "${FT_OUTPUT_DIR}"
+
+    # Navigate to the fine-tuning script directory and execute
+    cd /app/src/fsfm-3c/finuetune/cross_dataset_DfD/ && \
+    python main_finetune_DfD.py \
+      --batch_size "${FT_BATCH_SIZE}" \
+      --epochs "${FT_EPOCHS}" \
+      --finetune "${FT_FINETUNE_CHECKPOINT}" \
+      --finetune_data_path "${FT_DATA_PATH}" \
+      --output_dir "${FT_OUTPUT_DIR}" \
+      --device "${FT_DEVICE}" \
+      --num_workers "${FT_NUM_WORKERS}"
+
+    echo "FSFM Fine-Tuning finished."
+    ```
+
+4.  **Execute o script de fine-tuning dentro do container, utilizando o script `run_finetune.sh`:**
+    ```bash
+    docker exec fsfm_container /app/run_finetune.sh
+    ```
+    *   **Parâmetros de Configuração**: Você pode ajustar os valores de `FT_BATCH_SIZE`, `FT_EPOCHS`, etc., editando o arquivo `config_finetune.sh` diretamente. As mudanças serão refletidas na próxima execução do `run_finetune.sh`.
+    *   **Saída**: O script irá gerar logs e checkpoints no diretório especificado por `FT_OUTPUT_DIR`.
