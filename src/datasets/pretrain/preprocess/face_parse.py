@@ -21,7 +21,7 @@ import glob
 import argparse
 
 from config import cfg
-from tools.facer import facer
+import facer
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
@@ -157,40 +157,17 @@ def start_process(rank, path, parsing_result_path):
 
 def get_args_parser():
     parser = argparse.ArgumentParser('face parsing', add_help=False)
-    parser.add_argument('--dataset', default='FF++',
-                        help="choose from ['FF++_o', 'YTF', 'VF2']")
-
+    parser.add_argument('--dataset_path', required=True, type=str, help='Path to the dataset of faces')
     return parser
 
 
 if __name__ == '__main__':
-    # extract face parsing map (.npy file) and vis imgs for pretraining:
-    args = get_args_parser()
-    args = args.parse_args()
-    if args.dataset == 'FF++_o':
-        # FF++_youtube:
-        for i, path in enumerate(cfg.FF_real_face_paths_for_parsing):
-            face_parsing(face_ds_path=path,
-                         parsing_result_path=cfg.FF_face_parse_ds_path,
-                         save_vis_ps=cfg.save_vis_ps)
-    elif args.dataset == 'YTF':
-        # YoutubeFace:
-        face_parsing(face_ds_path=cfg.YTFace_path_for_parsing,
-                     parsing_result_path=cfg.YTFace_parse_ds_path,
-                     save_vis_ps=cfg.save_vis_ps)
-    elif args.dataset == 'VF2':
-        # VGGFace2:
-        face_parsing(face_ds_path=cfg.VGGFace2_path_for_parsing,
-                     parsing_result_path=cfg.VGGFace2_parse_ds_path,
-                     save_vis_ps=cfg.save_vis_ps)
-    else:
-        print('choose datasets: FF++_o, YTF, VF2;  or add the function for your customized dataset')
+    args = get_args_parser().parse_args()
     
-    # torch.multiprocessing.set_start_method('spawn')
-    # processes = []
-    # for i, path in enumerate(cfg.FF_real_face_paths_for_parsing):
-    #     p = mp.Process(target=start_process, args=(i, path))
-    #     p.start()
-    #     processes.append(p)
-    # for p in processes:
-    #     p.join()
+    # The output path should be the parent directory of the images directory,
+    # so the 'face_pm' folder is created at the same level as 'images'.
+    output_path = os.path.dirname(args.dataset_path)
+
+    face_parsing(face_ds_path=args.dataset_path,
+                 parsing_result_path=output_path,
+                 save_vis_ps=True)
