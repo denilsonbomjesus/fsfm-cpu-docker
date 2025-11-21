@@ -24,7 +24,8 @@ RUN pip install torch torchvision torchaudio --index-url https://download.pytorc
 # 4. Instalar outras dependências pesadas
 RUN pip install dlib
 RUN pip install opencv-python-headless
-RUN pip install facer timm scipy pandas scikit-learn tensorboard
+RUN pip install git+https://github.com/FacePerceiver/facer.git@main
+RUN pip install timm scipy pandas scikit-learn tensorboard
 
 # 5. Copiar o código fonte para dentro do container
 COPY ./src /app/src

@@ -146,15 +146,21 @@ def get_shared_folder() -> Path:
 
 
 def main(args):
+    # --- MODIFICAÇÃO PARA CPU START ---
+    args.distributed = False
+    import torch
+    device = torch.device('cpu')
+    # --- MODIFICAÇÃO PARA CPU END ---
+
     log_detail = 'log_detail' + '.txt'
     sys.stdout = open(os.path.join(args.output_dir, log_detail), 'a+')
 
-    misc.init_distributed_mode(args)
+    # misc.init_distributed_mode(args)
 
     print('job dir: {}'.format(os.path.dirname(os.path.realpath(__file__))))
     print("{}".format(args).replace(', ', ',\n'))
 
-    device = torch.device(args.device)
+    # device = torch.device(args.device) # Replaced by CPU device above
 
     # fix the seed for reproducibility
     seed = args.seed + misc.get_rank()
@@ -287,7 +293,7 @@ def main(args):
         model_without_ddp = model.module
 
     # running on multiple gpus in single machine:
-    if torch.cuda.device_count() > 1:
+    if torch.cuda.device_count() > 1 and args.distributed: # MODIFIED FOR CPU
         # model = torch.nn.parallel.DataParallel(model, device_ids=[args.gpu])
         model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu])
 
@@ -358,22 +364,18 @@ def main(args):
 
 
 if __name__ == '__main__':
-    # args = get_args_parser()
-    # args = args.parse_args()
-    # if args.output_dir:
-    #     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
-    #
-    # main(args)
-
+    # --- MODIFIED FOR LOCAL CPU EXECUTION ---
     args = get_args_parser()
     args = args.parse_args()
-    if args.output_dir == '':
-        print(os.getpgrp())
-        # args.output_dir = get_shared_folder() / "%j"
-        args.output_dir = get_shared_folder() / str(os.getpgrp())
-    args.log_dir = args.output_dir
-
-    executor = submitit.AutoExecutor(folder=args.output_dir, slurm_max_num_timeout=30)
-    executor.update_parameters(name="mae")
-    job = executor.submit(main(args))
-    print("Submitted job_id:", job.job_id)
+    
+    # Create a default output directory if not specified
+    if not args.output_dir:
+        args.output_dir = 'output_pretrain'
+    
+    Path(args.output_dir).mkdir(parents=True, exist_ok=True)
+    
+    # Set log_dir to be the same as output_dir
+    if not args.log_dir:
+        args.log_dir = args.output_dir
+    
+    main(args)
