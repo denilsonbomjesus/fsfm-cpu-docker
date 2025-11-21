@@ -163,3 +163,56 @@ O download direto do dataset LFW do `vis-www.cs.umass.edu` e `www.cs.cmu.edu` fa
     docker exec fsfm_container bash -c "cd /app/src/datasets/pretrain/preprocess && python face_parse.py --dataset_path /app/datasets/pretrain_datasets/mini_real/images"
     ```
     *(Este comando fará o processamento das imagens e salvará os mapas de segmentação facial.)*
+
+### **Passo 3: Pré-Treinamento (Execução Principal)**
+
+O pré-treinamento do modelo é executado com o script `main_pretrain.py`. Os parâmetros de execução foram centralizados em um arquivo de configuração para facilitar a modificação.
+
+1.  **Crie o arquivo de configuração `config_pretraining.sh` na raiz do seu projeto:**
+    ```bash
+    #!/bin/bash
+
+    # Configuration for pre-training the FSFM model on CPU
+
+    # Batch size: Essential to avoid running out of RAM
+    export BATCH_SIZE=4
+
+    # Accumulate gradient iterations: For increasing effective batch size under memory constraints
+    export ACCUM_ITER=1
+
+    # Number of epochs: Sufficient to show that it "ran"
+    export EPOCHS=5
+
+    # Model name
+    export MODEL_NAME="fsfm_vit_base_patch16"
+
+    # Mask ratio
+    export MASK_RATIO=0.75
+
+    # Path to the pre-training dataset
+    export PRETRAIN_DATA_PATH="/app/datasets/pretrain_datasets/mini_real"
+
+    # Output directory for checkpoints and logs
+    export OUTPUT_DIR="./output_cpu_test"
+
+    # Number of data loading workers: Essential for avoiding multiprocessing errors in emulation
+    export NUM_WORKERS=0
+    ```
+    *Obs: Certifique-se de que o arquivo `config_pretraining.sh` esteja presente na raiz do seu projeto local. Ele será montado automaticamente dentro do container no diretório `/app`.*
+
+2.  **Execute o script de pré-treinamento dentro do container, utilizando os parâmetros do arquivo de configuração:**
+    ```bash
+    docker exec fsfm_container bash -c "source /app/config_pretraining.sh && cd /app/src/fsfm-3c/pretrain && python main_pretrain.py \
+      --batch_size ${BATCH_SIZE} \
+      --accum_iter ${ACCUM_ITER} \
+      --epochs ${EPOCHS} \
+      --model ${MODEL_NAME} \
+      --mask_ratio ${MASK_RATIO} \
+      --pretrain_data_path ${PRETRAIN_DATA_PATH} \
+      --output_dir ${OUTPUT_DIR} \
+      --num_workers ${NUM_WORKERS}"
+    ```
+    *   **`--batch_size 4`**: Essencial para não estourar sua RAM.
+    *   **`--num_workers 0`**: Essencial para evitar erros de multiprocessamento em emulação.
+    *   **`--epochs 5`**: Suficiente para mostrar que "rodou" (o loss vai aparecer no terminal).
+    *(Você pode ajustar os valores de `BATCH_SIZE`, `EPOCHS`, etc., editando diretamente o arquivo `config_pretraining.sh` antes de executar o comando.)*
