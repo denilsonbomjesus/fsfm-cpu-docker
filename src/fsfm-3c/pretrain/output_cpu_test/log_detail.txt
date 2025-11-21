@@ -1,0 +1,1304 @@
+job dir: /app/src/fsfm-3c/pretrain
+Namespace(batch_size=4,
+epochs=5,
+accum_iter=1,
+model='fsfm_vit_base_patch16',
+input_size=224,
+patch_size=16,
+normalize_from_IMN=False,
+apply_simple_augment=False,
+mask_ratio=0.75,
+norm_pix_loss=False,
+weight_sfr=0.007,
+cl_loss='SimSiam',
+cl_sample='all',
+weight_cl=0.1,
+t_momentum=0.996,
+weight_decay=0.05,
+lr=None,
+blr=0.001,
+min_lr=0.0,
+warmup_epochs=40,
+data_path=['/app/datasets/pretrain_datasets/mini_real'],
+output_dir='./output_cpu_test',
+log_dir='./output_cpu_test',
+device='cuda',
+seed=0,
+resume='',
+resume_target_network='',
+start_epoch=0,
+num_workers=0,
+pin_mem=True,
+world_size=1,
+local_rank=-1,
+dist_on_itp=False,
+dist_url='env://',
+distributed=False)
+dataset_paths: ['/app/datasets/pretrain_datasets/mini_real']
+Compute mean and variance for pretraining data.
+len(dataset_train):  51
+job dir: /app/src/fsfm-3c/pretrain
+Namespace(batch_size=4,
+epochs=5,
+accum_iter=1,
+model='fsfm_vit_base_patch16',
+input_size=224,
+patch_size=16,
+normalize_from_IMN=False,
+apply_simple_augment=False,
+mask_ratio=0.75,
+norm_pix_loss=False,
+weight_sfr=0.007,
+cl_loss='SimSiam',
+cl_sample='all',
+weight_cl=0.1,
+t_momentum=0.996,
+weight_decay=0.05,
+lr=None,
+blr=0.001,
+min_lr=0.0,
+warmup_epochs=40,
+data_path=['/app/datasets/pretrain_datasets/mini_real'],
+output_dir='./output_cpu_test',
+log_dir='./output_cpu_test',
+device='cuda',
+seed=0,
+resume='',
+resume_target_network='',
+start_epoch=0,
+num_workers=0,
+pin_mem=True,
+world_size=1,
+local_rank=-1,
+dist_on_itp=False,
+dist_url='env://',
+distributed=False)
+dataset_paths: ['/app/datasets/pretrain_datasets/mini_real']
+Compute mean and variance for pretraining data.
+len(dataset_train):  50
+job dir: /app/src/fsfm-3c/pretrain
+Namespace(batch_size=4,
+epochs=5,
+accum_iter=1,
+model='fsfm_vit_base_patch16',
+input_size=224,
+patch_size=16,
+normalize_from_IMN=False,
+apply_simple_augment=False,
+mask_ratio=0.75,
+norm_pix_loss=False,
+weight_sfr=0.007,
+cl_loss='SimSiam',
+cl_sample='all',
+weight_cl=0.1,
+t_momentum=0.996,
+weight_decay=0.05,
+lr=None,
+blr=0.001,
+min_lr=0.0,
+warmup_epochs=40,
+data_path=['/app/datasets/pretrain_datasets/mini_real'],
+output_dir='./output_cpu_test',
+log_dir='./output_cpu_test',
+device='cuda',
+seed=0,
+resume='',
+resume_target_network='',
+start_epoch=0,
+num_workers=0,
+pin_mem=True,
+world_size=1,
+local_rank=-1,
+dist_on_itp=False,
+dist_url='env://',
+distributed=False)
+dataset_paths: ['/app/datasets/pretrain_datasets/mini_real']
+Compute mean and variance for pretraining data.
+len(dataset_train):  50
+train dataset mean%: [0.40251455 0.34928438 0.29918382] std: %[0.28308132 0.2527634  0.24832025] 
+Sampler_train = <torch.utils.data.distributed.DistributedSampler object at 0x7c44bc5f2310>
+[INFO]log dir: %./output_cpu_test
+job dir: /app/src/fsfm-3c/pretrain
+Namespace(batch_size=4,
+epochs=5,
+accum_iter=1,
+model='fsfm_vit_base_patch16',
+input_size=224,
+patch_size=16,
+normalize_from_IMN=False,
+apply_simple_augment=False,
+mask_ratio=0.75,
+norm_pix_loss=False,
+weight_sfr=0.007,
+cl_loss='SimSiam',
+cl_sample='all',
+weight_cl=0.1,
+t_momentum=0.996,
+weight_decay=0.05,
+lr=None,
+blr=0.001,
+min_lr=0.0,
+warmup_epochs=40,
+data_path=['/app/datasets/pretrain_datasets/mini_real'],
+output_dir='./output_cpu_test',
+log_dir='./output_cpu_test',
+device='cuda',
+seed=0,
+resume='',
+resume_target_network='',
+start_epoch=0,
+num_workers=0,
+pin_mem=True,
+world_size=1,
+local_rank=-1,
+dist_on_itp=False,
+dist_url='env://',
+distributed=False)
+dataset_paths: ['/app/datasets/pretrain_datasets/mini_real']
+Compute mean and variance for pretraining data.
+len(dataset_train):  100
+train dataset mean%: [0.40636173 0.3513318  0.30254686] std: %[0.28246233 0.25277162 0.24939251] 
+Sampler_train = <torch.utils.data.distributed.DistributedSampler object at 0x7829066efe50>
+[INFO]log dir: %./output_cpu_test
+job dir: /app/src/fsfm-3c/pretrain
+Namespace(batch_size=4,
+epochs=5,
+accum_iter=1,
+model='fsfm_vit_base_patch16',
+input_size=224,
+patch_size=16,
+normalize_from_IMN=False,
+apply_simple_augment=False,
+mask_ratio=0.75,
+norm_pix_loss=False,
+weight_sfr=0.007,
+cl_loss='SimSiam',
+cl_sample='all',
+weight_cl=0.1,
+t_momentum=0.996,
+weight_decay=0.05,
+lr=None,
+blr=0.001,
+min_lr=0.0,
+warmup_epochs=40,
+data_path=['/app/datasets/pretrain_datasets/mini_real'],
+output_dir='./output_cpu_test',
+log_dir='./output_cpu_test',
+device='cuda',
+seed=0,
+resume='',
+resume_target_network='',
+start_epoch=0,
+num_workers=0,
+pin_mem=True,
+world_size=1,
+local_rank=-1,
+dist_on_itp=False,
+dist_url='env://',
+distributed=False)
+dataset_paths: ['/app/datasets/pretrain_datasets/mini_real']
+Compute mean and variance for pretraining data.
+len(dataset_train):  100
+train dataset mean%: [0.40636173 0.3513318  0.30254686] std: %[0.28246233 0.25277162 0.24939251] 
+Sampler_train = <torch.utils.data.distributed.DistributedSampler object at 0x71745f7e2430>
+[INFO]log dir: %./output_cpu_test
+_IncompatibleKeys(missing_keys=[], unexpected_keys=['decoder_pos_embed', 'predictor.projection_head.0.weight', 'predictor.projection_head.0.bias', 'predictor.projection_head.1.weight', 'predictor.projection_head.1.bias', 'predictor.projection_head.3.weight', 'predictor.projection_head.3.bias', 'decoder_embed.weight', 'decoder_embed.bias', 'decoder_blocks.0.norm1.weight', 'decoder_blocks.0.norm1.bias', 'decoder_blocks.0.attn.qkv.weight', 'decoder_blocks.0.attn.qkv.bias', 'decoder_blocks.0.attn.proj.weight', 'decoder_blocks.0.attn.proj.bias', 'decoder_blocks.0.norm2.weight', 'decoder_blocks.0.norm2.bias', 'decoder_blocks.0.mlp.fc1.weight', 'decoder_blocks.0.mlp.fc1.bias', 'decoder_blocks.0.mlp.fc2.weight', 'decoder_blocks.0.mlp.fc2.bias', 'decoder_blocks.1.norm1.weight', 'decoder_blocks.1.norm1.bias', 'decoder_blocks.1.attn.qkv.weight', 'decoder_blocks.1.attn.qkv.bias', 'decoder_blocks.1.attn.proj.weight', 'decoder_blocks.1.attn.proj.bias', 'decoder_blocks.1.norm2.weight', 'decoder_blocks.1.norm2.bias', 'decoder_blocks.1.mlp.fc1.weight', 'decoder_blocks.1.mlp.fc1.bias', 'decoder_blocks.1.mlp.fc2.weight', 'decoder_blocks.1.mlp.fc2.bias', 'decoder_blocks.2.norm1.weight', 'decoder_blocks.2.norm1.bias', 'decoder_blocks.2.attn.qkv.weight', 'decoder_blocks.2.attn.qkv.bias', 'decoder_blocks.2.attn.proj.weight', 'decoder_blocks.2.attn.proj.bias', 'decoder_blocks.2.norm2.weight', 'decoder_blocks.2.norm2.bias', 'decoder_blocks.2.mlp.fc1.weight', 'decoder_blocks.2.mlp.fc1.bias', 'decoder_blocks.2.mlp.fc2.weight', 'decoder_blocks.2.mlp.fc2.bias', 'decoder_blocks.3.norm1.weight', 'decoder_blocks.3.norm1.bias', 'decoder_blocks.3.attn.qkv.weight', 'decoder_blocks.3.attn.qkv.bias', 'decoder_blocks.3.attn.proj.weight', 'decoder_blocks.3.attn.proj.bias', 'decoder_blocks.3.norm2.weight', 'decoder_blocks.3.norm2.bias', 'decoder_blocks.3.mlp.fc1.weight', 'decoder_blocks.3.mlp.fc1.bias', 'decoder_blocks.3.mlp.fc2.weight', 'decoder_blocks.3.mlp.fc2.bias', 'decoder_blocks.4.norm1.weight', 'decoder_blocks.4.norm1.bias', 'decoder_blocks.4.attn.qkv.weight', 'decoder_blocks.4.attn.qkv.bias', 'decoder_blocks.4.attn.proj.weight', 'decoder_blocks.4.attn.proj.bias', 'decoder_blocks.4.norm2.weight', 'decoder_blocks.4.norm2.bias', 'decoder_blocks.4.mlp.fc1.weight', 'decoder_blocks.4.mlp.fc1.bias', 'decoder_blocks.4.mlp.fc2.weight', 'decoder_blocks.4.mlp.fc2.bias', 'decoder_blocks.5.norm1.weight', 'decoder_blocks.5.norm1.bias', 'decoder_blocks.5.attn.qkv.weight', 'decoder_blocks.5.attn.qkv.bias', 'decoder_blocks.5.attn.proj.weight', 'decoder_blocks.5.attn.proj.bias', 'decoder_blocks.5.norm2.weight', 'decoder_blocks.5.norm2.bias', 'decoder_blocks.5.mlp.fc1.weight', 'decoder_blocks.5.mlp.fc1.bias', 'decoder_blocks.5.mlp.fc2.weight', 'decoder_blocks.5.mlp.fc2.bias', 'decoder_blocks.6.norm1.weight', 'decoder_blocks.6.norm1.bias', 'decoder_blocks.6.attn.qkv.weight', 'decoder_blocks.6.attn.qkv.bias', 'decoder_blocks.6.attn.proj.weight', 'decoder_blocks.6.attn.proj.bias', 'decoder_blocks.6.norm2.weight', 'decoder_blocks.6.norm2.bias', 'decoder_blocks.6.mlp.fc1.weight', 'decoder_blocks.6.mlp.fc1.bias', 'decoder_blocks.6.mlp.fc2.weight', 'decoder_blocks.6.mlp.fc2.bias', 'decoder_blocks.7.norm1.weight', 'decoder_blocks.7.norm1.bias', 'decoder_blocks.7.attn.qkv.weight', 'decoder_blocks.7.attn.qkv.bias', 'decoder_blocks.7.attn.proj.weight', 'decoder_blocks.7.attn.proj.bias', 'decoder_blocks.7.norm2.weight', 'decoder_blocks.7.norm2.bias', 'decoder_blocks.7.mlp.fc1.weight', 'decoder_blocks.7.mlp.fc1.bias', 'decoder_blocks.7.mlp.fc2.weight', 'decoder_blocks.7.mlp.fc2.bias', 'decoder_norm.weight', 'decoder_norm.bias', 'decoder_pred.weight', 'decoder_pred.bias'])
+job dir: /app/src/fsfm-3c/pretrain
+Namespace(batch_size=4,
+epochs=5,
+accum_iter=1,
+model='fsfm_vit_base_patch16',
+input_size=224,
+patch_size=16,
+normalize_from_IMN=False,
+apply_simple_augment=False,
+mask_ratio=0.75,
+norm_pix_loss=False,
+weight_sfr=0.007,
+cl_loss='SimSiam',
+cl_sample='all',
+weight_cl=0.1,
+t_momentum=0.996,
+weight_decay=0.05,
+lr=None,
+blr=0.001,
+min_lr=0.0,
+warmup_epochs=40,
+data_path=['/app/datasets/pretrain_datasets/mini_real'],
+output_dir='./output_cpu_test',
+log_dir='./output_cpu_test',
+device='cuda',
+seed=0,
+resume='',
+resume_target_network='',
+start_epoch=0,
+num_workers=0,
+pin_mem=True,
+world_size=1,
+local_rank=-1,
+dist_on_itp=False,
+dist_url='env://',
+distributed=False)
+dataset_paths: ['/app/datasets/pretrain_datasets/mini_real']
+Compute mean and variance for pretraining data.
+len(dataset_train):  100
+train dataset mean%: [0.40636173 0.3513318  0.30254686] std: %[0.28246233 0.25277162 0.24939251] 
+Sampler_train = <torch.utils.data.distributed.DistributedSampler object at 0x7e00ac6192b0>
+[INFO]log dir: %./output_cpu_test
+_IncompatibleKeys(missing_keys=[], unexpected_keys=['decoder_pos_embed', 'predictor.projection_head.0.weight', 'predictor.projection_head.0.bias', 'predictor.projection_head.1.weight', 'predictor.projection_head.1.bias', 'predictor.projection_head.3.weight', 'predictor.projection_head.3.bias', 'decoder_embed.weight', 'decoder_embed.bias', 'decoder_blocks.0.norm1.weight', 'decoder_blocks.0.norm1.bias', 'decoder_blocks.0.attn.qkv.weight', 'decoder_blocks.0.attn.qkv.bias', 'decoder_blocks.0.attn.proj.weight', 'decoder_blocks.0.attn.proj.bias', 'decoder_blocks.0.norm2.weight', 'decoder_blocks.0.norm2.bias', 'decoder_blocks.0.mlp.fc1.weight', 'decoder_blocks.0.mlp.fc1.bias', 'decoder_blocks.0.mlp.fc2.weight', 'decoder_blocks.0.mlp.fc2.bias', 'decoder_blocks.1.norm1.weight', 'decoder_blocks.1.norm1.bias', 'decoder_blocks.1.attn.qkv.weight', 'decoder_blocks.1.attn.qkv.bias', 'decoder_blocks.1.attn.proj.weight', 'decoder_blocks.1.attn.proj.bias', 'decoder_blocks.1.norm2.weight', 'decoder_blocks.1.norm2.bias', 'decoder_blocks.1.mlp.fc1.weight', 'decoder_blocks.1.mlp.fc1.bias', 'decoder_blocks.1.mlp.fc2.weight', 'decoder_blocks.1.mlp.fc2.bias', 'decoder_blocks.2.norm1.weight', 'decoder_blocks.2.norm1.bias', 'decoder_blocks.2.attn.qkv.weight', 'decoder_blocks.2.attn.qkv.bias', 'decoder_blocks.2.attn.proj.weight', 'decoder_blocks.2.attn.proj.bias', 'decoder_blocks.2.norm2.weight', 'decoder_blocks.2.norm2.bias', 'decoder_blocks.2.mlp.fc1.weight', 'decoder_blocks.2.mlp.fc1.bias', 'decoder_blocks.2.mlp.fc2.weight', 'decoder_blocks.2.mlp.fc2.bias', 'decoder_blocks.3.norm1.weight', 'decoder_blocks.3.norm1.bias', 'decoder_blocks.3.attn.qkv.weight', 'decoder_blocks.3.attn.qkv.bias', 'decoder_blocks.3.attn.proj.weight', 'decoder_blocks.3.attn.proj.bias', 'decoder_blocks.3.norm2.weight', 'decoder_blocks.3.norm2.bias', 'decoder_blocks.3.mlp.fc1.weight', 'decoder_blocks.3.mlp.fc1.bias', 'decoder_blocks.3.mlp.fc2.weight', 'decoder_blocks.3.mlp.fc2.bias', 'decoder_blocks.4.norm1.weight', 'decoder_blocks.4.norm1.bias', 'decoder_blocks.4.attn.qkv.weight', 'decoder_blocks.4.attn.qkv.bias', 'decoder_blocks.4.attn.proj.weight', 'decoder_blocks.4.attn.proj.bias', 'decoder_blocks.4.norm2.weight', 'decoder_blocks.4.norm2.bias', 'decoder_blocks.4.mlp.fc1.weight', 'decoder_blocks.4.mlp.fc1.bias', 'decoder_blocks.4.mlp.fc2.weight', 'decoder_blocks.4.mlp.fc2.bias', 'decoder_blocks.5.norm1.weight', 'decoder_blocks.5.norm1.bias', 'decoder_blocks.5.attn.qkv.weight', 'decoder_blocks.5.attn.qkv.bias', 'decoder_blocks.5.attn.proj.weight', 'decoder_blocks.5.attn.proj.bias', 'decoder_blocks.5.norm2.weight', 'decoder_blocks.5.norm2.bias', 'decoder_blocks.5.mlp.fc1.weight', 'decoder_blocks.5.mlp.fc1.bias', 'decoder_blocks.5.mlp.fc2.weight', 'decoder_blocks.5.mlp.fc2.bias', 'decoder_blocks.6.norm1.weight', 'decoder_blocks.6.norm1.bias', 'decoder_blocks.6.attn.qkv.weight', 'decoder_blocks.6.attn.qkv.bias', 'decoder_blocks.6.attn.proj.weight', 'decoder_blocks.6.attn.proj.bias', 'decoder_blocks.6.norm2.weight', 'decoder_blocks.6.norm2.bias', 'decoder_blocks.6.mlp.fc1.weight', 'decoder_blocks.6.mlp.fc1.bias', 'decoder_blocks.6.mlp.fc2.weight', 'decoder_blocks.6.mlp.fc2.bias', 'decoder_blocks.7.norm1.weight', 'decoder_blocks.7.norm1.bias', 'decoder_blocks.7.attn.qkv.weight', 'decoder_blocks.7.attn.qkv.bias', 'decoder_blocks.7.attn.proj.weight', 'decoder_blocks.7.attn.proj.bias', 'decoder_blocks.7.norm2.weight', 'decoder_blocks.7.norm2.bias', 'decoder_blocks.7.mlp.fc1.weight', 'decoder_blocks.7.mlp.fc1.bias', 'decoder_blocks.7.mlp.fc2.weight', 'decoder_blocks.7.mlp.fc2.bias', 'decoder_norm.weight', 'decoder_norm.bias', 'decoder_pred.weight', 'decoder_pred.bias'])
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1          [-1, 768, 14, 14]         590,592
+        PatchEmbed-2             [-1, 196, 768]               0
+         LayerNorm-3              [-1, 50, 768]           1,536
+            Linear-4             [-1, 50, 2304]       1,771,776
+           Dropout-5           [-1, 12, 50, 50]               0
+            Linear-6              [-1, 50, 768]         590,592
+           Dropout-7              [-1, 50, 768]               0
+         Attention-8              [-1, 50, 768]               0
+          Identity-9              [-1, 50, 768]               0
+        LayerNorm-10              [-1, 50, 768]           1,536
+           Linear-11             [-1, 50, 3072]       2,362,368
+             GELU-12             [-1, 50, 3072]               0
+          Dropout-13             [-1, 50, 3072]               0
+           Linear-14              [-1, 50, 768]       2,360,064
+          Dropout-15              [-1, 50, 768]               0
+              Mlp-16              [-1, 50, 768]               0
+         Identity-17              [-1, 50, 768]               0
+            Block-18              [-1, 50, 768]               0
+        LayerNorm-19              [-1, 50, 768]           1,536
+           Linear-20             [-1, 50, 2304]       1,771,776
+          Dropout-21           [-1, 12, 50, 50]               0
+           Linear-22              [-1, 50, 768]         590,592
+          Dropout-23              [-1, 50, 768]               0
+        Attention-24              [-1, 50, 768]               0
+         Identity-25              [-1, 50, 768]               0
+        LayerNorm-26              [-1, 50, 768]           1,536
+           Linear-27             [-1, 50, 3072]       2,362,368
+             GELU-28             [-1, 50, 3072]               0
+          Dropout-29             [-1, 50, 3072]               0
+           Linear-30              [-1, 50, 768]       2,360,064
+          Dropout-31              [-1, 50, 768]               0
+              Mlp-32              [-1, 50, 768]               0
+         Identity-33              [-1, 50, 768]               0
+            Block-34              [-1, 50, 768]               0
+        LayerNorm-35              [-1, 50, 768]           1,536
+           Linear-36             [-1, 50, 2304]       1,771,776
+          Dropout-37           [-1, 12, 50, 50]               0
+           Linear-38              [-1, 50, 768]         590,592
+          Dropout-39              [-1, 50, 768]               0
+        Attention-40              [-1, 50, 768]               0
+         Identity-41              [-1, 50, 768]               0
+        LayerNorm-42              [-1, 50, 768]           1,536
+           Linear-43             [-1, 50, 3072]       2,362,368
+             GELU-44             [-1, 50, 3072]               0
+          Dropout-45             [-1, 50, 3072]               0
+           Linear-46              [-1, 50, 768]       2,360,064
+          Dropout-47              [-1, 50, 768]               0
+              Mlp-48              [-1, 50, 768]               0
+         Identity-49              [-1, 50, 768]               0
+            Block-50              [-1, 50, 768]               0
+        LayerNorm-51              [-1, 50, 768]           1,536
+           Linear-52             [-1, 50, 2304]       1,771,776
+          Dropout-53           [-1, 12, 50, 50]               0
+           Linear-54              [-1, 50, 768]         590,592
+          Dropout-55              [-1, 50, 768]               0
+        Attention-56              [-1, 50, 768]               0
+         Identity-57              [-1, 50, 768]               0
+        LayerNorm-58              [-1, 50, 768]           1,536
+           Linear-59             [-1, 50, 3072]       2,362,368
+             GELU-60             [-1, 50, 3072]               0
+          Dropout-61             [-1, 50, 3072]               0
+           Linear-62              [-1, 50, 768]       2,360,064
+          Dropout-63              [-1, 50, 768]               0
+              Mlp-64              [-1, 50, 768]               0
+         Identity-65              [-1, 50, 768]               0
+            Block-66              [-1, 50, 768]               0
+        LayerNorm-67              [-1, 50, 768]           1,536
+           Linear-68             [-1, 50, 2304]       1,771,776
+          Dropout-69           [-1, 12, 50, 50]               0
+           Linear-70              [-1, 50, 768]         590,592
+          Dropout-71              [-1, 50, 768]               0
+        Attention-72              [-1, 50, 768]               0
+         Identity-73              [-1, 50, 768]               0
+        LayerNorm-74              [-1, 50, 768]           1,536
+           Linear-75             [-1, 50, 3072]       2,362,368
+             GELU-76             [-1, 50, 3072]               0
+          Dropout-77             [-1, 50, 3072]               0
+           Linear-78              [-1, 50, 768]       2,360,064
+          Dropout-79              [-1, 50, 768]               0
+              Mlp-80              [-1, 50, 768]               0
+         Identity-81              [-1, 50, 768]               0
+            Block-82              [-1, 50, 768]               0
+        LayerNorm-83              [-1, 50, 768]           1,536
+           Linear-84             [-1, 50, 2304]       1,771,776
+          Dropout-85           [-1, 12, 50, 50]               0
+           Linear-86              [-1, 50, 768]         590,592
+          Dropout-87              [-1, 50, 768]               0
+        Attention-88              [-1, 50, 768]               0
+         Identity-89              [-1, 50, 768]               0
+        LayerNorm-90              [-1, 50, 768]           1,536
+           Linear-91             [-1, 50, 3072]       2,362,368
+             GELU-92             [-1, 50, 3072]               0
+          Dropout-93             [-1, 50, 3072]               0
+           Linear-94              [-1, 50, 768]       2,360,064
+          Dropout-95              [-1, 50, 768]               0
+              Mlp-96              [-1, 50, 768]               0
+         Identity-97              [-1, 50, 768]               0
+            Block-98              [-1, 50, 768]               0
+        LayerNorm-99              [-1, 50, 768]           1,536
+          Linear-100             [-1, 50, 2304]       1,771,776
+         Dropout-101           [-1, 12, 50, 50]               0
+          Linear-102              [-1, 50, 768]         590,592
+         Dropout-103              [-1, 50, 768]               0
+       Attention-104              [-1, 50, 768]               0
+        Identity-105              [-1, 50, 768]               0
+       LayerNorm-106              [-1, 50, 768]           1,536
+          Linear-107             [-1, 50, 3072]       2,362,368
+            GELU-108             [-1, 50, 3072]               0
+         Dropout-109             [-1, 50, 3072]               0
+          Linear-110              [-1, 50, 768]       2,360,064
+         Dropout-111              [-1, 50, 768]               0
+             Mlp-112              [-1, 50, 768]               0
+        Identity-113              [-1, 50, 768]               0
+           Block-114              [-1, 50, 768]               0
+       LayerNorm-115              [-1, 50, 768]           1,536
+          Linear-116             [-1, 50, 2304]       1,771,776
+         Dropout-117           [-1, 12, 50, 50]               0
+          Linear-118              [-1, 50, 768]         590,592
+         Dropout-119              [-1, 50, 768]               0
+       Attention-120              [-1, 50, 768]               0
+        Identity-121              [-1, 50, 768]               0
+       LayerNorm-122              [-1, 50, 768]           1,536
+          Linear-123             [-1, 50, 3072]       2,362,368
+            GELU-124             [-1, 50, 3072]               0
+         Dropout-125             [-1, 50, 3072]               0
+          Linear-126              [-1, 50, 768]       2,360,064
+         Dropout-127              [-1, 50, 768]               0
+             Mlp-128              [-1, 50, 768]               0
+        Identity-129              [-1, 50, 768]               0
+           Block-130              [-1, 50, 768]               0
+       LayerNorm-131              [-1, 50, 768]           1,536
+          Linear-132             [-1, 50, 2304]       1,771,776
+         Dropout-133           [-1, 12, 50, 50]               0
+          Linear-134              [-1, 50, 768]         590,592
+         Dropout-135              [-1, 50, 768]               0
+       Attention-136              [-1, 50, 768]               0
+        Identity-137              [-1, 50, 768]               0
+       LayerNorm-138              [-1, 50, 768]           1,536
+          Linear-139             [-1, 50, 3072]       2,362,368
+            GELU-140             [-1, 50, 3072]               0
+         Dropout-141             [-1, 50, 3072]               0
+          Linear-142              [-1, 50, 768]       2,360,064
+         Dropout-143              [-1, 50, 768]               0
+             Mlp-144              [-1, 50, 768]               0
+        Identity-145              [-1, 50, 768]               0
+           Block-146              [-1, 50, 768]               0
+       LayerNorm-147              [-1, 50, 768]           1,536
+          Linear-148             [-1, 50, 2304]       1,771,776
+         Dropout-149           [-1, 12, 50, 50]               0
+          Linear-150              [-1, 50, 768]         590,592
+         Dropout-151              [-1, 50, 768]               0
+       Attention-152              [-1, 50, 768]               0
+        Identity-153              [-1, 50, 768]               0
+       LayerNorm-154              [-1, 50, 768]           1,536
+          Linear-155             [-1, 50, 3072]       2,362,368
+            GELU-156             [-1, 50, 3072]               0
+         Dropout-157             [-1, 50, 3072]               0
+          Linear-158              [-1, 50, 768]       2,360,064
+         Dropout-159              [-1, 50, 768]               0
+             Mlp-160              [-1, 50, 768]               0
+        Identity-161              [-1, 50, 768]               0
+           Block-162              [-1, 50, 768]               0
+       LayerNorm-163              [-1, 50, 768]           1,536
+          Linear-164             [-1, 50, 2304]       1,771,776
+         Dropout-165           [-1, 12, 50, 50]               0
+          Linear-166              [-1, 50, 768]         590,592
+         Dropout-167              [-1, 50, 768]               0
+       Attention-168              [-1, 50, 768]               0
+        Identity-169              [-1, 50, 768]               0
+       LayerNorm-170              [-1, 50, 768]           1,536
+          Linear-171             [-1, 50, 3072]       2,362,368
+            GELU-172             [-1, 50, 3072]               0
+         Dropout-173             [-1, 50, 3072]               0
+          Linear-174              [-1, 50, 768]       2,360,064
+         Dropout-175              [-1, 50, 768]               0
+             Mlp-176              [-1, 50, 768]               0
+        Identity-177              [-1, 50, 768]               0
+           Block-178              [-1, 50, 768]               0
+       LayerNorm-179              [-1, 50, 768]           1,536
+          Linear-180             [-1, 50, 2304]       1,771,776
+         Dropout-181           [-1, 12, 50, 50]               0
+          Linear-182              [-1, 50, 768]         590,592
+         Dropout-183              [-1, 50, 768]               0
+       Attention-184              [-1, 50, 768]               0
+        Identity-185              [-1, 50, 768]               0
+       LayerNorm-186              [-1, 50, 768]           1,536
+          Linear-187             [-1, 50, 3072]       2,362,368
+            GELU-188             [-1, 50, 3072]               0
+         Dropout-189             [-1, 50, 3072]               0
+          Linear-190              [-1, 50, 768]       2,360,064
+         Dropout-191              [-1, 50, 768]               0
+             Mlp-192              [-1, 50, 768]               0
+        Identity-193              [-1, 50, 768]               0
+           Block-194              [-1, 50, 768]               0
+       LayerNorm-195              [-1, 50, 768]           1,536
+          Linear-196              [-1, 50, 768]         590,592
+       LayerNorm-197             [-1, 197, 768]           1,536
+          Linear-198            [-1, 197, 2304]       1,771,776
+         Dropout-199         [-1, 16, 197, 197]               0
+          Linear-200             [-1, 197, 768]         590,592
+         Dropout-201             [-1, 197, 768]               0
+       Attention-202             [-1, 197, 768]               0
+        Identity-203             [-1, 197, 768]               0
+       LayerNorm-204             [-1, 197, 768]           1,536
+          Linear-205            [-1, 197, 3072]       2,362,368
+            GELU-206            [-1, 197, 3072]               0
+         Dropout-207            [-1, 197, 3072]               0
+          Linear-208             [-1, 197, 768]       2,360,064
+         Dropout-209             [-1, 197, 768]               0
+             Mlp-210             [-1, 197, 768]               0
+        Identity-211             [-1, 197, 768]               0
+           Block-212             [-1, 197, 768]               0
+       LayerNorm-213             [-1, 197, 768]           1,536
+          Linear-214            [-1, 197, 2304]       1,771,776
+         Dropout-215         [-1, 16, 197, 197]               0
+          Linear-216             [-1, 197, 768]         590,592
+         Dropout-217             [-1, 197, 768]               0
+       Attention-218             [-1, 197, 768]               0
+        Identity-219             [-1, 197, 768]               0
+       LayerNorm-220             [-1, 197, 768]           1,536
+          Linear-221            [-1, 197, 3072]       2,362,368
+            GELU-222            [-1, 197, 3072]               0
+         Dropout-223            [-1, 197, 3072]               0
+          Linear-224             [-1, 197, 768]       2,360,064
+         Dropout-225             [-1, 197, 768]               0
+             Mlp-226             [-1, 197, 768]               0
+        Identity-227             [-1, 197, 768]               0
+           Block-228             [-1, 197, 768]               0
+       LayerNorm-229             [-1, 197, 768]           1,536
+          Linear-230             [-1, 197, 768]         590,592
+          Linear-231                 [-1, 4096]       3,149,824
+       LayerNorm-232                 [-1, 4096]           8,192
+            ReLU-233                 [-1, 4096]               0
+          Linear-234                  [-1, 256]       1,048,832
+         BYOLMLP-235                  [-1, 256]               0
+          Linear-236                 [-1, 4096]       1,052,672
+       LayerNorm-237                 [-1, 4096]           8,192
+            ReLU-238                 [-1, 4096]               0
+          Linear-239                  [-1, 256]       1,048,832
+         BYOLMLP-240                  [-1, 256]               0
+          Linear-241             [-1, 197, 512]         393,728
+       LayerNorm-242             [-1, 197, 512]           1,024
+          Linear-243            [-1, 197, 1536]         787,968
+         Dropout-244         [-1, 16, 197, 197]               0
+          Linear-245             [-1, 197, 512]         262,656
+         Dropout-246             [-1, 197, 512]               0
+       Attention-247             [-1, 197, 512]               0
+        Identity-248             [-1, 197, 512]               0
+       LayerNorm-249             [-1, 197, 512]           1,024
+          Linear-250            [-1, 197, 2048]       1,050,624
+            GELU-251            [-1, 197, 2048]               0
+         Dropout-252            [-1, 197, 2048]               0
+          Linear-253             [-1, 197, 512]       1,049,088
+         Dropout-254             [-1, 197, 512]               0
+             Mlp-255             [-1, 197, 512]               0
+        Identity-256             [-1, 197, 512]               0
+           Block-257             [-1, 197, 512]               0
+       LayerNorm-258             [-1, 197, 512]           1,024
+          Linear-259            [-1, 197, 1536]         787,968
+         Dropout-260         [-1, 16, 197, 197]               0
+          Linear-261             [-1, 197, 512]         262,656
+         Dropout-262             [-1, 197, 512]               0
+       Attention-263             [-1, 197, 512]               0
+        Identity-264             [-1, 197, 512]               0
+       LayerNorm-265             [-1, 197, 512]           1,024
+          Linear-266            [-1, 197, 2048]       1,050,624
+            GELU-267            [-1, 197, 2048]               0
+         Dropout-268            [-1, 197, 2048]               0
+          Linear-269             [-1, 197, 512]       1,049,088
+         Dropout-270             [-1, 197, 512]               0
+             Mlp-271             [-1, 197, 512]               0
+        Identity-272             [-1, 197, 512]               0
+           Block-273             [-1, 197, 512]               0
+       LayerNorm-274             [-1, 197, 512]           1,024
+          Linear-275            [-1, 197, 1536]         787,968
+         Dropout-276         [-1, 16, 197, 197]               0
+          Linear-277             [-1, 197, 512]         262,656
+         Dropout-278             [-1, 197, 512]               0
+       Attention-279             [-1, 197, 512]               0
+        Identity-280             [-1, 197, 512]               0
+       LayerNorm-281             [-1, 197, 512]           1,024
+          Linear-282            [-1, 197, 2048]       1,050,624
+            GELU-283            [-1, 197, 2048]               0
+         Dropout-284            [-1, 197, 2048]               0
+          Linear-285             [-1, 197, 512]       1,049,088
+         Dropout-286             [-1, 197, 512]               0
+             Mlp-287             [-1, 197, 512]               0
+        Identity-288             [-1, 197, 512]               0
+           Block-289             [-1, 197, 512]               0
+       LayerNorm-290             [-1, 197, 512]           1,024
+          Linear-291            [-1, 197, 1536]         787,968
+         Dropout-292         [-1, 16, 197, 197]               0
+          Linear-293             [-1, 197, 512]         262,656
+         Dropout-294             [-1, 197, 512]               0
+       Attention-295             [-1, 197, 512]               0
+        Identity-296             [-1, 197, 512]               0
+       LayerNorm-297             [-1, 197, 512]           1,024
+          Linear-298            [-1, 197, 2048]       1,050,624
+            GELU-299            [-1, 197, 2048]               0
+         Dropout-300            [-1, 197, 2048]               0
+          Linear-301             [-1, 197, 512]       1,049,088
+         Dropout-302             [-1, 197, 512]               0
+             Mlp-303             [-1, 197, 512]               0
+        Identity-304             [-1, 197, 512]               0
+           Block-305             [-1, 197, 512]               0
+       LayerNorm-306             [-1, 197, 512]           1,024
+          Linear-307            [-1, 197, 1536]         787,968
+         Dropout-308         [-1, 16, 197, 197]               0
+          Linear-309             [-1, 197, 512]         262,656
+         Dropout-310             [-1, 197, 512]               0
+       Attention-311             [-1, 197, 512]               0
+        Identity-312             [-1, 197, 512]               0
+       LayerNorm-313             [-1, 197, 512]           1,024
+          Linear-314            [-1, 197, 2048]       1,050,624
+            GELU-315            [-1, 197, 2048]               0
+         Dropout-316            [-1, 197, 2048]               0
+          Linear-317             [-1, 197, 512]       1,049,088
+         Dropout-318             [-1, 197, 512]               0
+             Mlp-319             [-1, 197, 512]               0
+        Identity-320             [-1, 197, 512]               0
+           Block-321             [-1, 197, 512]               0
+       LayerNorm-322             [-1, 197, 512]           1,024
+          Linear-323            [-1, 197, 1536]         787,968
+         Dropout-324         [-1, 16, 197, 197]               0
+          Linear-325             [-1, 197, 512]         262,656
+         Dropout-326             [-1, 197, 512]               0
+       Attention-327             [-1, 197, 512]               0
+        Identity-328             [-1, 197, 512]               0
+       LayerNorm-329             [-1, 197, 512]           1,024
+          Linear-330            [-1, 197, 2048]       1,050,624
+            GELU-331            [-1, 197, 2048]               0
+         Dropout-332            [-1, 197, 2048]               0
+          Linear-333             [-1, 197, 512]       1,049,088
+         Dropout-334             [-1, 197, 512]               0
+             Mlp-335             [-1, 197, 512]               0
+        Identity-336             [-1, 197, 512]               0
+           Block-337             [-1, 197, 512]               0
+       LayerNorm-338             [-1, 197, 512]           1,024
+          Linear-339            [-1, 197, 1536]         787,968
+         Dropout-340         [-1, 16, 197, 197]               0
+          Linear-341             [-1, 197, 512]         262,656
+         Dropout-342             [-1, 197, 512]               0
+       Attention-343             [-1, 197, 512]               0
+        Identity-344             [-1, 197, 512]               0
+       LayerNorm-345             [-1, 197, 512]           1,024
+          Linear-346            [-1, 197, 2048]       1,050,624
+            GELU-347            [-1, 197, 2048]               0
+         Dropout-348            [-1, 197, 2048]               0
+          Linear-349             [-1, 197, 512]       1,049,088
+         Dropout-350             [-1, 197, 512]               0
+             Mlp-351             [-1, 197, 512]               0
+        Identity-352             [-1, 197, 512]               0
+           Block-353             [-1, 197, 512]               0
+       LayerNorm-354             [-1, 197, 512]           1,024
+          Linear-355            [-1, 197, 1536]         787,968
+         Dropout-356         [-1, 16, 197, 197]               0
+          Linear-357             [-1, 197, 512]         262,656
+         Dropout-358             [-1, 197, 512]               0
+       Attention-359             [-1, 197, 512]               0
+        Identity-360             [-1, 197, 512]               0
+       LayerNorm-361             [-1, 197, 512]           1,024
+          Linear-362            [-1, 197, 2048]       1,050,624
+            GELU-363            [-1, 197, 2048]               0
+         Dropout-364            [-1, 197, 2048]               0
+          Linear-365             [-1, 197, 512]       1,049,088
+         Dropout-366             [-1, 197, 512]               0
+             Mlp-367             [-1, 197, 512]               0
+        Identity-368             [-1, 197, 512]               0
+           Block-369             [-1, 197, 512]               0
+       LayerNorm-370             [-1, 197, 512]           1,024
+          Linear-371             [-1, 197, 768]         393,984
+job dir: /app/src/fsfm-3c/pretrain
+Namespace(batch_size=4,
+epochs=5,
+accum_iter=1,
+model='fsfm_vit_base_patch16',
+input_size=224,
+patch_size=16,
+normalize_from_IMN=False,
+apply_simple_augment=False,
+mask_ratio=0.75,
+norm_pix_loss=False,
+weight_sfr=0.007,
+cl_loss='SimSiam',
+cl_sample='all',
+weight_cl=0.1,
+t_momentum=0.996,
+weight_decay=0.05,
+lr=None,
+blr=0.001,
+min_lr=0.0,
+warmup_epochs=40,
+data_path=['/app/datasets/pretrain_datasets/mini_real'],
+output_dir='./output_cpu_test',
+log_dir='./output_cpu_test',
+device='cuda',
+seed=0,
+resume='',
+resume_target_network='',
+start_epoch=0,
+num_workers=0,
+pin_mem=True,
+world_size=1,
+local_rank=-1,
+dist_on_itp=False,
+dist_url='env://',
+distributed=False)
+dataset_paths: ['/app/datasets/pretrain_datasets/mini_real']
+Compute mean and variance for pretraining data.
+len(dataset_train):  100
+train dataset mean%: [0.40636173 0.3513318  0.30254686] std: %[0.28246233 0.25277162 0.24939251] 
+Sampler_train = <torch.utils.data.distributed.DistributedSampler object at 0x7e9b7bd36c10>
+[INFO]log dir: %./output_cpu_test
+_IncompatibleKeys(missing_keys=[], unexpected_keys=['decoder_pos_embed', 'predictor.projection_head.0.weight', 'predictor.projection_head.0.bias', 'predictor.projection_head.1.weight', 'predictor.projection_head.1.bias', 'predictor.projection_head.3.weight', 'predictor.projection_head.3.bias', 'decoder_embed.weight', 'decoder_embed.bias', 'decoder_blocks.0.norm1.weight', 'decoder_blocks.0.norm1.bias', 'decoder_blocks.0.attn.qkv.weight', 'decoder_blocks.0.attn.qkv.bias', 'decoder_blocks.0.attn.proj.weight', 'decoder_blocks.0.attn.proj.bias', 'decoder_blocks.0.norm2.weight', 'decoder_blocks.0.norm2.bias', 'decoder_blocks.0.mlp.fc1.weight', 'decoder_blocks.0.mlp.fc1.bias', 'decoder_blocks.0.mlp.fc2.weight', 'decoder_blocks.0.mlp.fc2.bias', 'decoder_blocks.1.norm1.weight', 'decoder_blocks.1.norm1.bias', 'decoder_blocks.1.attn.qkv.weight', 'decoder_blocks.1.attn.qkv.bias', 'decoder_blocks.1.attn.proj.weight', 'decoder_blocks.1.attn.proj.bias', 'decoder_blocks.1.norm2.weight', 'decoder_blocks.1.norm2.bias', 'decoder_blocks.1.mlp.fc1.weight', 'decoder_blocks.1.mlp.fc1.bias', 'decoder_blocks.1.mlp.fc2.weight', 'decoder_blocks.1.mlp.fc2.bias', 'decoder_blocks.2.norm1.weight', 'decoder_blocks.2.norm1.bias', 'decoder_blocks.2.attn.qkv.weight', 'decoder_blocks.2.attn.qkv.bias', 'decoder_blocks.2.attn.proj.weight', 'decoder_blocks.2.attn.proj.bias', 'decoder_blocks.2.norm2.weight', 'decoder_blocks.2.norm2.bias', 'decoder_blocks.2.mlp.fc1.weight', 'decoder_blocks.2.mlp.fc1.bias', 'decoder_blocks.2.mlp.fc2.weight', 'decoder_blocks.2.mlp.fc2.bias', 'decoder_blocks.3.norm1.weight', 'decoder_blocks.3.norm1.bias', 'decoder_blocks.3.attn.qkv.weight', 'decoder_blocks.3.attn.qkv.bias', 'decoder_blocks.3.attn.proj.weight', 'decoder_blocks.3.attn.proj.bias', 'decoder_blocks.3.norm2.weight', 'decoder_blocks.3.norm2.bias', 'decoder_blocks.3.mlp.fc1.weight', 'decoder_blocks.3.mlp.fc1.bias', 'decoder_blocks.3.mlp.fc2.weight', 'decoder_blocks.3.mlp.fc2.bias', 'decoder_blocks.4.norm1.weight', 'decoder_blocks.4.norm1.bias', 'decoder_blocks.4.attn.qkv.weight', 'decoder_blocks.4.attn.qkv.bias', 'decoder_blocks.4.attn.proj.weight', 'decoder_blocks.4.attn.proj.bias', 'decoder_blocks.4.norm2.weight', 'decoder_blocks.4.norm2.bias', 'decoder_blocks.4.mlp.fc1.weight', 'decoder_blocks.4.mlp.fc1.bias', 'decoder_blocks.4.mlp.fc2.weight', 'decoder_blocks.4.mlp.fc2.bias', 'decoder_blocks.5.norm1.weight', 'decoder_blocks.5.norm1.bias', 'decoder_blocks.5.attn.qkv.weight', 'decoder_blocks.5.attn.qkv.bias', 'decoder_blocks.5.attn.proj.weight', 'decoder_blocks.5.attn.proj.bias', 'decoder_blocks.5.norm2.weight', 'decoder_blocks.5.norm2.bias', 'decoder_blocks.5.mlp.fc1.weight', 'decoder_blocks.5.mlp.fc1.bias', 'decoder_blocks.5.mlp.fc2.weight', 'decoder_blocks.5.mlp.fc2.bias', 'decoder_blocks.6.norm1.weight', 'decoder_blocks.6.norm1.bias', 'decoder_blocks.6.attn.qkv.weight', 'decoder_blocks.6.attn.qkv.bias', 'decoder_blocks.6.attn.proj.weight', 'decoder_blocks.6.attn.proj.bias', 'decoder_blocks.6.norm2.weight', 'decoder_blocks.6.norm2.bias', 'decoder_blocks.6.mlp.fc1.weight', 'decoder_blocks.6.mlp.fc1.bias', 'decoder_blocks.6.mlp.fc2.weight', 'decoder_blocks.6.mlp.fc2.bias', 'decoder_blocks.7.norm1.weight', 'decoder_blocks.7.norm1.bias', 'decoder_blocks.7.attn.qkv.weight', 'decoder_blocks.7.attn.qkv.bias', 'decoder_blocks.7.attn.proj.weight', 'decoder_blocks.7.attn.proj.bias', 'decoder_blocks.7.norm2.weight', 'decoder_blocks.7.norm2.bias', 'decoder_blocks.7.mlp.fc1.weight', 'decoder_blocks.7.mlp.fc1.bias', 'decoder_blocks.7.mlp.fc2.weight', 'decoder_blocks.7.mlp.fc2.bias', 'decoder_norm.weight', 'decoder_norm.bias', 'decoder_pred.weight', 'decoder_pred.bias'])
+Model = FSFMViT(
+  (patch_embed): PatchEmbed(
+    (proj): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+  )
+  (blocks): ModuleList(
+    (0-11): 12 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (projector): BYOLMLP(
+    (projection_head): Sequential(
+      (0): Linear(in_features=768, out_features=4096, bias=True)
+      (1): LayerNorm((4096,), eps=1e-05, elementwise_affine=True)
+      (2): ReLU(inplace=True)
+      (3): Linear(in_features=4096, out_features=256, bias=True)
+    )
+  )
+  (predictor): BYOLMLP(
+    (projection_head): Sequential(
+      (0): Linear(in_features=256, out_features=4096, bias=True)
+      (1): LayerNorm((4096,), eps=1e-05, elementwise_affine=True)
+      (2): ReLU(inplace=True)
+      (3): Linear(in_features=4096, out_features=256, bias=True)
+    )
+  )
+  (rep_decoder_embed): Linear(in_features=768, out_features=768, bias=True)
+  (rep_decoder_blocks): ModuleList(
+    (0-1): 2 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (rep_decoder_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (rep_decoder_pred): Linear(in_features=768, out_features=768, bias=True)
+  (decoder_embed): Linear(in_features=768, out_features=512, bias=True)
+  (decoder_blocks): ModuleList(
+    (0-7): 8 x Block(
+      (norm1): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=512, out_features=1536, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=512, out_features=512, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (decoder_norm): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+  (decoder_pred): Linear(in_features=512, out_features=768, bias=True)
+)
+Model_target_network = TargetNetworkViT(
+  (patch_embed): PatchEmbed(
+    (proj): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+  )
+  (blocks): ModuleList(
+    (0-11): 12 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (projector): BYOLMLP(
+    (projection_head): Sequential(
+      (0): Linear(in_features=768, out_features=4096, bias=True)
+      (1): LayerNorm((4096,), eps=1e-05, elementwise_affine=True)
+      (2): ReLU(inplace=True)
+      (3): Linear(in_features=4096, out_features=256, bias=True)
+    )
+  )
+  (rep_decoder_embed): Linear(in_features=768, out_features=768, bias=True)
+  (rep_decoder_blocks): ModuleList(
+    (0-1): 2 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (rep_decoder_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (rep_decoder_pred): Linear(in_features=768, out_features=768, bias=True)
+)
+base lr: 1.00e-03
+actual lr: 1.56e-05
+Number of training steps = 25
+accumulate grad iterations: 1
+effective batch size: 4
+AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 1.5625e-05
+    maximize: False
+    weight_decay: 0.0
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 1.5625e-05
+    maximize: False
+    weight_decay: 0.05
+)
+Start training for 5 epochs
+Set warmup steps = 0
+log_dir: ./output_cpu_test
+job dir: /app/src/fsfm-3c/pretrain
+Namespace(batch_size=4,
+epochs=5,
+accum_iter=1,
+model='fsfm_vit_base_patch16',
+input_size=224,
+patch_size=16,
+normalize_from_IMN=False,
+apply_simple_augment=False,
+mask_ratio=0.75,
+norm_pix_loss=False,
+weight_sfr=0.007,
+cl_loss='SimSiam',
+cl_sample='all',
+weight_cl=0.1,
+t_momentum=0.996,
+weight_decay=0.05,
+lr=None,
+blr=0.001,
+min_lr=0.0,
+warmup_epochs=40,
+data_path=['/app/datasets/pretrain_datasets/mini_real'],
+output_dir='./output_cpu_test',
+log_dir='./output_cpu_test',
+device='cuda',
+seed=0,
+resume='',
+resume_target_network='',
+start_epoch=0,
+num_workers=0,
+pin_mem=True,
+world_size=1,
+local_rank=-1,
+dist_on_itp=False,
+dist_url='env://',
+distributed=False)
+dataset_paths: ['/app/datasets/pretrain_datasets/mini_real']
+Compute mean and variance for pretraining data.
+len(dataset_train):  100
+train dataset mean%: [0.40636173 0.3513318  0.30254686] std: %[0.28246233 0.25277162 0.24939251] 
+Sampler_train = <torch.utils.data.distributed.DistributedSampler object at 0x76ef68744310>
+[INFO]log dir: %./output_cpu_test
+_IncompatibleKeys(missing_keys=[], unexpected_keys=['decoder_pos_embed', 'predictor.projection_head.0.weight', 'predictor.projection_head.0.bias', 'predictor.projection_head.1.weight', 'predictor.projection_head.1.bias', 'predictor.projection_head.3.weight', 'predictor.projection_head.3.bias', 'decoder_embed.weight', 'decoder_embed.bias', 'decoder_blocks.0.norm1.weight', 'decoder_blocks.0.norm1.bias', 'decoder_blocks.0.attn.qkv.weight', 'decoder_blocks.0.attn.qkv.bias', 'decoder_blocks.0.attn.proj.weight', 'decoder_blocks.0.attn.proj.bias', 'decoder_blocks.0.norm2.weight', 'decoder_blocks.0.norm2.bias', 'decoder_blocks.0.mlp.fc1.weight', 'decoder_blocks.0.mlp.fc1.bias', 'decoder_blocks.0.mlp.fc2.weight', 'decoder_blocks.0.mlp.fc2.bias', 'decoder_blocks.1.norm1.weight', 'decoder_blocks.1.norm1.bias', 'decoder_blocks.1.attn.qkv.weight', 'decoder_blocks.1.attn.qkv.bias', 'decoder_blocks.1.attn.proj.weight', 'decoder_blocks.1.attn.proj.bias', 'decoder_blocks.1.norm2.weight', 'decoder_blocks.1.norm2.bias', 'decoder_blocks.1.mlp.fc1.weight', 'decoder_blocks.1.mlp.fc1.bias', 'decoder_blocks.1.mlp.fc2.weight', 'decoder_blocks.1.mlp.fc2.bias', 'decoder_blocks.2.norm1.weight', 'decoder_blocks.2.norm1.bias', 'decoder_blocks.2.attn.qkv.weight', 'decoder_blocks.2.attn.qkv.bias', 'decoder_blocks.2.attn.proj.weight', 'decoder_blocks.2.attn.proj.bias', 'decoder_blocks.2.norm2.weight', 'decoder_blocks.2.norm2.bias', 'decoder_blocks.2.mlp.fc1.weight', 'decoder_blocks.2.mlp.fc1.bias', 'decoder_blocks.2.mlp.fc2.weight', 'decoder_blocks.2.mlp.fc2.bias', 'decoder_blocks.3.norm1.weight', 'decoder_blocks.3.norm1.bias', 'decoder_blocks.3.attn.qkv.weight', 'decoder_blocks.3.attn.qkv.bias', 'decoder_blocks.3.attn.proj.weight', 'decoder_blocks.3.attn.proj.bias', 'decoder_blocks.3.norm2.weight', 'decoder_blocks.3.norm2.bias', 'decoder_blocks.3.mlp.fc1.weight', 'decoder_blocks.3.mlp.fc1.bias', 'decoder_blocks.3.mlp.fc2.weight', 'decoder_blocks.3.mlp.fc2.bias', 'decoder_blocks.4.norm1.weight', 'decoder_blocks.4.norm1.bias', 'decoder_blocks.4.attn.qkv.weight', 'decoder_blocks.4.attn.qkv.bias', 'decoder_blocks.4.attn.proj.weight', 'decoder_blocks.4.attn.proj.bias', 'decoder_blocks.4.norm2.weight', 'decoder_blocks.4.norm2.bias', 'decoder_blocks.4.mlp.fc1.weight', 'decoder_blocks.4.mlp.fc1.bias', 'decoder_blocks.4.mlp.fc2.weight', 'decoder_blocks.4.mlp.fc2.bias', 'decoder_blocks.5.norm1.weight', 'decoder_blocks.5.norm1.bias', 'decoder_blocks.5.attn.qkv.weight', 'decoder_blocks.5.attn.qkv.bias', 'decoder_blocks.5.attn.proj.weight', 'decoder_blocks.5.attn.proj.bias', 'decoder_blocks.5.norm2.weight', 'decoder_blocks.5.norm2.bias', 'decoder_blocks.5.mlp.fc1.weight', 'decoder_blocks.5.mlp.fc1.bias', 'decoder_blocks.5.mlp.fc2.weight', 'decoder_blocks.5.mlp.fc2.bias', 'decoder_blocks.6.norm1.weight', 'decoder_blocks.6.norm1.bias', 'decoder_blocks.6.attn.qkv.weight', 'decoder_blocks.6.attn.qkv.bias', 'decoder_blocks.6.attn.proj.weight', 'decoder_blocks.6.attn.proj.bias', 'decoder_blocks.6.norm2.weight', 'decoder_blocks.6.norm2.bias', 'decoder_blocks.6.mlp.fc1.weight', 'decoder_blocks.6.mlp.fc1.bias', 'decoder_blocks.6.mlp.fc2.weight', 'decoder_blocks.6.mlp.fc2.bias', 'decoder_blocks.7.norm1.weight', 'decoder_blocks.7.norm1.bias', 'decoder_blocks.7.attn.qkv.weight', 'decoder_blocks.7.attn.qkv.bias', 'decoder_blocks.7.attn.proj.weight', 'decoder_blocks.7.attn.proj.bias', 'decoder_blocks.7.norm2.weight', 'decoder_blocks.7.norm2.bias', 'decoder_blocks.7.mlp.fc1.weight', 'decoder_blocks.7.mlp.fc1.bias', 'decoder_blocks.7.mlp.fc2.weight', 'decoder_blocks.7.mlp.fc2.bias', 'decoder_norm.weight', 'decoder_norm.bias', 'decoder_pred.weight', 'decoder_pred.bias'])
+Model = FSFMViT(
+  (patch_embed): PatchEmbed(
+    (proj): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+  )
+  (blocks): ModuleList(
+    (0-11): 12 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (projector): BYOLMLP(
+    (projection_head): Sequential(
+      (0): Linear(in_features=768, out_features=4096, bias=True)
+      (1): LayerNorm((4096,), eps=1e-05, elementwise_affine=True)
+      (2): ReLU(inplace=True)
+      (3): Linear(in_features=4096, out_features=256, bias=True)
+    )
+  )
+  (predictor): BYOLMLP(
+    (projection_head): Sequential(
+      (0): Linear(in_features=256, out_features=4096, bias=True)
+      (1): LayerNorm((4096,), eps=1e-05, elementwise_affine=True)
+      (2): ReLU(inplace=True)
+      (3): Linear(in_features=4096, out_features=256, bias=True)
+    )
+  )
+  (rep_decoder_embed): Linear(in_features=768, out_features=768, bias=True)
+  (rep_decoder_blocks): ModuleList(
+    (0-1): 2 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (rep_decoder_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (rep_decoder_pred): Linear(in_features=768, out_features=768, bias=True)
+  (decoder_embed): Linear(in_features=768, out_features=512, bias=True)
+  (decoder_blocks): ModuleList(
+    (0-7): 8 x Block(
+      (norm1): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=512, out_features=1536, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=512, out_features=512, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (decoder_norm): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+  (decoder_pred): Linear(in_features=512, out_features=768, bias=True)
+)
+Model_target_network = TargetNetworkViT(
+  (patch_embed): PatchEmbed(
+    (proj): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+  )
+  (blocks): ModuleList(
+    (0-11): 12 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (projector): BYOLMLP(
+    (projection_head): Sequential(
+      (0): Linear(in_features=768, out_features=4096, bias=True)
+      (1): LayerNorm((4096,), eps=1e-05, elementwise_affine=True)
+      (2): ReLU(inplace=True)
+      (3): Linear(in_features=4096, out_features=256, bias=True)
+    )
+  )
+  (rep_decoder_embed): Linear(in_features=768, out_features=768, bias=True)
+  (rep_decoder_blocks): ModuleList(
+    (0-1): 2 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (rep_decoder_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (rep_decoder_pred): Linear(in_features=768, out_features=768, bias=True)
+)
+base lr: 1.00e-03
+actual lr: 1.56e-05
+Number of training steps = 25
+accumulate grad iterations: 1
+effective batch size: 4
+AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 1.5625e-05
+    maximize: False
+    weight_decay: 0.0
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 1.5625e-05
+    maximize: False
+    weight_decay: 0.05
+)
+Start training for 5 epochs
+Set warmup steps = 0
+log_dir: ./output_cpu_test
+job dir: /app/src/fsfm-3c/pretrain
+Namespace(batch_size=4,
+epochs=5,
+accum_iter=1,
+model='fsfm_vit_base_patch16',
+input_size=224,
+patch_size=16,
+normalize_from_IMN=False,
+apply_simple_augment=False,
+mask_ratio=0.75,
+norm_pix_loss=False,
+weight_sfr=0.007,
+cl_loss='SimSiam',
+cl_sample='all',
+weight_cl=0.1,
+t_momentum=0.996,
+weight_decay=0.05,
+lr=None,
+blr=0.001,
+min_lr=0.0,
+warmup_epochs=40,
+data_path=['/app/datasets/pretrain_datasets/mini_real'],
+output_dir='./output_cpu_test',
+log_dir='./output_cpu_test',
+device='cuda',
+seed=0,
+resume='',
+resume_target_network='',
+start_epoch=0,
+num_workers=0,
+pin_mem=True,
+world_size=1,
+local_rank=-1,
+dist_on_itp=False,
+dist_url='env://',
+distributed=False)
+dataset_paths: ['/app/datasets/pretrain_datasets/mini_real']
+Compute mean and variance for pretraining data.
+len(dataset_train):  100
+train dataset mean%: [0.40636173 0.3513318  0.30254686] std: %[0.28246233 0.25277162 0.24939251] 
+Sampler_train = <torch.utils.data.distributed.DistributedSampler object at 0x74f85cb9fc10>
+[INFO]log dir: %./output_cpu_test
+_IncompatibleKeys(missing_keys=[], unexpected_keys=['decoder_pos_embed', 'predictor.projection_head.0.weight', 'predictor.projection_head.0.bias', 'predictor.projection_head.1.weight', 'predictor.projection_head.1.bias', 'predictor.projection_head.3.weight', 'predictor.projection_head.3.bias', 'decoder_embed.weight', 'decoder_embed.bias', 'decoder_blocks.0.norm1.weight', 'decoder_blocks.0.norm1.bias', 'decoder_blocks.0.attn.qkv.weight', 'decoder_blocks.0.attn.qkv.bias', 'decoder_blocks.0.attn.proj.weight', 'decoder_blocks.0.attn.proj.bias', 'decoder_blocks.0.norm2.weight', 'decoder_blocks.0.norm2.bias', 'decoder_blocks.0.mlp.fc1.weight', 'decoder_blocks.0.mlp.fc1.bias', 'decoder_blocks.0.mlp.fc2.weight', 'decoder_blocks.0.mlp.fc2.bias', 'decoder_blocks.1.norm1.weight', 'decoder_blocks.1.norm1.bias', 'decoder_blocks.1.attn.qkv.weight', 'decoder_blocks.1.attn.qkv.bias', 'decoder_blocks.1.attn.proj.weight', 'decoder_blocks.1.attn.proj.bias', 'decoder_blocks.1.norm2.weight', 'decoder_blocks.1.norm2.bias', 'decoder_blocks.1.mlp.fc1.weight', 'decoder_blocks.1.mlp.fc1.bias', 'decoder_blocks.1.mlp.fc2.weight', 'decoder_blocks.1.mlp.fc2.bias', 'decoder_blocks.2.norm1.weight', 'decoder_blocks.2.norm1.bias', 'decoder_blocks.2.attn.qkv.weight', 'decoder_blocks.2.attn.qkv.bias', 'decoder_blocks.2.attn.proj.weight', 'decoder_blocks.2.attn.proj.bias', 'decoder_blocks.2.norm2.weight', 'decoder_blocks.2.norm2.bias', 'decoder_blocks.2.mlp.fc1.weight', 'decoder_blocks.2.mlp.fc1.bias', 'decoder_blocks.2.mlp.fc2.weight', 'decoder_blocks.2.mlp.fc2.bias', 'decoder_blocks.3.norm1.weight', 'decoder_blocks.3.norm1.bias', 'decoder_blocks.3.attn.qkv.weight', 'decoder_blocks.3.attn.qkv.bias', 'decoder_blocks.3.attn.proj.weight', 'decoder_blocks.3.attn.proj.bias', 'decoder_blocks.3.norm2.weight', 'decoder_blocks.3.norm2.bias', 'decoder_blocks.3.mlp.fc1.weight', 'decoder_blocks.3.mlp.fc1.bias', 'decoder_blocks.3.mlp.fc2.weight', 'decoder_blocks.3.mlp.fc2.bias', 'decoder_blocks.4.norm1.weight', 'decoder_blocks.4.norm1.bias', 'decoder_blocks.4.attn.qkv.weight', 'decoder_blocks.4.attn.qkv.bias', 'decoder_blocks.4.attn.proj.weight', 'decoder_blocks.4.attn.proj.bias', 'decoder_blocks.4.norm2.weight', 'decoder_blocks.4.norm2.bias', 'decoder_blocks.4.mlp.fc1.weight', 'decoder_blocks.4.mlp.fc1.bias', 'decoder_blocks.4.mlp.fc2.weight', 'decoder_blocks.4.mlp.fc2.bias', 'decoder_blocks.5.norm1.weight', 'decoder_blocks.5.norm1.bias', 'decoder_blocks.5.attn.qkv.weight', 'decoder_blocks.5.attn.qkv.bias', 'decoder_blocks.5.attn.proj.weight', 'decoder_blocks.5.attn.proj.bias', 'decoder_blocks.5.norm2.weight', 'decoder_blocks.5.norm2.bias', 'decoder_blocks.5.mlp.fc1.weight', 'decoder_blocks.5.mlp.fc1.bias', 'decoder_blocks.5.mlp.fc2.weight', 'decoder_blocks.5.mlp.fc2.bias', 'decoder_blocks.6.norm1.weight', 'decoder_blocks.6.norm1.bias', 'decoder_blocks.6.attn.qkv.weight', 'decoder_blocks.6.attn.qkv.bias', 'decoder_blocks.6.attn.proj.weight', 'decoder_blocks.6.attn.proj.bias', 'decoder_blocks.6.norm2.weight', 'decoder_blocks.6.norm2.bias', 'decoder_blocks.6.mlp.fc1.weight', 'decoder_blocks.6.mlp.fc1.bias', 'decoder_blocks.6.mlp.fc2.weight', 'decoder_blocks.6.mlp.fc2.bias', 'decoder_blocks.7.norm1.weight', 'decoder_blocks.7.norm1.bias', 'decoder_blocks.7.attn.qkv.weight', 'decoder_blocks.7.attn.qkv.bias', 'decoder_blocks.7.attn.proj.weight', 'decoder_blocks.7.attn.proj.bias', 'decoder_blocks.7.norm2.weight', 'decoder_blocks.7.norm2.bias', 'decoder_blocks.7.mlp.fc1.weight', 'decoder_blocks.7.mlp.fc1.bias', 'decoder_blocks.7.mlp.fc2.weight', 'decoder_blocks.7.mlp.fc2.bias', 'decoder_norm.weight', 'decoder_norm.bias', 'decoder_pred.weight', 'decoder_pred.bias'])
+Model = FSFMViT(
+  (patch_embed): PatchEmbed(
+    (proj): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+  )
+  (blocks): ModuleList(
+    (0-11): 12 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (projector): BYOLMLP(
+    (projection_head): Sequential(
+      (0): Linear(in_features=768, out_features=4096, bias=True)
+      (1): LayerNorm((4096,), eps=1e-05, elementwise_affine=True)
+      (2): ReLU(inplace=True)
+      (3): Linear(in_features=4096, out_features=256, bias=True)
+    )
+  )
+  (predictor): BYOLMLP(
+    (projection_head): Sequential(
+      (0): Linear(in_features=256, out_features=4096, bias=True)
+      (1): LayerNorm((4096,), eps=1e-05, elementwise_affine=True)
+      (2): ReLU(inplace=True)
+      (3): Linear(in_features=4096, out_features=256, bias=True)
+    )
+  )
+  (rep_decoder_embed): Linear(in_features=768, out_features=768, bias=True)
+  (rep_decoder_blocks): ModuleList(
+    (0-1): 2 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (rep_decoder_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (rep_decoder_pred): Linear(in_features=768, out_features=768, bias=True)
+  (decoder_embed): Linear(in_features=768, out_features=512, bias=True)
+  (decoder_blocks): ModuleList(
+    (0-7): 8 x Block(
+      (norm1): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=512, out_features=1536, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=512, out_features=512, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=512, out_features=2048, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=2048, out_features=512, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (decoder_norm): LayerNorm((512,), eps=1e-06, elementwise_affine=True)
+  (decoder_pred): Linear(in_features=512, out_features=768, bias=True)
+)
+Model_target_network = TargetNetworkViT(
+  (patch_embed): PatchEmbed(
+    (proj): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+  )
+  (blocks): ModuleList(
+    (0-11): 12 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (projector): BYOLMLP(
+    (projection_head): Sequential(
+      (0): Linear(in_features=768, out_features=4096, bias=True)
+      (1): LayerNorm((4096,), eps=1e-05, elementwise_affine=True)
+      (2): ReLU(inplace=True)
+      (3): Linear(in_features=4096, out_features=256, bias=True)
+    )
+  )
+  (rep_decoder_embed): Linear(in_features=768, out_features=768, bias=True)
+  (rep_decoder_blocks): ModuleList(
+    (0-1): 2 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (rep_decoder_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+  (rep_decoder_pred): Linear(in_features=768, out_features=768, bias=True)
+)
+base lr: 1.00e-03
+actual lr: 1.56e-05
+Number of training steps = 25
+accumulate grad iterations: 1
+effective batch size: 4
+AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 1.5625e-05
+    maximize: False
+    weight_decay: 0.0
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 1.5625e-05
+    maximize: False
+    weight_decay: 0.05
+)
+Start training for 5 epochs
+Set warmup steps = 0
+log_dir: ./output_cpu_test
+Epoch: [0]  [ 0/25]  eta: 0:02:47  lr: 0.000000  loss: 1.9472 (1.9472)  loss_rec_all: 1.9368 (1.9368)  loss_rec_sfr: 1.7081 (1.7081)  loss_cl: -0.0151 (-0.0151)  time: 6.7090  data: 0.0186
+Epoch: [0]  [20/25]  eta: 0:00:35  lr: 0.000000  loss: 1.8382 (1.8246)  loss_rec_all: 1.8313 (1.8161)  loss_rec_sfr: 1.4254 (1.4970)  loss_cl: -0.0207 (-0.0197)  time: 7.0524  data: 0.0212
+Epoch: [0]  [24/25]  eta: 0:00:07  lr: 0.000000  loss: 1.7891 (1.8154)  loss_rec_all: 1.7833 (1.8073)  loss_rec_sfr: 1.3955 (1.4761)  loss_cl: -0.0249 (-0.0226)  time: 7.1108  data: 0.0207
+Epoch: [0] Total time: 0:02:55 (7.0151 s / it)
+Averaged stats: lr: 0.000000  loss: 1.7891 (1.8154)  loss_rec_all: 1.7833 (1.8073)  loss_rec_sfr: 1.3955 (1.4761)  loss_cl: -0.0249 (-0.0226)
+log_dir: ./output_cpu_test
+Epoch: [1]  [ 0/25]  eta: 0:03:07  lr: 0.000000  loss: 1.8571 (1.8571)  loss_rec_all: 1.8513 (1.8513)  loss_rec_sfr: 1.5420 (1.5420)  loss_cl: -0.0492 (-0.0492)  time: 7.5136  data: 0.0341
+Epoch: [1]  [20/25]  eta: 0:00:37  lr: 0.000001  loss: 1.7352 (1.7054)  loss_rec_all: 1.7338 (1.7033)  loss_rec_sfr: 1.3322 (1.3720)  loss_cl: -0.0757 (-0.0753)  time: 7.5703  data: 0.0217
+Epoch: [1]  [24/25]  eta: 0:00:07  lr: 0.000001  loss: 1.6471 (1.6859)  loss_rec_all: 1.6456 (1.6847)  loss_rec_sfr: 1.2939 (1.3556)  loss_cl: -0.0947 (-0.0826)  time: 7.6693  data: 0.0227
+Epoch: [1] Total time: 0:03:10 (7.6176 s / it)
+Averaged stats: lr: 0.000001  loss: 1.6471 (1.6859)  loss_rec_all: 1.6456 (1.6847)  loss_rec_sfr: 1.2939 (1.3556)  loss_cl: -0.0947 (-0.0826)
+Save model with min_pretrain_loss:1.685892834663391 at epoch: 1
+log_dir: ./output_cpu_test
+Epoch: [2]  [ 0/25]  eta: 0:03:08  lr: 0.000001  loss: 1.6919 (1.6919)  loss_rec_all: 1.6957 (1.6957)  loss_rec_sfr: 1.3800 (1.3800)  loss_cl: -0.1346 (-0.1346)  time: 7.5328  data: 0.0164
+Epoch: [2]  [20/25]  eta: 0:00:34  lr: 0.000001  loss: 1.5399 (1.5022)  loss_rec_all: 1.5489 (1.5107)  loss_rec_sfr: 1.2173 (1.2344)  loss_cl: -0.1789 (-0.1718)  time: 6.9569  data: 0.0205
+Epoch: [2]  [24/25]  eta: 0:00:06  lr: 0.000001  loss: 1.4773 (1.4849)  loss_rec_all: 1.4873 (1.4943)  loss_rec_sfr: 1.2070 (1.2233)  loss_cl: -0.1969 (-0.1802)  time: 6.8679  data: 0.0202
+Epoch: [2] Total time: 0:02:53 (6.9538 s / it)
+Averaged stats: lr: 0.000001  loss: 1.4773 (1.4849)  loss_rec_all: 1.4873 (1.4943)  loss_rec_sfr: 1.2070 (1.2233)  loss_cl: -0.1969 (-0.1802)
+Save model with min_pretrain_loss:1.4848574590682984 at epoch: 2
+log_dir: ./output_cpu_test
+Epoch: [3]  [ 0/25]  eta: 0:02:54  lr: 0.000001  loss: 1.4999 (1.4999)  loss_rec_all: 1.5160 (1.5160)  loss_rec_sfr: 1.0891 (1.0891)  loss_cl: -0.2372 (-0.2372)  time: 6.9914  data: 0.0217
+Epoch: [3]  [20/25]  eta: 0:00:34  lr: 0.000001  loss: 1.3239 (1.3113)  loss_rec_all: 1.3446 (1.3305)  loss_rec_sfr: 1.0097 (1.0673)  loss_cl: -0.2769 (-0.2668)  time: 6.8190  data: 0.0204
+Epoch: [3]  [24/25]  eta: 0:00:06  lr: 0.000002  loss: 1.2792 (1.2943)  loss_rec_all: 1.3032 (1.3142)  loss_rec_sfr: 0.9800 (1.0592)  loss_cl: -0.2899 (-0.2737)  time: 6.8144  data: 0.0206
+Epoch: [3] Total time: 0:02:50 (6.8125 s / it)
+Averaged stats: lr: 0.000002  loss: 1.2792 (1.2943)  loss_rec_all: 1.3032 (1.3142)  loss_rec_sfr: 0.9800 (1.0592)  loss_cl: -0.2899 (-0.2737)
+Save model with min_pretrain_loss:1.2942720651626587 at epoch: 3
+log_dir: ./output_cpu_test
+Epoch: [4]  [ 0/25]  eta: 0:02:57  lr: 0.000002  loss: 1.3405 (1.3405)  loss_rec_all: 1.3653 (1.3653)  loss_rec_sfr: 1.0174 (1.0174)  loss_cl: -0.3191 (-0.3191)  time: 7.1085  data: 0.0230
+Epoch: [4]  [20/25]  eta: 0:00:34  lr: 0.000002  loss: 1.1969 (1.1858)  loss_rec_all: 1.2198 (1.2134)  loss_rec_sfr: 0.8595 (0.9448)  loss_cl: -0.3541 (-0.3424)  time: 6.8277  data: 0.0203
+Epoch: [4]  [24/25]  eta: 0:00:06  lr: 0.000002  loss: 1.1567 (1.1726)  loss_rec_all: 1.1847 (1.2009)  loss_rec_sfr: 0.8468 (0.9247)  loss_cl: -0.3633 (-0.3481)  time: 6.9920  data: 0.0203
+Epoch: [4] Total time: 0:02:54 (6.9648 s / it)
+Averaged stats: lr: 0.000002  loss: 1.1567 (1.1726)  loss_rec_all: 1.1847 (1.2009)  loss_rec_sfr: 0.8468 (0.9247)  loss_cl: -0.3633 (-0.3481)
+Save model with min_pretrain_loss:1.1725972819328307 at epoch: 4
+Training time 0:15:28

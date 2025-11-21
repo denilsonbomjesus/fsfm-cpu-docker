@@ -224,3 +224,51 @@ O pré-treinamento do modelo é executado com o script `main_pretrain.py`. Os pa
     ```
     *   **Parâmetros de Configuração**: Você pode ajustar os valores de `BATCH_SIZE`, `EPOCHS`, etc., editando o arquivo `config_pretraining.sh` diretamente. As mudanças serão refletidas na próxima execução do `run_pretrain.sh`.
     *   **Saída**: O script irá gerar logs e checkpoints no diretório especificado por `OUTPUT_DIR` (padrão: `./output_cpu_test`).
+
+### **Passo 4: Simulação de Fine-Tuning (Prova de Conceito)**
+
+Para demonstrar a capacidade de fine-tuning do modelo, prepare um pequeno dataset de imagens "reais" e "falsas" e execute o script de fine-tuning.
+
+1.  **Crie a estrutura de diretórios para o fine-tuning e prepare os dados:**
+    Execute os comandos abaixo **dentro do container** para criar as pastas de treino e validação para imagens reais e falsas, e copiar/gerar as imagens.
+
+    ```bash
+    rm -rf /app/datasets/finetune/real /app/datasets/finetune/fake # Limpa tentativas anteriores, se houver
+    mkdir -p /app/datasets/finetune/train/real
+    mkdir -p /app/datasets/finetune/train/fake
+    mkdir -p /app/datasets/finetune/val/real
+    mkdir -p /app/datasets/finetune/val/fake
+
+    # Copia 10 imagens "reais" para o conjunto de treinamento
+    find /app/datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 10 | xargs -I {} cp {} /app/datasets/finetune/train/real/
+
+    # Copia 2 imagens "reais" para o conjunto de validação
+    find /app/datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 12 | tail -n 2 | xargs -I {} cp {} /app/datasets/finetune/val/real/
+
+    # Gere as imagens "falsas" invertendo as cores das imagens reais (treino)
+    python /app/src/util/generate_fake_images.py --real_images_dir /app/datasets/finetune/train/real --fake_images_dir /app/datasets/finetune/train/fake
+
+    # Gere as imagens "falsas" invertendo as cores das imagens reais (validação)
+    python /app/src/util/generate_fake_images.py --real_images_dir /app/datasets/finetune/val/real --fake_images_dir /app/datasets/finetune/val/fake
+    ```
+
+2.  **Execute o script de Fine-Tuning:**
+    Navegue até o diretório do script de fine-tuning e execute-o, apontando para o checkpoint do pré-treinamento e os dados de fine-tuning.
+
+    ```bash
+    cd /app/src/fsfm-3c/finuetune/cross_dataset_DfD/
+    python main_finetune_DfD.py \
+      --batch_size 4 \
+      --epochs 5 \
+      --finetune /app/src/fsfm-3c/pretrain/output_cpu_test/checkpoint-4.pth \
+      --finetune_data_path /app/datasets/finetune \
+      --output_dir /app/src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_cpu_test \
+      --device cpu \
+      --num_workers 0
+    ```
+
+    *   **`--finetune`**: Especifica o caminho para o checkpoint do pré-treinamento (`checkpoint-4.pth` é usado para simular 5 épocas completas).
+    *   **`--finetune_data_path`**: Aponta para o diretório base do dataset de fine-tuning que contém as subpastas `train` e `val`.
+    *   **`--output_dir`**: Define o diretório onde os logs e checkpoints do fine-tuning serão salvos.
+    *   **`--device cpu`**: Garante que o fine-tuning seja executado na CPU.
+    *   **`--num_workers 0`**: Desativa o paralelismo na leitura de dados para evitar problemas em ambientes CPU e WSL/Docker.

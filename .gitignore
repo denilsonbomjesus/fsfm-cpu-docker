@@ -1,4 +1,5 @@
 # Ignore datasets and large files
 datasets/
 output_pretrain/
-src/fsfm-3c/pretrain/output_cpu_test
+src/fsfm-3c/pretrain/output_cpu_test/*pth
+src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_cpu_test/*pth

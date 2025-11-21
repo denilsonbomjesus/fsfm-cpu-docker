@@ -56,10 +56,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
         if mixup_fn is not None:
             samples, targets = mixup_fn(samples, targets)
 
-        with torch.cuda.amp.autocast():
-            # outputs = model(samples)
-            outputs = model(samples).to(device, non_blocking=True)  # modified
-            loss = criterion(outputs, targets)
+        outputs = model(samples)
+        loss = criterion(outputs, targets)
 
         loss_value = loss.item()
 
@@ -74,7 +72,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
         if (data_iter_step + 1) % accum_iter == 0:
             optimizer.zero_grad()
 
-        torch.cuda.synchronize()
+        # torch.cuda.synchronize()
 
         metric_logger.update(loss=loss_value)
         min_lr = 10.
@@ -117,10 +115,8 @@ def evaluate(data_loader, model, device):
         target = target.to(device, non_blocking=True)
 
         # compute output
-        with torch.cuda.amp.autocast():
-            # output = model(images)
-            output = model(images).to(device, non_blocking=True)  # modified
-            loss = criterion(output, target)
+        output = model(images).to(device, non_blocking=True)  # modified
+        loss = criterion(output, target)
 
         # acc1, acc5 = accuracy(output, target, topk=(1, 5))
         # acc = float(accuracy(output, target, topk=(1,))[0])
@@ -170,10 +166,8 @@ def test(data_loader, model, device):
         target = target.to(device, non_blocking=True)
 
         # compute output
-        with torch.cuda.amp.autocast():
-            # output = model(images)
-            output = model(images).to(device, non_blocking=True)  # modified
-            loss = criterion(output, target)
+        output = model(images).to(device, non_blocking=True)  # modified
+        loss = criterion(output, target)
 
         frame_pred = (F.softmax(output, dim=1)[:, 1].detach().cpu().numpy())
         frame_preds = np.append(frame_preds, frame_pred)
@@ -227,10 +221,8 @@ def test_binary_video_frames(data_loader, model, device):
         target = target.to(device, non_blocking=True)
 
         # compute output
-        with torch.cuda.amp.autocast():
-            # output = model(images)
-            output = model(images).to(device, non_blocking=True)  # modified
-            loss = criterion(output, target)
+        output = model(images).to(device, non_blocking=True)  # modified
+        loss = criterion(output, target)
 
         frame_pred = (F.softmax(output, dim=1)[:, 1].detach().cpu().numpy())
         frame_preds = np.append(frame_preds, frame_pred)
