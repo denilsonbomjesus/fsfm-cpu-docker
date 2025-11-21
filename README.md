@@ -42,9 +42,9 @@ This guide outlines the steps to set up and run the FSFM-CVPR25 project in a CPU
     # 4. Instalar outras dependências pesadas
     RUN pip install dlib
     RUN pip install opencv-python-headless
-    RUN pip install git+https://github.com/FacePerceiver/facer.git@main # Corrigido: 'facer' não encontrado no PyPI
-    RUN pip install timm scipy pandas scikit-learn tensorboard # Separado para clareza
-
+    RUN pip install git+https://github.com/FacePerceiver/facer.git@main
+    RUN pip install timm==0.4.5 scipy pandas scikit-learn tensorboard submitit torchsummary # Corrigido: Versão timm, submitit e torchsummary
+    
     # 5. Copiar o código fonte para dentro do container
     COPY ./src /app/src
 
@@ -68,13 +68,26 @@ As seguintes modificações foram aplicadas ao arquivo `src/fsfm-3c/pretrain/mai
 3.  **Execução Local do Script Principal:**
     *   O bloco `if __name__ == '__main__':` foi ajustado para remover a dependência de `submitit` e chamar `main(args)` diretamente, adaptando o script para execução local em ambiente CPU.
 
-Adicionalmente, o script `src/datasets/pretrain/preprocess/face_parse.py` foi modificado para corrigir erros de importação e de `argparse`:
+Adicionalmente, os seguintes scripts foram modificados para corrigir erros e garantir a compatibilidade com o ambiente:
 
-1.  **Correção da Importação do `facer`:**
-    *   A linha `from tools.facer import facer` foi alterada para `import facer`, pois a biblioteca `facer` é instalada como um pacote Python padrão.
+*   **`src/datasets/pretrain/preprocess/face_parse.py`:**
+    1.  **Correção da Importação do `facer`:** A linha `from tools.facer import facer` foi alterada para `import facer`, pois a biblioteca `facer` é instalada como um pacote Python padrão.
+    2.  **Ajuste do Argument Parser e Execução Principal:** As funções `get_args_parser` e o bloco `if __name__ == '__main__':` foram redefinidos para aceitar o argumento `--dataset_path` e direcionar a saída para o diretório pai do caminho das imagens.
+    3.  **Compatibilidade com Python 3.9 (`facer`):** A biblioteca `facer`, instalada via `git+https`, utiliza a sintaxe de `Union` (operador `|`) para type hints. Como o container utiliza Python 3.9, foram aplicadas correções via `sed` em `/usr/local/lib/python3.9/site-packages/facer/face_parsing/farl.py`.
 
-2.  **Ajuste do Argument Parser e Execução Principal:**
-    *   As funções `get_args_parser` e o bloco `if __name__ == '__main__':` foram redefinidos para aceitar o argumento `--dataset_path` e direcionar a saída para o diretório pai do caminho das imagens.
+*   **`src/fsfm-3c/models_fsfm.py`:**
+    1.  **Remoção de `qk_scale`:** O argumento `qk_scale=None` foi removido das chamadas do construtor `Block`, pois a versão `timm==0.4.5` (original do projeto) não o aceita.
+
+*   **`src/fsfm-3c/util/pos_embed.py`:**
+    1.  **Correção de `np.float`:** A expressão `np.float` foi substituída por `float` para compatibilidade com versões mais recentes do NumPy.
+
+*   **`src/fsfm-3c/pretrain/main_pretrain.py`:**
+    1.  **Comentar `torchsummary`:** A chamada para `summary.summary` foi comentada, pois causava um `ValueError` com o formato de entrada.
+    2.  **Correção da passagem do modelo:** A função `train_one_epoch` agora recebe `model_without_ddp` em vez de `model`, garantindo que o modelo não encapsulado por `DistributedDataParallel` seja usado.
+
+*   **`src/fsfm-3c/pretrain/engine_pretrain.py`:**
+    1.  **Correção de `model.module`:** As referências a `model.module` foram alteradas para `model` diretamente ao iterar sobre os parâmetros, pois o modelo não está em modo distribuído.
+    2.  **Comentar `torch.cuda.synchronize()`:** A chamada `torch.cuda.synchronize()` foi comentada, pois causa um erro em ambientes CPU-only.
 
 ---
 
@@ -88,8 +101,9 @@ Adicionalmente, o script `src/datasets/pretrain/preprocess/face_parse.py` foi mo
 2.  **Inicie o Container Docker (modo detached):**
     Este comando inicia um container em segundo plano, nomeado `fsfm_container`, que permanecerá ativo para que os comandos seguintes possam ser executados.
     ```bash
-    docker run -d --name fsfm_container -v $(pwd)/src:/app/src -v $(pwd)/datasets:/app/datasets fsfm-cpu /bin/bash -c "sleep infinity"
+    docker run -d --name fsfm_container -v $(pwd):/app fsfm-cpu /bin/bash -c "sleep infinity"
     ```
+    *Obs: O diretório raiz do projeto local (`$(pwd)`) é montado como `/app` dentro do container, garantindo que o `config_pretraining.sh` e outros arquivos do projeto estejam acessíveis.*
 
 ---
 
@@ -153,6 +167,7 @@ O download direto do dataset LFW do `vis-www.cs.umass.edu` e `www.cs.cmu.edu` fa
     ```
 
 2.  **Aplique as correções de sintaxe no `farl.py` (necessário para Python 3.9):**
+    A biblioteca `facer`, instalada via `git+https`, utiliza a sintaxe de `Union` (operador `|`) para type hints, que é compatível apenas com Python 3.10 ou superior. Como o container utiliza Python 3.9, é necessário corrigir o arquivo `farl.py` diretamente.
     ```bash
     docker exec fsfm_container sed -i "s/from typing import Optional, Dict, Any/from typing import Optional, Dict, Any, Union/" /usr/local/lib/python3.9/site-packages/facer/face_parsing/farl.py
     docker exec fsfm_container sed -i "s/images: torch.Tensor|np.ndarray|list/images: Union[torch.Tensor, np.ndarray, list]/" /usr/local/lib/python3.9/site-packages/facer/face_parsing/farl.py
@@ -163,6 +178,8 @@ O download direto do dataset LFW do `vis-www.cs.umass.edu` e `www.cs.cmu.edu` fa
     docker exec fsfm_container bash -c "cd /app/src/datasets/pretrain/preprocess && python face_parse.py --dataset_path /app/datasets/pretrain_datasets/mini_real/images"
     ```
     *(Este comando fará o processamento das imagens e salvará os mapas de segmentação facial.)*
+
+
 
 ### **Passo 3: Pré-Treinamento (Execução Principal)**
 
@@ -200,19 +217,10 @@ O pré-treinamento do modelo é executado com o script `main_pretrain.py`. Os pa
     ```
     *Obs: Certifique-se de que o arquivo `config_pretraining.sh` esteja presente na raiz do seu projeto local. Ele será montado automaticamente dentro do container no diretório `/app`.*
 
-2.  **Execute o script de pré-treinamento dentro do container, utilizando os parâmetros do arquivo de configuração:**
+2.  **Execute o script de pré-treinamento dentro do container, utilizando o script `run_pretrain.sh`:**
+    Para garantir que os parâmetros do `config_pretraining.sh` sejam utilizados corretamente, criamos um script wrapper `run_pretrain.sh` que faz a leitura do arquivo de configuração e executa o comando `python main_pretrain.py`.
     ```bash
-    docker exec fsfm_container bash -c "source /app/config_pretraining.sh && cd /app/src/fsfm-3c/pretrain && python main_pretrain.py \
-      --batch_size ${BATCH_SIZE} \
-      --accum_iter ${ACCUM_ITER} \
-      --epochs ${EPOCHS} \
-      --model ${MODEL_NAME} \
-      --mask_ratio ${MASK_RATIO} \
-      --pretrain_data_path ${PRETRAIN_DATA_PATH} \
-      --output_dir ${OUTPUT_DIR} \
-      --num_workers ${NUM_WORKERS}"
+    docker exec fsfm_container /app/run_pretrain.sh
     ```
-    *   **`--batch_size 4`**: Essencial para não estourar sua RAM.
-    *   **`--num_workers 0`**: Essencial para evitar erros de multiprocessamento em emulação.
-    *   **`--epochs 5`**: Suficiente para mostrar que "rodou" (o loss vai aparecer no terminal).
-    *(Você pode ajustar os valores de `BATCH_SIZE`, `EPOCHS`, etc., editando diretamente o arquivo `config_pretraining.sh` antes de executar o comando.)*
+    *   **Parâmetros de Configuração**: Você pode ajustar os valores de `BATCH_SIZE`, `EPOCHS`, etc., editando o arquivo `config_pretraining.sh` diretamente. As mudanças serão refletidas na próxima execução do `run_pretrain.sh`.
+    *   **Saída**: O script irá gerar logs e checkpoints no diretório especificado por `OUTPUT_DIR` (padrão: `./output_cpu_test`).

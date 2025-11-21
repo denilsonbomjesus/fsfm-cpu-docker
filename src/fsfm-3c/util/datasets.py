@@ -352,7 +352,7 @@ class FaceParsingDataset(Dataset):
 
     def __getitem__(self, idx):
         img_name = os.path.join(self.image_folder, self.image_names[idx])
-        parsing_map_name = os.path.join(self.parsing_map_folder, self.image_names[idx].replace('.png', '.npy'))
+        parsing_map_name = os.path.join(self.parsing_map_folder, os.path.splitext(self.image_names[idx])[0] + '.npy')
 
         image = Image.open(img_name).convert("RGB")
         parsing_map_np = np.load(parsing_map_name)

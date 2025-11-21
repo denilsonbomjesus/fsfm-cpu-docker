@@ -1,3 +1,4 @@
 # Ignore datasets and large files
 datasets/
 output_pretrain/
+src/fsfm-3c/pretrain/output_cpu_test

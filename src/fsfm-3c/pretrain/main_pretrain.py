@@ -268,9 +268,9 @@ def main(args):
 
     import torchsummary as summary
     # if change the default mask_ratio, please also change the mask_ratio in forward() at model_fsfm.py for cal summary
-    print(summary.summary(model, [(3, args.input_size, args.input_size),
-                                  ((args.input_size // args.patch_size) ** 2,),
-                                  ((args.input_size // args.patch_size) ** 2,)]))
+    # print(summary.summary(model, [(3, args.input_size, args.input_size),
+    #                               ((args.input_size // args.patch_size) ** 2,),
+    #                               ((args.input_size // args.patch_size) ** 2,)]))
 
     model_without_ddp = model
     print("Model = %s" % str(model_without_ddp))
@@ -316,7 +316,7 @@ def main(args):
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
             data_loader_train.sampler.set_epoch(epoch)
-        train_stats = train_one_epoch(model,
+        train_stats = train_one_epoch(model_without_ddp,
                                       momentum_schedule, model_target_network, model_target_network_without_ddp,
                                       epoch * num_training_steps_per_epoch,
                                       data_loader_train,

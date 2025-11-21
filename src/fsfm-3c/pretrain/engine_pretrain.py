@@ -135,7 +135,7 @@ def train_one_epoch(model: torch.nn.Module,
         with torch.no_grad():
             m = momentum_schedule[it]  # momentum parameter
             names_q, params_q, names_k, params_k = [], [], [], []
-            for name_q, param_q in model.module.named_parameters():
+            for name_q, param_q in model.named_parameters():
                 names_q.append(name_q)
                 params_q.append(param_q)
             for name_k, param_k in model_target_encoder_without_ddp.named_parameters():
@@ -147,7 +147,7 @@ def train_one_epoch(model: torch.nn.Module,
             for param_q, param_k in zip(params_q, params_k):
                 param_k.data.mul_(m).add_((1 - m) * param_q.detach().data)
 
-        torch.cuda.synchronize()
+        # torch.cuda.synchronize() # Commented out for CPU-only environment
 
         metric_logger.update(loss=loss_value)
         metric_logger.update(loss_rec_all=loss_rec_all_value)
