@@ -53,25 +53,28 @@ class VisionTransformer(timm.models.vision_transformer.VisionTransformer):
         return outcome
 
 
-def vit_small_patch16(**kwargs):
+def vit_small_patch16(pretrained=False, **kwargs):
+    model_kwargs = {k: v for k, v in kwargs.items() if k != 'pretrained'}
     model = VisionTransformer(
         patch_size=16, embed_dim=384, depth=12, num_heads=12, mlp_ratio=4, qkv_bias=True,  # ViT-small config in MOCO_V3
         # patch_size=16, embed_dim=768, depth=8, num_heads=8, mlp_ratio=3, qkv_bias=True,  # ViT-small config in timm
-        norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), **model_kwargs)
     return model
 
 
-def vit_base_patch16(**kwargs):
+def vit_base_patch16(pretrained=False, **kwargs):
+    model_kwargs = {k: v for k, v in kwargs.items() if k != 'pretrained'}
     model = VisionTransformer(
         patch_size=16, embed_dim=768, depth=12, num_heads=12, mlp_ratio=4, qkv_bias=True,
-        norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), **model_kwargs)
     return model
 
 
-def vit_large_patch16(**kwargs):
+def vit_large_patch16(pretrained=False, **kwargs):
+    model_kwargs = {k: v for k, v in kwargs.items() if k != 'pretrained'}
     model = VisionTransformer(
         patch_size=16, embed_dim=1024, depth=24, num_heads=16, mlp_ratio=4, qkv_bias=True,
-        norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), **model_kwargs)
     return model
 
 

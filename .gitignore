@@ -3,6 +3,7 @@ datasets/
 src/fsfm-3c/pretrain/output_cpu_test/*pth
 src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_cpu_test/*pth
 src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_cpu_test_diff/*pth
+src/fsfm-3c/finuetune/cross_domain_FAS/output_finetune_cpu_test_fas/*pth
 
 # Ignore files
 ANALISE_COMPLETA_FSFM.md

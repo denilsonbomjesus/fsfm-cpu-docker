@@ -7,7 +7,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-sys.path.append('../../')
 import timm
 from collections import OrderedDict
 
@@ -31,7 +30,7 @@ class feature_generator(nn.Module):
             # self.vit = timm.create_model(args.model+'_224', pretrained=True)
             if not args.scratch:
                 print("loading ImageNet pretrained weights....")
-            self.vit = models_vit.__dict__[args.model](
+            self.vit = getattr(models_vit, args.model)(
                 pretrained=False if args.scratch else True,
                 num_classes=2,
                 global_pool=global_pool,
@@ -39,7 +38,7 @@ class feature_generator(nn.Module):
             )
 
         else:
-            model = models_vit.__dict__[args.model](
+            model = getattr(models_vit, args.model)(
                 num_classes=2,
                 global_pool=global_pool,
                 drop_path_rate=args.drop_path,
@@ -93,7 +92,7 @@ class feature_embedder(nn.Module):
 
     def __init__(self):
         super(feature_embedder, self).__init__()
-        self.bottleneck_layer_fc = nn.Linear(768, 512) # for ViT-B
+        self.bottleneck_layer_fc = nn.Linear(384, 512) # for ViT-S
         # self.bottleneck_layer_fc = nn.Linear(384, 512) # for ViT-S
         # self.bottleneck_layer_fc = nn.Linear(1024, 512)  # for ViT-L
         self.bottleneck_layer_fc.weight.data.normal_(0, 0.005)
