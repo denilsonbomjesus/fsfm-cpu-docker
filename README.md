@@ -319,3 +319,58 @@ Para demonstrar a capacidade de fine-tuning do modelo, prepare um pequeno datase
     ```
     *   **Parâmetros de Configuração**: Você pode ajustar os valores de `FT_BATCH_SIZE`, `FT_EPOCHS`, etc., editando o arquivo `config_finetune.sh` diretamente. As mudanças serão refletidas na próxima execução do `run_finetune.sh`.
     *   **Saída**: O script irá gerar logs e checkpoints no diretório especificado por `FT_OUTPUT_DIR`.
+
+### **Passo 5: Fine-Tuning para o cenário `cross_dataset_unseen_DiFF`**
+
+Esta seção descreve como executar o fine-tuning para o cenário de detecção de DeepFakes "não vistos" (DiFF).
+
+1.  **Crie o script de execução `run_finetune_diff.sh` na raiz do seu projeto:**
+    Este script é responsável por configurar e executar o teste de fine-tuning para o cenário DiFF.
+    ```bash
+    #!/bin/bash
+    #SBATCH --job-name=fsfm_finetune_diff
+    #SBATCH --nodes=1
+    #SBATCH --ntasks-per-node=1
+    #SBATCH --time=1:00:00
+    #SBATCH --mem=32G
+    #SBATCH --cpus-per-task=8
+
+    # Set the root directory for the dataset
+    DATA_PATH="./lfw_mock"
+
+    # Set the output directory for logs and models
+    OUTPUT_DIR="./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_cpu_test_diff/"
+
+    # Create the output directory if it doesn't exist
+    mkdir -p ${OUTPUT_DIR}
+
+    # Execute the fine-tuning script
+    python3 ./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/main_finetune_DiFF.py \
+        --input_dir ${DATA_PATH} \
+        --output_dir ${OUTPUT_DIR} \
+        --log_dir ${OUTPUT_DIR} \
+        --epochs 1 \
+        --batch_size 4 \
+        --model vit_small_patch16 \
+        --device cpu \
+        --num_workers 0
+    ```
+
+2.  **Prepare um dataset de mock para o teste:**
+    Para um teste funcional, você pode criar uma estrutura de diretórios com algumas imagens.
+    ```bash
+    # Criar a estrutura de diretórios
+    mkdir -p lfw_mock/train/real lfw_mock/train/fake lfw_mock/val/real lfw_mock/val/fake
+
+    # Copiar algumas imagens para simular o dataset
+    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 4 | xargs -I {} cp {} lfw_mock/train/real/
+    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 8 | tail -n 4 | xargs -I {} cp {} lfw_mock/train/fake/
+    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 12 | tail -n 4 | xargs -I {} cp {} lfw_mock/val/real/
+    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 16 | tail -n 4 | xargs -I {} cp {} lfw_mock/val/fake/
+    ```
+
+3.  **Execute o script de fine-tuning DiFF dentro do container:**
+    ```bash
+    docker exec fsfm_container /app/run_finetune_diff.sh
+    ```
+    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_cpu_test_diff/`. Você pode verificar os arquivos `log.txt` e `log_detail.txt` para confirmar que a execução foi bem-sucedida.

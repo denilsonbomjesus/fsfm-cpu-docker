@@ -56,7 +56,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
         if mixup_fn is not None:
             samples, targets = mixup_fn(samples, targets)
 
-        with torch.cuda.amp.autocast():
+        with torch.amp.autocast(device_type=device.type):
             # outputs = model(samples)
             outputs = model(samples).to(device, non_blocking=True)  # modified
             loss = criterion(outputs, targets)
@@ -74,7 +74,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
         if (data_iter_step + 1) % accum_iter == 0:
             optimizer.zero_grad()
 
-        torch.cuda.synchronize()
+        if device.type == 'cuda':
+            torch.cuda.synchronize()
 
         metric_logger.update(loss=loss_value)
         min_lr = 10.
@@ -117,14 +118,14 @@ def evaluate(data_loader, model, device):
         target = target.to(device, non_blocking=True)
 
         # compute output
-        with torch.cuda.amp.autocast():
+        with torch.amp.autocast(device_type=device.type):
             # output = model(images)
             output = model(images).to(device, non_blocking=True)  # modified
             loss = criterion(output, target)
 
         # acc1, acc5 = accuracy(output, target, topk=(1, 5))
         acc = float(accuracy(output, target, topk=(1,))[0])
-        preds = (F.softmax(output, dim=1)[:, 1].detach().cpu().numpy())
+        preds = (F.softmax(output.float(), dim=1)[:, 1].detach().cpu().numpy())
         trues = (target.detach().cpu().numpy())
         auc_score = roc_auc_score(trues, preds) * 100.
 
@@ -170,12 +171,12 @@ def test(data_loader, model, device):
         target = target.to(device, non_blocking=True)
 
         # compute output
-        with torch.cuda.amp.autocast():
+        with torch.amp.autocast(device_type=device.type):
             # output = model(images)
             output = model(images).to(device, non_blocking=True)  # modified
             loss = criterion(output, target)
 
-        frame_pred = (F.softmax(output, dim=1)[:, 1].detach().cpu().numpy())
+        frame_pred = (F.softmax(output.float(), dim=1)[:, 1].detach().cpu().numpy())
         frame_preds = np.append(frame_preds, frame_pred)
 
         frame_y_pred = np.argmax(output.detach().cpu().numpy(), axis=1)
@@ -227,12 +228,12 @@ def test_binary_video_frames(data_loader, model, device):
         target = target.to(device, non_blocking=True)
 
         # compute output
-        with torch.cuda.amp.autocast():
+        with torch.amp.autocast(device_type=device.type):
             # output = model(images)
             output = model(images).to(device, non_blocking=True)  # modified
             loss = criterion(output, target)
 
-        frame_pred = (F.softmax(output, dim=1)[:, 1].detach().cpu().numpy())
+        frame_pred = (F.softmax(output.float(), dim=1)[:, 1].detach().cpu().numpy())
         frame_preds = np.append(frame_preds, frame_pred)
 
         frame_y_pred = np.argmax(output.detach().cpu().numpy(), axis=1)

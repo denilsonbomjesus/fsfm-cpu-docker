@@ -1,204 +1,125 @@
-Abaixo está o **Plano de Implementação Remodelado para WSL 2 com Docker (CPU-Only)**.
+# Plano de Implementação e Evolução do Projeto FSFM
 
------
+Este documento detalha o plano de ação para expandir e robustecer o projeto FSFM, com base na análise da implementação atual e nos objetivos de evolução. O plano está estruturado em fases sequenciais para garantir um desenvolvimento incremental, organizado e testável.
 
-### 1\. Estratégia Geral: "Mini-FSFM Containerizado"
+---
 
-Como seu hardware é limitado (i5 sem GPU dedicada), nós vamos criar um container Docker "leve" que roda tudo em CPU.
+## Fase 1: Implementação do Finetuning `cross_dataset_unseen_DiFF`
 
-  * **Ambiente:** Ubuntu (via Docker) rodando dentro do WSL 2.
-  * **Dados:** Usaremos o dataset **LFW (Labeled Faces in the Wild)** reduzido (apenas \~50 imagens) em vez dos datasets gigantes do artigo.
-  * **Pipeline:**
-    1.  Baixar Dataset LFW (direto pelo terminal Linux).
-    2.  Pré-processar (Extração e Parsing) dentro do container.
-    3.  Pré-treinar (FSFM) por poucas épocas (CPU).
-    4.  Fine-tuning (Detecção) com dados sintéticos simples.
+**Objetivo:** Implementar e testar o cenário de finetuning para detecção de DeepFakes "não vistos" durante o treinamento, medindo a capacidade de generalização do modelo contra novos métodos de ataque.
 
------
+**Passos:**
 
-### 2\. Preparação dos Arquivos (No Windows/WSL)
+1.  **Criar o Script de Automação:**
+    *   [ ] Criar o arquivo `run_finetune_diff.sh` na raiz do projeto.
+    *   [ ] Copiar o conteúdo do `run_finetune.sh` existente como base.
+    *   [ ] Modificar o script para executar o `main_finetune_DiFF.py`.
+        *   Alterar a linha de comando `python` para chamar `./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/main_finetune_DiFF.py`.
+    *   [ ] Ajustar o `OUTPUT_DIR` para salvar os logs em um diretório específico, como `./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_cpu_test_diff/`.
 
-Abra seu terminal WSL (Ubuntu) e crie uma pasta para o projeto.
+2.  **Adaptação para CPU e Teste Inicial:**
+    *   [ ] Revisar o script `main_finetune_DiFF.py` para garantir que ele aceite e utilize argumentos para rodar em CPU (ex: `--device cpu`), similar ao que foi feito no `main_finetune_DfD.py`.
+    *   [ ] No script `run_finetune_diff.sh`, configurar o `--data_path` para apontar para o dataset `lfw` já existente, a fim de realizar um primeiro teste funcional.
+    *   [ ] Adicionar todos os argumentos necessários para a execução em modo CPU e com poucas épocas (ex: `--num_workers 0`, `--epochs 1`, `--batch_size 4`).
 
-```bash
-mkdir fsfm_project
-cd fsfm_project
-# Clone o repositório oficial
-git clone https://github.com/wolo-wolo/FSFM-CVPR25.git
-mv FSFM-CVPR25 src
-```
+3.  **Execução e Validação:**
+    *   [ ] Executar o script: `./run_finetune_diff.sh`.
+    *   [ ] Verificar se a execução ocorre sem erros e se os arquivos de log (`log.txt`, `log_detail.txt`, etc.) são criados corretamente no diretório de saída definido.
+    *   [ ] Analisar brevemente os logs para confirmar que as métricas (ACC, AUC) estão sendo geradas.
 
-Agora, crie um arquivo chamado `Dockerfile` na raiz da pasta `fsfm_project`. Este arquivo vai configurar todo o ambiente automaticamente.
+4.  **Atualizar Documentação:**
+    *   [ ] Editar o arquivo `README.md` principal do projeto.
+    *   [ ] Adicionar uma nova seção explicando como executar o finetuning para o cenário `DiFF` usando o novo script `run_finetune_diff.sh`.
 
-**Conteúdo do `Dockerfile` (Copie e cole):**
+---
 
-```dockerfile
-# Usar uma imagem base leve do Python 3.9
-FROM python:3.9-slim
+## Fase 2: Implementação do Finetuning `cross_domain_FAS`
 
-# 1. Instalar dependências do sistema (necessárias para dlib e opencv)
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    cmake \
-    libopenblas-dev \
-    liblapack-dev \
-    libx11-dev \
-    libgtk-3-dev \
-    git \
-    wget \
-    unzip \
-    && rm -rf /var/lib/apt/lists/*
+**Objetivo:** Implementar e testar o cenário de "Face Anti-Spoofing", expandindo a aplicação do modelo para um domínio relacionado de detecção de fraudes.
 
-# 2. Configurar diretório de trabalho
-WORKDIR /app
+**Passos:**
 
-# 3. Instalar PyTorch versão CPU (Muito importante para não baixar GBs de drivers NVIDIA inúteis)
-# Isso economiza espaço e RAM no seu notebook
-RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+1.  **Criar o Script de Automação:**
+    *   [ ] Criar o arquivo `run_finetune_fas.sh` na raiz do projeto.
+    *   [ ] Usar a estrutura dos outros scripts `.sh` como base.
+    *   [ ] Identificar o script Python de entrada principal para esta tarefa (provavelmente `train_vit.py` dentro de `src/fsfm-3c/finuetune/cross_domain_FAS/`).
+    *   [ ] Modificar o script para executar o `train_vit.py` com os argumentos corretos.
+    *   [ ] Ajustar o `OUTPUT_DIR` para `./src/fsfm-3c/finuetune/cross_domain_FAS/output_finetune_cpu_test_fas/`.
 
-# 4. Instalar outras dependências pesadas
-RUN pip install dlib
-RUN pip install opencv-python-headless
-RUN pip install facer timm scipy pandas scikit-learn tensorboard
+2.  **Adaptação para CPU e Teste Inicial:**
+    *   [ ] Revisar o `train_vit.py` e seus arquivos de configuração (`config.py`) para garantir a compatibilidade com a execução em CPU.
+    *   [ ] Configurar o `run_finetune_fas.sh` para usar o dataset `lfw` no primeiro teste e ajustar os parâmetros para uma execução leve.
 
-# 5. Copiar o código fonte para dentro do container
-COPY ./src /app/src
+3.  **Execução e Validação:**
+    *   [ ] Executar o script: `./run_finetune_fas.sh`.
+    *   [ ] Validar a criação e o conteúdo dos logs no diretório de saída.
 
-# 6. Definir variável de ambiente para usar CPU
-ENV CUDA_VISIBLE_DEVICES=""
-ENV OMP_NUM_THREADS=1
-```
+4.  **Atualizar Documentação:**
+    *   [ ] Adicionar uma seção ao `README.md` explicando como executar o finetuning para o cenário `FAS` com o script `run_finetune_fas.sh`.
 
------
+---
 
-### 3\. Modificações no Código (Cirurgia para CPU)
+## Fase 3: Implementação do Sistema de Seleção Dinâmica de Datasets
 
-Você precisará editar alguns arquivos Python dentro da pasta `src` que você clonou. Você pode usar o VS Code (conectado ao WSL) para isso.
+**Objetivo:** Refatorar os scripts de automação para permitir a escolha dinâmica do conjunto de dados a ser usado, facilitando a experimentação e a avaliação de desempenho com datasets progressivamente maiores.
 
-#### A. Desativar Treinamento Distribuído (`src/fsfm-3c/pretrain/main_pretrain.py`)
+**Passos:**
 
-O código original tenta iniciar conexões complexas entre GPUs. Precisamos forçar o modo "standalone".
+1.  **Reestruturar os Diretórios de Datasets:**
+    *   [ ] Organizar os datasets seguindo a estrutura proposta na análise:
+        ```
+        datasets/
+        ├── pretrain/
+        │   └── set_1_lfw/
+        └── finetune/
+            ├── DfD/
+            │   └── set_1_lfw_mock/  # (usando lfw como placeholder)
+            ├── DiFF/
+            │   └── set_1_lfw_mock/
+            └── FAS/
+                └── set_1_lfw_mock/
+        ```
+    *   [ ] Mover os arquivos do dataset `lfw` para a pasta `datasets/pretrain/set_1_lfw/`.
 
-1.  Abra `src/fsfm-3c/pretrain/main_pretrain.py`.
-2.  Localize a função `main(args)`.
-3.  Logo no início da função `main`, **adicione** estas linhas para forçar o desligamento do modo distribuído:
+2.  **Adaptar Scripts `.sh` para Aceitar Argumentos:**
+    *   [ ] **Modificar `run_pretrain.sh`:**
+        *   Alterar o script para aceitar um ID de dataset como primeiro argumento (`DATASET_ID=$1`).
+        *   Tornar os caminhos `DATA_PATH` e `OUTPUT_DIR` dinâmicos usando a variável `$DATASET_ID`.
+        *   Exemplo de `DATA_PATH`: `./datasets/pretrain/${DATASET_ID}`.
+        *   Exemplo de `OUTPUT_DIR`: `./src/fsfm-3c/pretrain/output_${DATASET_ID}`.
+    *   [ ] **Modificar `run_finetune.sh`, `run_finetune_diff.sh`, e `run_finetune_fas.sh`:**
+        *   Aplicar a mesma lógica para que aceitem um `DATASET_ID=$1`.
+        *   Ajustar `DATA_PATH` e `OUTPUT_DIR` de acordo. Exemplo para `run_finetune.sh`:
+            *   `DATA_PATH`: `./datasets/finetune/DfD/${DATASET_ID}`
+            *   `OUTPUT_DIR`: `./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_${DATASET_ID}`
 
-<!-- end list -->
+3.  **Atualizar Documentação:**
+    *   [ ] Reescrever as seções de "Como Executar" no `README.md`.
+    *   [ ] Explicar a nova estrutura de diretórios de datasets.
+    *   [ ] Fornecer exemplos claros de como executar os scripts com o novo parâmetro de ID do dataset.
+        *   Ex: `./run_pretrain.sh set_1_lfw`
+        *   Ex: `./run_finetune.sh set_1_lfw_mock`
 
-```python
-def main(args):
-    # --- MODIFICAÇÃO PARA CPU START ---
-    args.distributed = False
-    import torch
-    device = torch.device('cpu')
-    # --- MODIFICAÇÃO PARA CPU END ---
-    
-    # Comente ou apague a linha original que dizia: 
-    # misc.init_distributed_mode(args)
-    
-    print('job dir: {}'.format(os.path.dirname(os.path.realpath(__file__))))
-    # ... resto do código
-```
+---
 
-4.  Busque onde o código define `device = torch.device(args.device)` e garanta que ele está usando a variável `device` que definimos acima (CPU).
-5.  Busque por `model = torch.nn.parallel.DistributedDataParallel(model, ...)` e **comente** ou envolva em um `if args.distributed:`. Como setamos para `False`, ele usará o modelo puro.
+## Fase 4: Otimização e Melhoria Contínua
 
-#### B. Ajuste no Carregamento de Dados (`src/datasets/pretrain/dataset_preprocess.py`)
+**Objetivo:** Estabelecer um ciclo de melhoria para os resultados do modelo, utilizando a nova estrutura de datasets dinâmicos.
 
-Simplifique este script. Em vez de usar o script complexo deles, vamos fazer algo manual na etapa de execução, pois o dataset será pequeno.
+**Passos:**
 
------
+1.  **Expor Hiperparâmetros nos Scripts `.sh`:**
+    *   [ ] Modificar os scripts `.sh` para transformar hiperparâmetros importantes (como `--lr`, `--batch_size`, `--epochs`) em variáveis no topo do arquivo. Isso facilitará a experimentação sem precisar alterar a linha de comando `python`.
 
-### 4\. Construindo e Rodando o Container
+2.  **Ciclo de Teste com Novos Datasets:**
+    *   [ ] **Pesquisar e Baixar:** Encontrar um dataset de pré-treinamento ligeiramente maior que o LFW (ex: uma amostra do CelebA).
+    *   [ ] **Estruturar:** Criar a pasta `datasets/pretrain/set_2_celeba/` e colocar os dados lá.
+    *   [ ] **Executar:** Rodar o pré-treinamento com o novo dataset: `./run_pretrain.sh set_2_celeba`.
+    *   [ ] **Analisar:** Comparar os logs de `output_set_1_lfw` e `output_set_2_celeba`. Avaliar o impacto no tempo de treinamento e na queda da `loss`.
+    *   [ ] **Repetir:** Seguir o mesmo processo para os datasets de finetuning (ex: usando amostras do FaceForensics++), sempre comparando os resultados (ACC, AUC) e o consumo de recursos (CPU, RAM).
 
-No terminal do WSL, dentro da pasta `fsfm_project`:
+3.  **Ajuste de Hiperparâmetros:**
+    *   [ ] Com um dataset fixo (ex: `set_2_celeba`), iniciar experimentos alterando um hiperparâmetro de cada vez (ex: aumentar o número de épocas de `1` para `5`, depois ajustar a `learning rate`).
+    *   [ ] Documentar cada resultado para encontrar a combinação ótima que o seu hardware suporta.
 
-1.  **Construir a Imagem:**
-
-    ```bash
-    docker build -t fsfm-cpu .
-    ```
-
-    *(Isso vai demorar uns minutos instalando o dlib e torch, mas só precisa ser feito uma vez).*
-
-2.  **Rodar o Container:**
-    Vamos montar o volume para que os dados persistam e você possa ver os logs.
-
-    ```bash
-    docker run -it --rm -v $(pwd)/src:/app/src -v $(pwd)/datasets:/app/datasets fsfm-cpu /bin/bash
-    ```
-
-    *Agora você está dentro do terminal do container Linux, pronto para rodar os scripts.*
-
------
-
-### 5\. O Pipeline de Execução (Dentro do Container)
-
-Agora, dentro do container, execute passo a passo:
-
-#### Passo 1: Baixar Mini-Dataset (LFW)
-
-Vamos baixar o LFW e preparar uma estrutura "fake" que o código aceite.
-
-```bash
-# Crie a estrutura de pastas
-mkdir -p /app/datasets/pretrain_datasets/mini_real/images
-cd /app/datasets
-
-# Baixar LFW (Labelled Faces in the Wild) - versão pequena
-wget http://vis-www.cs.umass.edu/lfw/lfw-funneled.tgz
-tar -xzf lfw-funneled.tgz
-
-# Copiar apenas 50 imagens para nossa pasta de treino
-# (Isso pega as primeiras 50 imagens encontradas nas subpastas)
-find lfw_funneled -name "*.jpg" | head -n 50 | xargs -I {} cp {} /app/datasets/pretrain_datasets/mini_real/images/
-
-# Criar uma pasta de validação vazia ou com poucas imagens para não quebrar o script
-mkdir -p /app/datasets/pretrain_datasets/mini_real/val
-cp /app/datasets/pretrain_datasets/mini_real/images/*.jpg /app/datasets/pretrain_datasets/mini_real/val/
-```
-
-#### Passo 2: Face Parsing (Crítico para o FSFM)
-
-O FSFM precisa dos mapas de segmentação (`.npy`).
-
-```bash
-cd /app/src/datasets/pretrain
-# Precisamos ajustar o script face_parse.py para apontar para nossa pasta
-# Execute o script (ele vai baixar o modelo do facer automaticamente)
-python face_parse.py --dataset_path /app/datasets/pretrain_datasets/mini_real/images
-```
-
-*Nota:* Se o `face_parse.py` pedir argumentos específicos do argparse original (como `dataset_name`), você pode precisar editar o final do arquivo `face_parse.py` para aceitar um caminho direto ou simplesmente hardcodar o caminho da pasta `mini_real`.
-
-#### Passo 3: Pré-Treinamento (Execução Principal)
-
-Aqui rodamos o modelo. Devido à sua RAM (16GB compartilhada), seremos conservadores.
-
-```bash
-cd /app/src/fsfm-3c/pretrain
-
-# Comando adaptado para CPU Single-Core
-python main_pretrain.py \
-  --batch_size 4 \
-  --accum_iter 1 \
-  --epochs 5 \
-  --model fsfm_vit_base_patch16 \
-  --mask_ratio 0.75 \
-  --pretrain_data_path /app/datasets/pretrain_datasets/mini_real \
-  --output_dir ./output_cpu_test \
-  --num_workers 0
-```
-
-  * **`--batch_size 4`**: Essencial para não estourar sua RAM.
-  * **`--num_workers 0`**: Essencial para evitar erros de multiprocessamento em emulação.
-  * **`--epochs 5`**: Suficiente para mostrar que "rodou" (o loss vai aparecer no terminal).
-
-#### Passo 4: Simulação de Fine-Tuning (Prova de Conceito)
-
-Para provar que o modelo treinado funciona, rodamos o script de detecção.
-
-1.  Crie uma pasta `datasets/finetune` com duas subpastas: `real` e `fake`.
-2.  Copie algumas imagens do LFW para `real`.
-3.  Copie as mesmas imagens para `fake` e rabisque algo nelas (ou inverta cores) usando algum script Python rápido, só para serem diferentes matematicamente.
-4.  Rode o `main_finetune.py` apontando para o checkpoint gerado no Passo 3 (`output_cpu_test/checkpoint-5.pth`).
+Este plano fornece um caminho claro e estruturado para alcançar seus objetivos, transformando a implementação funcional atual em uma plataforma de experimentação robusta e escalável.

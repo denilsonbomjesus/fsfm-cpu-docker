@@ -122,11 +122,9 @@ def get_args_parser():
     parser.add_argument('--cls_token', action='store_false', dest='global_pool',
                         help='Use class token instead of global pool for classification')
     
-    # Dataset (with train/val folder structure) parameters. modified for unseen DiFF evaluation
-    parser.add_argument('--data_path', default=None, type=str,
-                        help='train dataset path with /train/classes sub-folder')
-    parser.add_argument('--val_data_path', default=None, type=str,
-                        help='val(no test) dataset path')
+    # Dataset (with train/val folder structure) parameters.
+    parser.add_argument('--input_dir', default=None, type=str,
+                        help='dataset path with train/val file structure')
     parser.add_argument('--nb_classes', default=2, type=int,
                         help='number of the classification types')
 
@@ -194,16 +192,12 @@ def main(args):
     np.random.seed(seed)
 
     cudnn.benchmark = True
+    
+    # Set data_path for build_dataset
+    args.data_path = args.input_dir
 
     dataset_train = build_dataset(is_train=True if not args.eval else False, args=args)
-    args.data_path = os.path.join(args.val_data_path, 'T2I')
-    dataset_val_T2I = build_dataset(is_train=False, args=args)
-    args.data_path = os.path.join(args.val_data_path, 'I2I')
-    dataset_val_I2I = build_dataset(is_train=False, args=args)
-    args.data_path = os.path.join(args.val_data_path, 'FS')
-    dataset_val_FS = build_dataset(is_train=False, args=args)
-    args.data_path = os.path.join(args.val_data_path, 'FE')
-    dataset_val_FE = build_dataset(is_train=False, args=args)
+    dataset_val = build_dataset(is_train=False, args=args)
 
     if True:  # args.distributed:
         num_tasks = misc.get_world_size()
@@ -213,45 +207,19 @@ def main(args):
         )
         print("Sampler_train = %s" % str(sampler_train))
         if args.dist_eval:
-            if len(dataset_val_T2I) % num_tasks != 0:
+            if len(dataset_val) % num_tasks != 0:
                 print('Warning: Enabling distributed evaluation with an eval dataset not divisible by process number. '
                       'This will slightly alter validation results as extra duplicate entries are added to achieve '
                       'equal num of samples per-process.')
-            sampler_val_T2I = torch.utils.data.DistributedSampler(
-                dataset_val_T2I, num_replicas=num_tasks, rank=global_rank,
-                shuffle=True)  # shuffle=True to reduce monitor bias
-            if len(dataset_val_I2I) % num_tasks != 0:
-                print('Warning: Enabling distributed evaluation with an eval dataset not divisible by process number. '
-                      'This will slightly alter validation results as extra duplicate entries are added to achieve '
-                      'equal num of samples per-process.')
-            sampler_val_I2I = torch.utils.data.DistributedSampler(
-                dataset_val_I2I, num_replicas=num_tasks, rank=global_rank,
-                shuffle=True)  # shuffle=True to reduce monitor bias
-            if len(dataset_val_FS) % num_tasks != 0:
-                print('Warning: Enabling distributed evaluation with an eval dataset not divisible by process number. '
-                      'This will slightly alter validation results as extra duplicate entries are added to achieve '
-                      'equal num of samples per-process.')
-            sampler_val_FS = torch.utils.data.DistributedSampler(
-                dataset_val_FS, num_replicas=num_tasks, rank=global_rank,
-                shuffle=True)  # shuffle=True to reduce monitor bias
-            if len(dataset_val_FE) % num_tasks != 0:
-                print('Warning: Enabling distributed evaluation with an eval dataset not divisible by process number. '
-                      'This will slightly alter validation results as extra duplicate entries are added to achieve '
-                      'equal num of samples per-process.')
-            sampler_val_FE = torch.utils.data.DistributedSampler(
-                dataset_val_FE, num_replicas=num_tasks, rank=global_rank,
+            sampler_val = torch.utils.data.DistributedSampler(
+                dataset_val, num_replicas=num_tasks, rank=global_rank,
                 shuffle=True)  # shuffle=True to reduce monitor bias
         else:
-            sampler_val_T2I = torch.utils.data.SequentialSampler(dataset_val_T2I)
-            sampler_val_I2I = torch.utils.data.SequentialSampler(dataset_val_I2I)
-            sampler_val_FS = torch.utils.data.SequentialSampler(dataset_val_FS)
-            sampler_val_FE = torch.utils.data.SequentialSampler(dataset_val_FE)
+            sampler_val = torch.utils.data.SequentialSampler(dataset_val)
     else:
         sampler_train = torch.utils.data.RandomSampler(dataset_train)
-        sampler_val_T2I = torch.utils.data.SequentialSampler(dataset_val_T2I)
-        sampler_val_I2I = torch.utils.data.SequentialSampler(dataset_val_I2I)
-        sampler_val_FS = torch.utils.data.SequentialSampler(dataset_val_FS)
-        sampler_val_FE = torch.utils.data.SequentialSampler(dataset_val_FE)
+        sampler_val = torch.utils.data.SequentialSampler(dataset_val)
+
 
     if global_rank == 0 and args.log_dir is not None and not args.eval:
         os.makedirs(args.log_dir, exist_ok=True)
@@ -269,36 +237,13 @@ def main(args):
         drop_last=True,
     )
 
-    data_loader_val_T2I = torch.utils.data.DataLoader(
-        dataset_val_T2I, sampler=sampler_val_T2I,
-        batch_size=args.batch_size*10,
+    data_loader_val = torch.utils.data.DataLoader(
+        dataset_val, sampler=sampler_val,
+        batch_size=args.batch_size,
         num_workers=args.num_workers,
         pin_memory=args.pin_mem,
         drop_last=False
     )
-    data_loader_val_I2I = torch.utils.data.DataLoader(
-        dataset_val_I2I, sampler=sampler_val_I2I,
-        batch_size=args.batch_size*10,
-        num_workers=args.num_workers,
-        pin_memory=args.pin_mem,
-        drop_last=False
-    )
-    data_loader_val_FS = torch.utils.data.DataLoader(
-        dataset_val_FS, sampler=sampler_val_FS,
-        batch_size=args.batch_size*10,
-        num_workers=args.num_workers,
-        pin_memory=args.pin_mem,
-        drop_last=False
-    )
-    data_loader_val_FE = torch.utils.data.DataLoader(
-        dataset_val_FE, sampler=sampler_val_FE,
-        batch_size=args.batch_size*10,
-        num_workers=args.num_workers,
-        pin_memory=args.pin_mem,
-        drop_last=False
-    )
-    data_loader_val = {'T2I': data_loader_val_T2I, 'I2I': data_loader_val_I2I,
-                       'FS': data_loader_val_FS, 'FE': data_loader_val_FE}
 
     mixup_fn = None
     mixup_active = args.mixup > 0 or args.cutmix > 0. or args.cutmix_minmax is not None
@@ -306,7 +251,7 @@ def main(args):
         print("Mixup is activated!")
         mixup_fn = Mixup(
             mixup_alpha=args.mixup, cutmix_alpha=args.cutmix, cutmix_minmax=args.cutmix_minmax,
-            prob=args.mixup_prob, switch_prob=args.mixup_switch_prob, mode=args.mixup_mode,
+            prob=args.mixup_prob, switch_prob=.5, mode=args.mixup_mode,
             label_smoothing=args.smoothing, num_classes=args.nb_classes)
 
     model = models_vit.__dict__[args.model](
@@ -315,7 +260,7 @@ def main(args):
         global_pool=args.global_pool,
     )
 
-    if args.finetune and not args.eval:
+    if args.finetune:
         checkpoint = torch.load(args.finetune, map_location='cpu')
 
         print("Load pre-trained checkpoint from: %s" % args.finetune)
@@ -390,18 +335,14 @@ def main(args):
 
     misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler)
 
-    # we use main_test.py for eval and test
     if args.eval:
-        # test_stats = test(data_loader_val, model, device)
-        # print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc']:.3f}%")
-        # print(f"AUC of the network on the {len(dataset_val)} test images: {test_stats['auc']:.3f}%")
-        # print(f"Loss of the network on the {len(dataset_val)} test images: {test_stats['loss']:.3f}%")
         print("Please use main_test.py for testing")
         exit(0)
 
     print(f"Start training for {args.epochs} epochs")
     start_time = time.time()
-    min_val_loss = {'T2I': 100000., 'I2I': 100000., 'FS': 100000., 'FE': 100000.}
+    max_auc = 0.0
+    min_val_loss = 100000.
 
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
@@ -414,21 +355,37 @@ def main(args):
             args=args
         )
 
-        # if args.output_dir and (epoch % 10 == 0 or epoch + 1 == args.epochs):
+        val_stats = evaluate(data_loader_val, model, device)
+        print(f"AUC of the network on the {len(dataset_val)} val images: {val_stats['auc']:.2f}%")
+        max_auc = max(max_auc, val_stats["auc"])
+        print(f'Max auc: {max_auc:.2f}%')
+
         if args.output_dir and epoch + 1 == args.epochs:
             misc.save_model(
                 args=args, model=model, model_without_ddp=model_without_ddp, optimizer=optimizer,
                 loss_scaler=loss_scaler, epoch=epoch)
 
-        for val_ds in ['T2I', 'I2I', 'FS', 'FE']:
-            print(f"Validation on {val_ds} subset")
-            val_stats = evaluate(data_loader_val[val_ds], model, device)
-            if args.output_dir and val_stats['loss'] < min_val_loss[val_ds]:
-                min_val_loss[val_ds] = val_stats['loss']
-                print(f'Save model for val_set of {val_ds} with min_val_loss at epoch: {epoch}')
-                misc.save_model(
-                    args=args, model=model, model_without_ddp=model_without_ddp, optimizer=optimizer,
-                    loss_scaler=loss_scaler, epoch=epoch, tag='min_val_loss_'+val_ds)
+        if args.output_dir and val_stats['loss'] < min_val_loss:
+            min_val_loss = val_stats['loss']
+            print(f'Save model with min_val_loss at epoch: {epoch}')
+            misc.save_model(
+                args=args, model=model, model_without_ddp=model_without_ddp, optimizer=optimizer,
+                loss_scaler=loss_scaler, epoch=epoch, tag='min_val_loss')
+
+        if log_writer is not None:
+            log_writer.add_scalar('perf/val_auc', val_stats['auc'], epoch)
+            log_writer.add_scalar('perf/val_loss', val_stats['loss'], epoch)
+
+        log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
+                        **{f'val_{k}': v for k, v in val_stats.items()},
+                        'epoch': epoch,
+                        'n_parameters': n_parameters}
+
+        if args.output_dir and misc.is_main_process():
+            if log_writer is not None:
+                log_writer.flush()
+            with open(os.path.join(args.output_dir, "log.txt"), mode="a", encoding="utf-8") as f:
+                f.write(json.dumps(log_stats) + "\n")
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
@@ -437,21 +394,8 @@ def main(args):
 
 
 if __name__ == '__main__':
-    # args = get_args_parser()
-    # args = args.parse_args()
-    # if args.output_dir:
-    #     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
-    # main(args)
-
     args = get_args_parser()
     args = args.parse_args()
-    if args.output_dir == '':
-        print(os.getpgrp())
-        # args.output_dir = get_shared_folder() / "%j"
-        args.output_dir = get_shared_folder() / str(os.getpgrp())
-    args.log_dir = args.output_dir
-
-    executor = submitit.AutoExecutor(folder=args.output_dir)
-    executor.update_parameters(name="fsfm")
-    job = executor.submit(main(args))
-    print("Submitted job_id:", job.job_id)
+    if args.output_dir:
+        Path(args.output_dir).mkdir(parents=True, exist_ok=True)
+    main(args)
