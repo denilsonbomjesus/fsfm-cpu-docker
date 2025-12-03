@@ -190,8 +190,8 @@ def get_shared_folder() -> Path:
 
 def main(args):
     import sys
-    log_detail = 'log_detail' + '.txt'
-    sys.stdout = open(os.path.join(args.output_dir, log_detail), 'a+')
+    # sys.stdout redirection handled by shell script
+    pass # Placeholder, or remove if not strictly needed
 
     misc.init_distributed_mode(args)
 
@@ -444,12 +444,6 @@ def main(args):
 
 
 if __name__ == '__main__':
-    # args = get_args_parser()
-    # args = args.parse_args()
-    # if args.output_dir:
-    #     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
-    # main(args)
-
     args = get_args_parser()
     args = args.parse_args()
     if args.output_dir == '':
@@ -458,7 +452,7 @@ if __name__ == '__main__':
         args.output_dir = get_shared_folder() / str(os.getpgrp())
     args.log_dir = args.output_dir
 
-    executor = submitit.AutoExecutor(folder=args.output_dir)
-    executor.update_parameters(name="fsfm")
-    job = executor.submit(main(args))
-    print("Submitted job_id:", job.job_id)
+    # Ensure output directory exists before running main(args)
+    Path(args.output_dir).mkdir(parents=True, exist_ok=True)
+
+    main(args)

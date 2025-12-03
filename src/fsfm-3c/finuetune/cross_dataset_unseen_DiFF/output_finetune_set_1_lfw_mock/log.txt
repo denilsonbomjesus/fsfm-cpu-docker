@@ -1,0 +1,1 @@
+{"train_lr": 7.8125e-07, "train_loss": 0.78125, "val_loss": 0.7814381122589111, "val_acc": 50.0, "val_auc": NaN, "epoch": 0, "n_parameters": 21666434}

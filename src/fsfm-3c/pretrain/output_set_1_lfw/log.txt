@@ -1,0 +1,5 @@
+{"train_lr": 1.875e-07, "train_loss": 1.8150159263610839, "train_loss_rec_all": 1.806569266319275, "train_loss_rec_sfr": 1.5331714487075805, "train_loss_cl": -0.02285556312650442, "epoch": 0}
+{"train_lr": 5.781250000000001e-07, "train_loss": 1.6852833223342896, "train_loss_rec_all": 1.6834677314758302, "train_loss_rec_sfr": 1.4374424695968628, "train_loss_cl": -0.08246480733156204, "epoch": 1}
+{"train_lr": 9.6875e-07, "train_loss": 1.4869100427627564, "train_loss_rec_all": 1.4962590980529784, "train_loss_rec_sfr": 1.2377429676055909, "train_loss_cl": -0.18013256430625915, "epoch": 2}
+{"train_lr": 1.3593750000000002e-06, "train_loss": 1.2960373663902283, "train_loss_rec_all": 1.3160891222953797, "train_loss_rec_sfr": 1.044043743610382, "train_loss_cl": -0.2736005789041519, "epoch": 3}
+{"train_lr": 1.7500000000000002e-06, "train_loss": 1.1712641644477844, "train_loss_rec_all": 1.1997287321090697, "train_loss_rec_sfr": 0.9029589009284973, "train_loss_cl": -0.3478529417514801, "epoch": 4}

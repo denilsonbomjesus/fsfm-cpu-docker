@@ -6,22 +6,32 @@
 #SBATCH --mem=32G
 #SBATCH --cpus-per-task=8
 
-# Set the root directory for the dataset
-DATA_PATH="./lfw_mock"
+# Aceita o ID do dataset como primeiro argumento
+DATASET_ID=$1
 
-# Set the output directory for logs and models
-OUTPUT_DIR="./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_cpu_test_diff/"
+# Verifica se um ID de dataset foi fornecido
+if [ -z "$DATASET_ID" ]; then
+  echo "Uso: $0 <DATASET_ID>"
+  exit 1
+fi
 
-# Create the output directory if it doesn't exist
-mkdir -p ${OUTPUT_DIR}
+# Set the root directory for the dataset dynamically
+DATA_PATH="$(realpath ./datasets/finetune/DiFF/${DATASET_ID})"
+
+# Set the output directory for logs and models dynamically
+OUTPUT_DIR="./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_${DATASET_ID}/"
+
+# Create the output directory if it doesn't exist and set correct ownership
+mkdir -p "${OUTPUT_DIR}"
+chown -R 1000:1000 "${OUTPUT_DIR}"
 
 # Execute the fine-tuning script
 python3 ./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/main_finetune_DiFF.py \
-    --input_dir ${DATA_PATH} \
-    --output_dir ${OUTPUT_DIR} \
-    --log_dir ${OUTPUT_DIR} \
+    --input_dir "${DATA_PATH}" \
+    --output_dir "${OUTPUT_DIR}" \
+    --log_dir "${OUTPUT_DIR}" \
     --epochs 1 \
     --batch_size 4 \
     --model vit_small_patch16 \
     --device cpu \
-    --num_workers 0
+    --num_workers 0 > "${OUTPUT_DIR}/log_detail.txt" 2>&1

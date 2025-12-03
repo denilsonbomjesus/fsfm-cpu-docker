@@ -109,6 +109,25 @@ Adicionalmente, os seguintes scripts foram modificados para corrigir erros e gar
 
 ## 4. O Pipeline de Execução (Dentro do Container)
 
+### **Nova Estrutura de Diretórios de Datasets**
+
+Com a implementação do sistema de seleção dinâmica, os datasets agora seguem uma estrutura organizada para facilitar a experimentação:
+
+```
+datasets/
+├── pretrain_datasets/
+│   └── set_1_lfw/           # Contém os dados para pré-treinamento (e.g., LFW)
+├── finetune/
+│   ├── DfD/
+│   │   └── set_1_lfw_mock/  # Dados para finetuning DfD
+│   ├── DiFF/
+│   │   └── set_1_lfw_mock/  # Dados para finetuning DiFF
+│   └── FAS/
+│       └── set_1_lfw_mock/  # Dados para finetuning FAS
+```
+
+Cada subdiretório `set_X_datasetname/` deve conter os dados necessários para o respectivo estágio (pré-treinamento ou finetuning) e tipo de tarefa (DfD, DiFF, FAS). O nome `set_1_lfw` ou `set_1_lfw_mock` atua como um `DATASET_ID` que é passado como argumento para os scripts de execução.
+
 Todos os comandos abaixo devem ser executados **dentro do container** (usando `docker exec fsfm_container ...`).
 
 ### **Passo 1: Baixar Mini-Dataset (LFW)**
@@ -117,7 +136,7 @@ O download direto do dataset LFW do `vis-www.cs.umass.edu` e `www.cs.cmu.edu` fa
 
 1.  **Crie a estrutura de diretórios necessária:**
     ```bash
-    docker exec fsfm_container mkdir -p /app/datasets/pretrain_datasets/mini_real/images
+    docker exec fsfm_container mkdir -p /app/datasets/pretrain_datasets/set_1_lfw/images
     ```
 
 2.  **Crie um script Python para baixar o dataset LFW (usando `scikit-learn`):**
@@ -151,12 +170,12 @@ O download direto do dataset LFW do `vis-www.cs.umass.edu` e `www.cs.cmu.edu` fa
 
 4.  **Copie 50 imagens do dataset LFW para a pasta de treinamento:**
     ```bash
-    docker exec fsfm_container bash -c "find /root/scikit_learn_data/lfw_home/lfw_funneled -name '*.jpg' | head -n 50 | xargs -I {} cp --parents {} /app/datasets/pretrain_datasets/mini_real/images/"
+    docker exec fsfm_container bash -c "find /root/scikit_learn_data/lfw_home/lfw_funneled -name '*.jpg' | head -n 50 | xargs -I {} cp --parents {} /app/datasets/pretrain_datasets/set_1_lfw/images/"
     ```
 
 5.  **Crie a pasta de validação e copie as imagens para ela:**
     ```bash
-    docker exec fsfm_container bash -c "mkdir -p /app/datasets/pretrain_datasets/mini_real/val && find /app/datasets/pretrain_datasets/mini_real/images -name '*.jpg' -print0 | xargs -0 -I {} cp {} /app/datasets/pretrain_datasets/mini_real/val/"
+    docker exec fsfm_container bash -c "mkdir -p /app/datasets/pretrain_datasets/set_1_lfw/val && find /app/datasets/pretrain_datasets/set_1_lfw/images -name '*.jpg' -print0 | xargs -0 -I {} cp {} /app/datasets/pretrain_datasets/set_1_lfw/val/"
     ```
 
 ### **Passo 2: Face Parsing (Crítico para o FSFM)**
@@ -206,53 +225,25 @@ O pré-treinamento do modelo é executado com o script `main_pretrain.py`. Os pa
     # Mask ratio
     export MASK_RATIO=0.75
 
-    # Path to the pre-training dataset
-    export PRETRAIN_DATA_PATH="/app/datasets/pretrain_datasets/mini_real"
-
-    # Output directory for checkpoints and logs
-    export OUTPUT_DIR="./output_cpu_test"
-
     # Number of data loading workers: Essential for avoiding multiprocessing errors in emulation
     export NUM_WORKERS=0
     ```
     *Obs: Certifique-se de que o arquivo `config_pretraining.sh` esteja presente na raiz do seu projeto local. Ele será montado automaticamente dentro do container no diretório `/app`.*
+    *   **Caminhos de Dados e Saída**: Os caminhos para o dataset (`PRETRAIN_DATA_PATH`) e o diretório de saída (`OUTPUT_DIR`) são agora definidos dinamicamente dentro do script `run_pretrain.sh` usando o `DATASET_ID` fornecido.
 
 2.  **Execute o script de pré-treinamento dentro do container, utilizando o script `run_pretrain.sh`:**
-    Para garantir que os parâmetros do `config_pretraining.sh` sejam utilizados corretamente, criamos um script wrapper `run_pretrain.sh` que faz a leitura do arquivo de configuração e executa o comando `python main_pretrain.py`.
+    Para garantir que os parâmetros sejam utilizados corretamente, execute o `run_pretrain.sh` passando o `DATASET_ID` correspondente à pasta do seu dataset.
     ```bash
-    docker exec fsfm_container /app/run_pretrain.sh
+    docker exec fsfm_container /app/run_pretrain.sh set_1_lfw
     ```
     *   **Parâmetros de Configuração**: Você pode ajustar os valores de `BATCH_SIZE`, `EPOCHS`, etc., editando o arquivo `config_pretraining.sh` diretamente. As mudanças serão refletidas na próxima execução do `run_pretrain.sh`.
-    *   **Saída**: O script irá gerar logs e checkpoints no diretório especificado por `OUTPUT_DIR` (padrão: `./output_cpu_test`).
+    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/pretrain/output_set_1_lfw/` (ou `output_SEU_DATASET_ID/` correspondente).
 
-### **Passo 4: Simulação de Fine-Tuning (Prova de Conceito)**
+### **Passo 4: Simulação de Fine-Tuning (Prova de Conceito) - DfD**
 
-Para demonstrar a capacidade de fine-tuning do modelo, prepare um pequeno dataset de imagens "reais" e "falsas" e execute o script de fine-tuning.
+Para demonstrar a capacidade de fine-tuning do modelo no cenário `cross_dataset_DfD`, utilize o dataset mock já preparado.
 
-1.  **Crie a estrutura de diretórios para o fine-tuning e prepare os dados:**
-    Execute os comandos abaixo **dentro do container** para criar as pastas de treino e validação para imagens reais e falsas, e copiar/gerar as imagens.
-
-    ```bash
-    rm -rf /app/datasets/finetune/real /app/datasets/finetune/fake # Limpa tentativas anteriores, se houver
-    mkdir -p /app/datasets/finetune/train/real
-    mkdir -p /app/datasets/finetune/train/fake
-    mkdir -p /app/datasets/finetune/val/real
-    mkdir -p /app/datasets/finetune/val/fake
-
-    # Copia 10 imagens "reais" para o conjunto de treinamento
-    find /app/datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 10 | xargs -I {} cp {} /app/datasets/finetune/train/real/
-
-    # Copia 2 imagens "reais" para o conjunto de validação
-    find /app/datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 12 | tail -n 2 | xargs -I {} cp {} /app/datasets/finetune/val/real/
-
-    # Gere as imagens "falsas" invertendo as cores das imagens reais (treino)
-    python /app/src/util/generate_fake_images.py --real_images_dir /app/datasets/finetune/train/real --fake_images_dir /app/datasets/finetune/train/fake
-
-    # Gere as imagens "falsas" invertendo as cores das imagens reais (validação)
-    python /app/src/util/generate_fake_images.py --real_images_dir /app/datasets/finetune/val/real --fake_images_dir /app/datasets/finetune/val/fake
-    ```
-
-2.  **Crie o arquivo de configuração `config_finetune.sh` na raiz do seu projeto:**
+1.  **Crie o arquivo de configuração `config_finetune.sh` na raiz do seu projeto:**
     ```bash
     #!/bin/bash
 
@@ -267,164 +258,41 @@ Para demonstrar a capacidade de fine-tuning do modelo, prepare um pequeno datase
     # Path to the pre-trained checkpoint
     export FT_FINETUNE_CHECKPOINT="/app/src/fsfm-3c/pretrain/output_cpu_test/checkpoint-4.pth"
 
-    # Path to the fine-tuning dataset
-    export FT_DATA_PATH="/app/datasets/finetune"
-
-    # Output directory for fine-tuning checkpoints and logs
-    export FT_OUTPUT_DIR="/app/src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_cpu_test"
-
     # Device to use (cpu)
     export FT_DEVICE="cpu"
 
     # Number of data loading workers (0 for CPU emulation)
     export FT_NUM_WORKERS=0
     ```
+    *Obs: Certifique-se de que o arquivo `config_finetune.sh` esteja presente na raiz do seu projeto local. Ele será montado automaticamente dentro do container no diretório `/app`.*
+    *   **Caminhos de Dados e Saída**: Os caminhos para o dataset (`FT_DATA_PATH`) e o diretório de saída (`FT_OUTPUT_DIR`) são agora definidos dinamicamente dentro do script `run_finetune.sh` usando o `DATASET_ID` fornecido.
 
-3.  **Crie o script de execução `run_finetune.sh` na raiz do seu projeto:**
+2.  **Execute o script de fine-tuning dentro do container, utilizando o script `run_finetune.sh`:**
+    Para garantir que os parâmetros sejam utilizados corretamente, execute o `run_finetune.sh` passando o `DATASET_ID` correspondente à pasta do seu dataset (`set_1_lfw_mock`).
     ```bash
-    #!/bin/bash
-
-    # Source the configuration file
-    source /app/config_finetune.sh
-
-    echo "Starting FSFM Fine-Tuning..."
-    echo "Batch Size: ${FT_BATCH_SIZE}"
-    echo "Epochs: ${FT_EPOCHS}"
-    echo "Finetune Checkpoint: ${FT_FINETUNE_CHECKPOINT}"
-    echo "Data Path: ${FT_DATA_PATH}"
-    echo "Output Directory: ${FT_OUTPUT_DIR}"
-    echo "Device: ${FT_DEVICE}"
-    echo "Num Workers: ${FT_NUM_WORKERS}"
-
-    # Ensure output directory exists
-    mkdir -p "${FT_OUTPUT_DIR}"
-
-    # Navigate to the fine-tuning script directory and execute
-    cd /app/src/fsfm-3c/finuetune/cross_dataset_DfD/ && \
-    python main_finetune_DfD.py \
-      --batch_size "${FT_BATCH_SIZE}" \
-      --epochs "${FT_EPOCHS}" \
-      --finetune "${FT_FINETUNE_CHECKPOINT}" \
-      --finetune_data_path "${FT_DATA_PATH}" \
-      --output_dir "${FT_OUTPUT_DIR}" \
-      --device "${FT_DEVICE}" \
-      --num_workers "${FT_NUM_WORKERS}"
-
-    echo "FSFM Fine-Tuning finished."
-    ```
-
-4.  **Execute o script de fine-tuning dentro do container, utilizando o script `run_finetune.sh`:**
-    ```bash
-    docker exec fsfm_container /app/run_finetune.sh
+    docker exec fsfm_container /app/run_finetune.sh set_1_lfw_mock
     ```
     *   **Parâmetros de Configuração**: Você pode ajustar os valores de `FT_BATCH_SIZE`, `FT_EPOCHS`, etc., editando o arquivo `config_finetune.sh` diretamente. As mudanças serão refletidas na próxima execução do `run_finetune.sh`.
-    *   **Saída**: O script irá gerar logs e checkpoints no diretório especificado por `FT_OUTPUT_DIR`.
+    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock/` (ou `output_finetune_SEU_DATASET_ID/` correspondente).
 
 ### **Passo 5: Fine-Tuning para o cenário `cross_dataset_unseen_DiFF`**
 
 Esta seção descreve como executar o fine-tuning para o cenário de detecção de DeepFakes "não vistos" (DiFF).
 
-1.  **Crie o script de execução `run_finetune_diff.sh` na raiz do seu projeto:**
-    Este script é responsável por configurar e executar o teste de fine-tuning para o cenário DiFF.
+1.  **Execute o script de fine-tuning DiFF dentro do container:**
+    Para garantir que os parâmetros sejam utilizados corretamente, execute o `run_finetune_diff.sh` passando o `DATASET_ID` correspondente à pasta do seu dataset (`set_1_lfw_mock`).
     ```bash
-    #!/bin/bash
-    #SBATCH --job-name=fsfm_finetune_diff
-    #SBATCH --nodes=1
-    #SBATCH --ntasks-per-node=1
-    #SBATCH --time=1:00:00
-    #SBATCH --mem=32G
-    #SBATCH --cpus-per-task=8
-
-    # Set the root directory for the dataset
-    DATA_PATH="./lfw_mock"
-
-    # Set the output directory for logs and models
-    OUTPUT_DIR="./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_cpu_test_diff/"
-
-    # Create the output directory if it doesn't exist
-    mkdir -p ${OUTPUT_DIR}
-
-    # Execute the fine-tuning script
-    python3 ./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/main_finetune_DiFF.py \
-        --input_dir ${DATA_PATH} \
-        --output_dir ${OUTPUT_DIR} \
-        --log_dir ${OUTPUT_DIR} \
-        --epochs 1 \
-        --batch_size 4 \
-        --model vit_small_patch16 \
-        --device cpu \
-        --num_workers 0
+    docker exec fsfm_container /app/run_finetune_diff.sh set_1_lfw_mock
     ```
-
-2.  **Prepare um dataset de mock para o teste:**
-    Para um teste funcional, você pode criar uma estrutura de diretórios com algumas imagens.
-    ```bash
-    # Criar a estrutura de diretórios
-    mkdir -p lfw_mock/train/real lfw_mock/train/fake lfw_mock/val/real lfw_mock/val/fake
-
-    # Copiar algumas imagens para simular o dataset
-    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 4 | xargs -I {} cp {} lfw_mock/train/real/
-    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 8 | tail -n 4 | xargs -I {} cp {} lfw_mock/train/fake/
-    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 12 | tail -n 4 | xargs -I {} cp {} lfw_mock/val/real/
-    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 16 | tail -n 4 | xargs -I {} cp {} lfw_mock/val/fake/
-    ```
-
-3.  **Execute o script de fine-tuning DiFF dentro do container:**
-    ```bash
-    docker exec fsfm_container /app/run_finetune_diff.sh
-    ```
-    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_cpu_test_diff/`. Você pode verificar os arquivos `log.txt` e `log_detail.txt` para confirmar que a execução foi bem-sucedida.
+    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_set_1_lfw_mock/` (ou `output_finetune_SEU_DATASET_ID/` correspondente). Você pode verificar os arquivos `log.txt` e `log_detail.txt` para confirmar que a execução foi bem-sucedida.
 
 ### **Passo 6: Fine-Tuning para o cenário `cross_domain_FAS`**
 
 Esta seção descreve como executar o fine-tuning para o cenário de "Face Anti-Spoofing" (FAS).
 
-1.  **Crie o script de execução `run_finetune_fas.sh` na raiz do seu projeto:**
-    Este script é responsável por configurar e executar o teste de fine-tuning para o cenário FAS.
+1.  **Execute o script de fine-tuning FAS dentro do container:**
+    Para garantir que os parâmetros sejam utilizados corretamente, execute o `run_finetune_fas.sh` passando o `DATASET_ID` correspondente à pasta do seu dataset (`set_1_lfw_mock`).
     ```bash
-    #!/bin/bash
-    #SBATCH --job-name=fsfm_finetune_fas
-    #SBATCH --nodes=1
-    #SBATCH --ntasks-per-node=1
-    #SBATCH --time=1:00:00
-    #SBATCH --mem=32G
-    #SBATCH --cpus-per-task=8
-
-    # Set the root directory for the dataset
-    DATA_PATH="./lfw_mock"
-
-    # Set the output directory for logs and models
-    OUTPUT_DIR="./src/fsfm-3c/finuetune/cross_domain_FAS/output_finetune_cpu_test_fas/"
-
-    # Create the output directory if it doesn't exist
-    mkdir -p ${OUTPUT_DIR}
-
-    # Execute the fine-tuning script
-    python3 ./src/fsfm-3c/finuetune/cross_domain_FAS/train_vit.py \
-        --data_path ${DATA_PATH} \
-        --output_dir ${OUTPUT_DIR} \
-        --epochs 1 \
-        --batch_size 4 \
-        --model vit_small_patch16 \
-        --device cpu \
-        --num_workers 0
+    docker exec fsfm_container /app/run_finetune_fas.sh set_1_lfw_mock
     ```
-
-2.  **Preparar o dataset de mock para o teste (se ainda não o fez):**
-    Para um teste funcional, você pode criar uma estrutura de diretórios com algumas imagens. Se você já executou a seção DiFF, o dataset `lfw_mock` já deve existir. Caso contrário, execute os comandos abaixo na raiz do seu projeto:
-    ```bash
-    # Criar a estrutura de diretórios
-    mkdir -p lfw_mock/train/real lfw_mock/train/fake lfw_mock/val/real lfw_mock/val/fake
-
-    # Copiar algumas imagens para simular o dataset
-    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 4 | xargs -I {} cp {} lfw_mock/train/real/
-    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 8 | tail -n 4 | xargs -I {} cp {} lfw_mock/train/fake/
-    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 12 | tail -n 4 | xargs -I {} cp {} lfw_mock/val/real/
-    find datasets/pretrain_datasets/mini_real/images -name "*.jpg" | head -n 16 | tail -n 4 | xargs -I {} cp {} lfw_mock/val/fake/
-    ```
-
-3.  **Execute o script de fine-tuning FAS dentro do container:**
-    ```bash
-    docker exec fsfm_container /app/run_finetune_fas.sh
-    ```
-    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/finuetune/cross_domain_FAS/output_finetune_cpu_test_fas/`. Você pode verificar os arquivos `log.txt` e `log_detail.txt` para confirmar que a execução foi bem-sucedida.
+    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/finuetune/cross_domain_FAS/output_finetune_set_1_lfw_mock/` (ou `output_finetune_SEU_DATASET_ID/` correspondente). Você pode verificar os arquivos `log.txt` e `log_detail.txt` para confirmar que a execução foi bem-sucedida.

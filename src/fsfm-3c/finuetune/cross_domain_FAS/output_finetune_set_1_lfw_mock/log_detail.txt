@@ -1,0 +1,31 @@
+Warning: Could not load dataset stats (Stats file not found: ./src/fsfm-3c/finuetune/cross_domain_FAS/output_finetune_set_1_lfw_mock/pretrain_ds_mean_std.txt). Using VGGFace2 values instead.
+Dataset ImageFolder
+    Number of datapoints: 8
+    Root location: /app/datasets/finetune/FAS/set_1_lfw_mock/train
+    StandardTransform
+Transform: Compose(
+               Resize(size=(224, 224), interpolation=bicubic, max_size=None, antialias=True)
+               ToTensor()
+               Normalize(mean=[0.5482207536697388, 0.42340534925460815, 0.3654651641845703], std=[0.2789176106452942, 0.2438540756702423, 0.23493893444538116])
+           )
+Warning: Could not load dataset stats (Stats file not found: ./src/fsfm-3c/finuetune/cross_domain_FAS/output_finetune_set_1_lfw_mock/pretrain_ds_mean_std.txt). Using VGGFace2 values instead.
+Dataset ImageFolder
+    Number of datapoints: 8
+    Root location: /app/datasets/finetune/FAS/set_1_lfw_mock/val
+    StandardTransform
+Transform: Compose(
+               Resize(size=(224, 224), interpolation=bicubic, max_size=None, antialias=True)
+               ToTensor()
+               Normalize(mean=[0.5482207536697388, 0.42340534925460815, 0.3654651641845703], std=[0.2789176106452942, 0.2438540756702423, 0.23493893444538116])
+           )
+loading ImageNet pretrained weights....
+Start training for 1 epochs
+Epoch: [0]  [0/2]  eta: 0:00:53  lr: 0.000100  loss: 1.2286 (1.2286)  time: 26.8061  data: 0.0175
+Epoch: [0]  [1/2]  eta: 0:00:26  lr: 0.000100  loss: 1.2286 (1.4149)  time: 26.6585  data: 0.0229
+Epoch: [0] Total time: 0:00:53 (26.6587 s / it)
+Averaged stats: lr: 0.000100  loss: 1.2286 (1.4149)
+Test:  [0/2]  eta: 0:00:21  loss: 3.0767 (3.0767)  acc1: 0.0000 (0.0000)  time: 10.8288  data: 0.0288
+Test:  [1/2]  eta: 0:00:10  loss: 0.0147 (1.5457)  acc1: 0.0000 (50.0000)  time: 10.5571  data: 0.0192
+Test: Total time: 0:00:21 (10.5573 s / it)
+* Acc@1 50.000 loss 1.546
+Training time 00:01:14

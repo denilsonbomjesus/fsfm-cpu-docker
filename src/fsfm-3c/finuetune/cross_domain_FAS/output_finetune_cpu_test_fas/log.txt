@@ -2,3 +2,4 @@
 {"train_lr": 0.0001, "train_loss": 1.9564960598945618, "val_loss": 1.4681736528873444, "val_acc1": 50.0, "epoch": 0}
 {"train_lr": 0.0001, "train_loss": 1.1663874387741089, "val_loss": 0.6085854023694992, "val_acc1": 62.5, "epoch": 0}
 {"train_lr": 0.0001, "train_loss": 0.9190619885921478, "val_loss": 1.2822899669408798, "val_acc1": 50.0, "epoch": 0}
+{"train_lr": 0.0001, "train_loss": 2.2042048573493958, "val_loss": 1.1381586492061615, "val_acc1": 62.5, "epoch": 0}

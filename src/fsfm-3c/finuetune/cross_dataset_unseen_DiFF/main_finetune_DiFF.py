@@ -176,8 +176,8 @@ def get_shared_folder() -> Path:
 
 def main(args):
     import sys
-    log_detail = 'log_detail' + '.txt'
-    sys.stdout = open(os.path.join(args.output_dir, log_detail), 'a+')
+    # sys.stdout redirection handled by shell script
+    pass # Placeholder, or remove if not strictly needed
 
     misc.init_distributed_mode(args)
 

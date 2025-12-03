@@ -1,6 +1,21 @@
 #!/bin/bash
 
-# Source the configuration file
+# Aceita o ID do dataset como primeiro argumento
+DATASET_ID=$1
+
+# Verifica se um ID de dataset foi fornecido
+if [ -z "$DATASET_ID" ]; then
+  echo "Uso: $0 <DATASET_ID>"
+  exit 1
+fi
+
+# Define os caminhos de dados e saída dinamicamente, com base no DATASET_ID
+# O caminho para o dataset será relativo à raiz do projeto.
+FT_DATA_PATH="../../../../datasets/finetune/DfD/${DATASET_ID}"
+# O diretório de saída será relativo à raiz do projeto.
+FT_OUTPUT_DIR="./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_${DATASET_ID}"
+
+# Source the configuration file for other parameters
 source /app/config_finetune.sh
 
 echo "Starting FSFM Fine-Tuning..."
@@ -12,11 +27,9 @@ echo "Output Directory: ${FT_OUTPUT_DIR}"
 echo "Device: ${FT_DEVICE}"
 echo "Num Workers: ${FT_NUM_WORKERS}"
 
-# Ensure output directory exists
+# Ensure output directory exists and set correct ownership
 mkdir -p "${FT_OUTPUT_DIR}"
-
-# Navigate to the fine-tuning script directory and execute
-cd /app/src/fsfm-3c/finuetune/cross_dataset_DfD/ && \
+chown -R 1000:1000 "${FT_OUTPUT_DIR}"
 python main_finetune_DfD.py \
   --batch_size "${FT_BATCH_SIZE}" \
   --epochs "${FT_EPOCHS}" \
@@ -24,6 +37,7 @@ python main_finetune_DfD.py \
   --finetune_data_path "${FT_DATA_PATH}" \
   --output_dir "${FT_OUTPUT_DIR}" \
   --device "${FT_DEVICE}" \
-  --num_workers "${FT_NUM_WORKERS}"
+  --num_workers "${FT_NUM_WORKERS}" > "${FT_OUTPUT_DIR}/log_detail.txt" 2>&1
 
 echo "FSFM Fine-Tuning finished."
+

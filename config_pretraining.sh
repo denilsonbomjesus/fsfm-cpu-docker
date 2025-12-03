@@ -17,11 +17,7 @@ export MODEL_NAME="fsfm_vit_base_patch16"
 # Mask ratio
 export MASK_RATIO=0.75
 
-# Path to the pre-training dataset
-export PRETRAIN_DATA_PATH="/app/datasets/pretrain_datasets/mini_real"
 
-# Output directory for checkpoints and logs
-export OUTPUT_DIR="./output_cpu_test"
 
 # Number of data loading workers: Essential for avoiding multiprocessing errors in emulation
 export NUM_WORKERS=0
