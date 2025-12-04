@@ -135,9 +135,13 @@ def face_parsing(face_ds_path,
                             if save_vis_ps:
                                 vis_parsing_maps(img, parsing_map.squeeze(0), save_path=os.path.join(vis_pm_path, file))
 
-                        except (KeyError, IndexError) as e:
+                        except (KeyError, IndexError, RuntimeError) as e: # Added RuntimeError for broader catch
                             print(f"fail of face parsing {file}: {e}")
                             no_parsing_num += 1
+                            # Create a dummy parsing map (e.g., all -1) for failed cases
+                            dummy_parsing_map = np.full((224, 224), -1, dtype=np.int8)
+                            save_path = os.path.join(face_pm_path, file).replace(cfg.img_format, cfg.pm_format)
+                            np.save(save_path, dummy_parsing_map)
                             # parsing_map = np.zeros((1, 224, 224), dtype="int64")  # [1, 224, 224]
                             continue
 
