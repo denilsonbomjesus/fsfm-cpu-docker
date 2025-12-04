@@ -1,0 +1,16 @@
+[33mfbdf59b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: commit: docs: Documentação do projeto
+[33m17bc5e7[m HEAD@{1}: checkout: moving from feat/robust-implementation to main
+[33mc2eeb63[m[33m ([m[1;31morigin/feat/robust-implementation[m[33m, [m[1;32mfeat/robust-implementation[m[33m)[m HEAD@{2}: commit: feat: Implementação incial do dataset CelebA
+[33m56b768c[m HEAD@{3}: commit: fix: Caminhos absolutos corrigidos em run_finetune.sh
+[33m3b7a95f[m HEAD@{4}: commit: feat: Implementação de Sistema para Seleção Dinâmica de Datasets
+[33m86db415[m HEAD@{5}: commit: feat: Implementação do Finetuning cross_domain_FAS
+[33m17bc5e7[m HEAD@{6}: checkout: moving from main to feat/robust-implementation
+[33m17bc5e7[m HEAD@{7}: commit: feat: Implementação do Finetuning cross_dataset_unseen_DiFF
+[33m4e51fc8[m HEAD@{8}: commit: feat: Scripts de automação para o Fine-tuning
+[33m13daf2a[m HEAD@{9}: commit: feat: Execução do Fine-Tuning com Adaptação de Scripts para CPU
+[33mbe653f7[m HEAD@{10}: commit: fix: Modificações para uso de CPU no projeto original e Pré-Treinamento Executado
+[33mae7d9d5[m HEAD@{11}: commit: feat: Configuração para o Pré-Treinamento
+[33m6548f0a[m HEAD@{12}: commit: feat: Pipeline de Execução: Download Mini-Dataset (LFW) + Face Parsing (Crítico para o FSFM) e docs: Documentação e comandos no README.md da raiz do projeto
+[33m798b3fd[m HEAD@{13}: commit: feat: 'Cirurgia para CPU': Desativar Treinamento Distribuído + Ajuste no Carregamento de Dados
+[33m49c6e5c[m HEAD@{14}: reset: moving to HEAD
+[33m49c6e5c[m HEAD@{15}: commit (initial): feat: Preparação dos Arquivos (No Windows/WSL)

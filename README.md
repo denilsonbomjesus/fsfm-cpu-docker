@@ -1,298 +1,120 @@
-# FSFM-CVPR25 CPU-Only Setup Guide
+# FSFM-CVPR25 (CPU-Only Docker Version)
 
-Este guia descreve os passos para configurar e executar o projeto FSFM-CVPR25 em um ambiente somente de CPU usando Docker e WSL 2, seguindo o "Plano de Implementação Remodelado para WSL 2 com Docker (CPU-Only)".
+Esta é uma versão modificada do projeto FSFM, adaptada para rodar exclusivamente em ambiente **CPU via Docker**. O objetivo é facilitar a execução, teste e experimentação do modelo sem a necessidade de uma GPU.
 
----
+## Pré-requisitos
 
-## 1. Preparação dos Arquivos (No Windows/WSL) 
-
-1.  **Clone o repositório oficial e configure a pasta do projeto:**
-    ```bash
-    git clone https://github.com/wolo-wolo/FSFM-CVPR25.git
-    mv FSFM-CVPR25 src
-    ```
-
-2.  **Crie o `Dockerfile` na raiz do projeto:**
-    Crie um arquivo chamado `Dockerfile` com o seguinte conteúdo:
-
-    ```dockerfile
-    # Usar uma imagem base leve do Python 3.9
-    FROM python:3.9-slim
-
-    # 1. Instalar dependências do sistema (necessárias para dlib e opencv)
-    RUN apt-get update && apt-get install -y \
-        build-essential \
-        cmake \
-        libopenblas-dev \
-        liblapack-dev \
-        libx11-dev \
-        libgtk-3-dev \
-        git \
-        wget \
-        unzip \
-        && rm -rf /var/lib/apt/lists/*
-
-    # 2. Configurar diretório de trabalho
-    WORKDIR /app
-
-    # 3. Instalar PyTorch versão CPU (Muito importante para não baixar GBs de drivers NVIDIA inúteis)
-    # Isso economiza espaço e RAM no seu notebook
-    RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-
-    # 4. Instalar outras dependências pesadas
-    RUN pip install dlib
-    RUN pip install opencv-python-headless
-    RUN pip install git+https://github.com/FacePerceiver/facer.git@main
-    RUN pip install timm==0.4.5 scipy pandas scikit-learn tensorboard submitit torchsummary # Corrigido: Versão timm, submitit e torchsummary
-    
-    # 5. Copiar o código fonte para dentro do container
-    COPY ./src /app/src
-
-    # 6. Definir variável de ambiente para usar CPU
-    ENV CUDA_VISIBLE_DEVICES=""
-    ENV OMP_NUM_THREADS=1
-    ```
+- **Docker:** Certifique-se de que o Docker esteja instalado e em execução em seu sistema.
+- **Git:** Necessário para clonar o repositório.
+- **Conexão com a Internet:** Para clonar o repositório e construir a imagem Docker.
 
 ---
 
-## 2. Modificações no Código (Cirurgia para CPU)
+## Guia de Início Rápido
 
-As seguintes modificações foram aplicadas ao arquivo `src/fsfm-3c/pretrain/main_pretrain.py`:
+Siga estes passos para colocar o projeto em funcionamento.
 
-1.  **Desativar Treinamento Distribuído e Forçar CPU:**
-    *   No início da função `main(args)`, o código foi modificado para forçar o uso da CPU e desabilitar o modo distribuído. A linha `misc.init_distributed_mode(args)` e a definição `device = torch.device(args.device)` foram comentadas e substituídas pela definição `device = torch.device('cpu')`.
+### Passo 1: Clonar o Repositório
 
-2.  **Desabilitar `DistributedDataParallel` para Múltiplas GPUs:**
-    *   O bloco `if torch.cuda.device_count() > 1:` foi modificado para incluir `and args.distributed`, garantindo que a lógica de paralelização para múltiplas GPUs não seja ativada em ambiente CPU.
+Primeiro, clone este repositório para a sua máquina local:
 
-3.  **Execução Local do Script Principal:**
-    *   O bloco `if __name__ == '__main__':` foi ajustado para remover a dependência de `submitit` e chamar `main(args)` diretamente, adaptando o script para execução local em ambiente CPU.
+```bash
+git clone https://github.com/denilsonbomjesus/fsfm-cpu-docker.git
+cd fsfm-cpu-docker
+```
 
-Adicionalmente, os seguintes scripts foram modificados para corrigir erros e garantir a compatibilidade com o ambiente:
+### Passo 2: Baixar e Estruturar os Datasets
 
-*   **`src/datasets/pretrain/preprocess/face_parse.py`:**
-    1.  **Correção da Importação do `facer`:** A linha `from tools.facer import facer` foi alterada para `import facer`, pois a biblioteca `facer` é instalada como um pacote Python padrão.
-    2.  **Ajuste do Argument Parser e Execução Principal:** As funções `get_args_parser` e o bloco `if __name__ == '__main__':` foram redefinidos para aceitar o argumento `--dataset_path` e direcionar a saída para o diretório pai do caminho das imagens.
-    3.  **Compatibilidade com Python 3.9 (`facer`):** A biblioteca `facer`, instalada via `git+https`, utiliza a sintaxe de `Union` (operador `|`) para type hints. Como o container utiliza Python 3.9, foram aplicadas correções via `sed` em `/usr/local/lib/python3.9/site-packages/facer/face_parsing/farl.py`.
+Este projeto utiliza um conjunto de datasets para pré-treinamento e fine-tuning. Para facilitar, todos os datasets necessários foram agrupados em um único arquivo.
 
-*   **`src/fsfm-3c/models_fsfm.py`:**
-    1.  **Remoção de `qk_scale`:** O argumento `qk_scale=None` foi removido das chamadas do construtor `Block`, pois a versão `timm==0.4.5` (original do projeto) não o aceita.
+1.  **Baixe o arquivo `datasets.zip`** do seguinte link:
+    - [Link para Download dos Datasets (Google Drive)](https://drive.google.com/file/d/1YfP7uN_Lb7DMMNo-Xs-5-SoXe3kdGS3i/view?usp=sharing)
 
-*   **`src/fsfm-3c/util/pos_embed.py`:**
-    1.  **Correção de `np.float`:** A expressão `np.float` foi substituída por `float` para compatibilidade com versões mais recentes do NumPy.
+2.  **Descompacte e estruture os datasets:**
+    Após o download, descompacte o arquivo `datasets.zip` na raiz do projeto. A estrutura de pastas final deve ser a seguinte:
 
-*   **`src/fsfm-3c/pretrain/main_pretrain.py`:**
-    1.  **Comentar `torchsummary`:** A chamada para `summary.summary` foi comentada, pois causava um `ValueError` com o formato de entrada.
-    2.  **Correção da passagem do modelo:** A função `train_one_epoch` agora recebe `model_without_ddp` em vez de `model`, garantindo que o modelo não encapsulado por `DistributedDataParallel` seja usado.
-
-*   **`src/fsfm-3c/pretrain/engine_pretrain.py`:**
-    1.  **Correção de `model.module`:** As referências a `model.module` foram alteradas para `model` diretamente ao iterar sobre os parâmetros, pois o modelo não está em modo distribuído.
-    2.  **Comentar `torch.cuda.synchronize()`:** A chamada `torch.cuda.synchronize()` foi comentada, pois causa um erro em ambientes CPU-only.
-
----
-
-## 3. Construindo e Rodando o Container
-
-1.  **Construa a Imagem Docker:**
-    ```bash
-    docker build -t fsfm-cpu .
+    ```
+    fsfm-cpu-docker/
+    ├── datasets/
+    │   ├── finetune/
+    │   │   ├── DfD/
+    │   │   │   └── set_1_lfw_mock/
+    │   │   ├── DiFF/
+    │   │   │   └── set_1_lfw_mock/
+    │   │   └── FAS/
+    │   │       └── set_1_lfw_mock/
+    │   └── pretrain_datasets/
+    │       ├── set_1_lfw/
+    │       └── set_2_celeba/
+    ├── src/
+    ├── Dockerfile
+    ├── README.md
+    └── ... (outros arquivos do projeto)
     ```
 
-2.  **Inicie o Container Docker (modo detached):**
-    Este comando inicia um container em segundo plano, nomeado `fsfm_container`, que permanecerá ativo para que os comandos seguintes possam ser executados.
+### Passo 3: Construir o Ambiente Docker
+
+Com os datasets no lugar, construa a imagem Docker. Este comando utiliza o `Dockerfile` do projeto para criar um ambiente com todas as dependências necessárias.
+
+```bash
+docker build -t fsfm-cpu .
+```
+
+### Passo 4: Pré-treinamento do Modelo
+
+O pré-treinamento é o primeiro passo para treinar o modelo FSFM.
+
+1.  **Inicie o contêiner Docker (se ainda não estiver rodando):**
+    Este comando inicia o contêiner em segundo plano e monta o diretório do projeto, permitindo que você execute os scripts.
+
     ```bash
     docker run -d --name fsfm_container -v $(pwd):/app fsfm-cpu /bin/bash -c "sleep infinity"
     ```
-    *Obs: O diretório raiz do projeto local (`$(pwd)`) é montado como `/app` dentro do container, garantindo que o `config_pretraining.sh` e outros arquivos do projeto estejam acessíveis.*
+
+2.  **Execute o script de pré-treinamento:**
+    Utilizamos o script `run_pretrain.sh` para iniciar o processo. Por padrão, ele usará o dataset `set_1_lfw`.
+
+    ```bash
+    docker exec fsfm_container bash /app/run_pretrain.sh set_1_lfw
+    ```
+
+    - **Para usar outro dataset**, como o `set_2_celeba`, basta alterar o argumento:
+      ```bash
+      docker exec fsfm_container bash /app/run_pretrain.sh set_2_celeba
+      ```
+    - Os logs e checkpoints serão salvos em `src/fsfm-3c/pretrain/output_DATASET_ID/`.
+
+### Passo 5: Fine-Tuning do Modelo
+
+Após o pré-treinamento, você pode especializar o modelo para tarefas específicas usando os scripts de fine-tuning.
+
+#### Cenário 1: Cross Dataset DfD (DeepFake Detection)
+
+- **Comando:**
+  ```bash
+  docker exec fsfm_container bash /app/run_finetune.sh set_1_lfw_mock
+  ```
+- **O que faz:** Executa o fine-tuning para detecção de DeepFakes.
+- **Saída:** Logs e checkpoints serão salvos em `src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock/`.
+
+#### Cenário 2: Cross Dataset Unseen DiFF (Unseen DeepFake Detection)
+
+- **Comando:**
+  ```bash
+  docker exec fsfm_container bash /app/run_finetune_diff.sh set_1_lfw_mock
+  ```
+- **O que faz:** Executa o fine-tuning para detecção de DeepFakes de métodos "não vistos" durante o treinamento.
+- **Saída:** Logs e checkpoints serão salvos em `src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_set_1_lfw_mock/`.
+
+#### Cenário 3: Cross Domain FAS (Face Anti-Spoofing)
+
+- **Comando:**
+  ```bash
+  docker exec fsfm_container bash /app/run_finetune_fas.sh set_1_lfw_mock
+  ```
+- **O que faz:** Executa o fine-tuning para detecção de ataques de "spoofing" facial (ex: foto de uma foto, vídeo de uma face).
+- **Saída:** Logs e checkpoints serão salvos em `src/fsfm-3c/finuetune/cross_domain_FAS/output_finetune_set_1_lfw_mock/`.
 
 ---
 
-## 4. O Pipeline de Execução (Dentro do Container)
-
-### **Nova Estrutura de Diretórios de Datasets**
-
-Com a implementação do sistema de seleção dinâmica, os datasets agora seguem uma estrutura organizada para facilitar a experimentação:
-
-```
-datasets/
-├── pretrain_datasets/
-│   └── set_1_lfw/           # Contém os dados para pré-treinamento (e.g., LFW)
-├── finetune/
-│   ├── DfD/
-│   │   └── set_1_lfw_mock/  # Dados para finetuning DfD
-│   ├── DiFF/
-│   │   └── set_1_lfw_mock/  # Dados para finetuning DiFF
-│   └── FAS/
-│       └── set_1_lfw_mock/  # Dados para finetuning FAS
-```
-
-Cada subdiretório `set_X_datasetname/` deve conter os dados necessários para o respectivo estágio (pré-treinamento ou finetuning) e tipo de tarefa (DfD, DiFF, FAS). O nome `set_1_lfw` ou `set_1_lfw_mock` atua como um `DATASET_ID` que é passado como argumento para os scripts de execução.
-
-Todos os comandos abaixo devem ser executados **dentro do container** (usando `docker exec fsfm_container ...`).
-
-### **Passo 1: Baixar Mini-Dataset (LFW)**
-
-O download direto do dataset LFW do `vis-www.cs.umass.edu` e `www.cs.cmu.edu` falhou devido a problemas de rede/DNS ou erro 404. O dataset foi baixado e preparado usando a biblioteca `scikit-learn` dentro do container.
-
-1.  **Crie a estrutura de diretórios necessária:**
-    ```bash
-    docker exec fsfm_container mkdir -p /app/datasets/pretrain_datasets/set_1_lfw/images
-    ```
-
-2.  **Crie um script Python para baixar o dataset LFW (usando `scikit-learn`):**
-    Crie o arquivo `src/download_lfw.py` com o seguinte conteúdo:
-    ```python
-    from sklearn.datasets import fetch_lfw_people
-    import os
-
-    print("Downloading LFW dataset...")
-    lfw_people = fetch_lfw_people(min_faces_per_person=1, resize=0.4)
-    print("Download complete.")
-
-    from sklearn.datasets import get_data_home
-    data_home = get_data_home()
-    print(f"Scikit-learn data home: {data_home}")
-
-    lfw_dir = os.path.join(data_home, 'lfw_home')
-    print(f"LFW data should be in: {lfw_dir}")
-
-    if os.path.exists(lfw_dir):
-        print(f"Found LFW home directory at: {lfw_dir}")
-    else:
-        print("LFW home directory not found where expected.")
-    ```
-
-3.  **Execute o script para baixar o dataset:**
-    ```bash
-    docker exec fsfm_container python /app/src/download_lfw.py
-    ```
-    *(Este comando fará o download do dataset para `/root/scikit_learn_data/lfw_home` dentro do container.)*
-
-4.  **Copie 50 imagens do dataset LFW para a pasta de treinamento:**
-    ```bash
-    docker exec fsfm_container bash -c "find /root/scikit_learn_data/lfw_home/lfw_funneled -name '*.jpg' | head -n 50 | xargs -I {} cp --parents {} /app/datasets/pretrain_datasets/set_1_lfw/images/"
-    ```
-
-5.  **Crie a pasta de validação e copie as imagens para ela:**
-    ```bash
-    docker exec fsfm_container bash -c "mkdir -p /app/datasets/pretrain_datasets/set_1_lfw/val && find /app/datasets/pretrain_datasets/set_1_lfw/images -name '*.jpg' -print0 | xargs -0 -I {} cp {} /app/datasets/pretrain_datasets/set_1_lfw/val/"
-    ```
-
-### **Passo 2: Face Parsing (Crítico para o FSFM)**
-
-1.  **Instale a dependência `yacs`:**
-    ```bash
-    docker exec fsfm_container pip install yacs
-    ```
-
-2.  **Aplique as correções de sintaxe no `farl.py` (necessário para Python 3.9):**
-    A biblioteca `facer`, instalada via `git+https`, utiliza a sintaxe de `Union` (operador `|`) para type hints, que é compatível apenas com Python 3.10 ou superior. Como o container utiliza Python 3.9, é necessário corrigir o arquivo `farl.py` diretamente.
-    ```bash
-    docker exec fsfm_container sed -i "s/from typing import Optional, Dict, Any/from typing import Optional, Dict, Any, Union/" /usr/local/lib/python3.9/site-packages/facer/face_parsing/farl.py
-    docker exec fsfm_container sed -i "s/images: torch.Tensor|np.ndarray|list/images: Union[torch.Tensor, np.ndarray, list]/" /usr/local/lib/python3.9/site-packages/facer/face_parsing/farl.py
-    ```
-
-3.  **Execute o script `face_parse.py` (com o caminho corrigido):**
-    ```bash
-    docker exec fsfm_container bash -c "cd /app/src/datasets/pretrain/preprocess && python face_parse.py --dataset_path /app/datasets/pretrain_datasets/mini_real/images"
-    ```
-    *(Este comando fará o processamento das imagens e salvará os mapas de segmentação facial.)*
-
-
-
-### **Passo 3: Pré-Treinamento (Execução Principal)**
-
-O pré-treinamento do modelo é executado com o script `main_pretrain.py`. Os parâmetros de execução foram centralizados em um arquivo de configuração para facilitar a modificação.
-
-1.  **Crie o arquivo de configuração `config_pretraining.sh` na raiz do seu projeto:**
-    ```bash
-    #!/bin/bash
-
-    # Configuration for pre-training the FSFM model on CPU
-
-    # Batch size: Essential to avoid running out of RAM
-    export BATCH_SIZE=4
-
-    # Accumulate gradient iterations: For increasing effective batch size under memory constraints
-    export ACCUM_ITER=1
-
-    # Number of epochs: Sufficient to show that it "ran"
-    export EPOCHS=5
-
-    # Model name
-    export MODEL_NAME="fsfm_vit_base_patch16"
-
-    # Mask ratio
-    export MASK_RATIO=0.75
-
-    # Number of data loading workers: Essential for avoiding multiprocessing errors in emulation
-    export NUM_WORKERS=0
-    ```
-    *Obs: Certifique-se de que o arquivo `config_pretraining.sh` esteja presente na raiz do seu projeto local. Ele será montado automaticamente dentro do container no diretório `/app`.*
-    *   **Caminhos de Dados e Saída**: Os caminhos para o dataset (`PRETRAIN_DATA_PATH`) e o diretório de saída (`OUTPUT_DIR`) são agora definidos dinamicamente dentro do script `run_pretrain.sh` usando o `DATASET_ID` fornecido.
-
-2.  **Execute o script de pré-treinamento dentro do container, utilizando o script `run_pretrain.sh`:**
-    Para garantir que os parâmetros sejam utilizados corretamente, execute o `run_pretrain.sh` passando o `DATASET_ID` correspondente à pasta do seu dataset.
-    ```bash
-    docker exec fsfm_container /app/run_pretrain.sh set_1_lfw
-    ```
-    *   **Parâmetros de Configuração**: Você pode ajustar os valores de `BATCH_SIZE`, `EPOCHS`, etc., editando o arquivo `config_pretraining.sh` diretamente. As mudanças serão refletidas na próxima execução do `run_pretrain.sh`.
-    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/pretrain/output_set_1_lfw/` (ou `output_SEU_DATASET_ID/` correspondente).
-
-### **Passo 4: Simulação de Fine-Tuning (Prova de Conceito) - DfD**
-
-Para demonstrar a capacidade de fine-tuning do modelo no cenário `cross_dataset_DfD`, utilize o dataset mock já preparado.
-
-1.  **Crie o arquivo de configuração `config_finetune.sh` na raiz do seu projeto:**
-    ```bash
-    #!/bin/bash
-
-    # Configuration for fine-tuning the FSFM model on CPU
-
-    # Batch size
-    export FT_BATCH_SIZE=4
-
-    # Number of epochs
-    export FT_EPOCHS=5
-
-    # Path to the pre-trained checkpoint
-    export FT_FINETUNE_CHECKPOINT="/app/src/fsfm-3c/pretrain/output_cpu_test/checkpoint-4.pth"
-
-    # Device to use (cpu)
-    export FT_DEVICE="cpu"
-
-    # Number of data loading workers (0 for CPU emulation)
-    export FT_NUM_WORKERS=0
-    ```
-    *Obs: Certifique-se de que o arquivo `config_finetune.sh` esteja presente na raiz do seu projeto local. Ele será montado automaticamente dentro do container no diretório `/app`.*
-    *   **Caminhos de Dados e Saída**: Os caminhos para o dataset (`FT_DATA_PATH`) e o diretório de saída (`FT_OUTPUT_DIR`) são agora definidos dinamicamente dentro do script `run_finetune.sh` usando o `DATASET_ID` fornecido.
-
-2.  **Execute o script de fine-tuning dentro do container, utilizando o script `run_finetune.sh`:**
-    Para garantir que os parâmetros sejam utilizados corretamente, execute o `run_finetune.sh` passando o `DATASET_ID` correspondente à pasta do seu dataset (`set_1_lfw_mock`).
-    ```bash
-    docker exec fsfm_container /app/run_finetune.sh set_1_lfw_mock
-    ```
-    *   **Parâmetros de Configuração**: Você pode ajustar os valores de `FT_BATCH_SIZE`, `FT_EPOCHS`, etc., editando o arquivo `config_finetune.sh` diretamente. As mudanças serão refletidas na próxima execução do `run_finetune.sh`.
-    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock/` (ou `output_finetune_SEU_DATASET_ID/` correspondente).
-
-### **Passo 5: Fine-Tuning para o cenário `cross_dataset_unseen_DiFF`**
-
-Esta seção descreve como executar o fine-tuning para o cenário de detecção de DeepFakes "não vistos" (DiFF).
-
-1.  **Execute o script de fine-tuning DiFF dentro do container:**
-    Para garantir que os parâmetros sejam utilizados corretamente, execute o `run_finetune_diff.sh` passando o `DATASET_ID` correspondente à pasta do seu dataset (`set_1_lfw_mock`).
-    ```bash
-    docker exec fsfm_container /app/run_finetune_diff.sh set_1_lfw_mock
-    ```
-    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/finuetune/cross_dataset_unseen_DiFF/output_finetune_set_1_lfw_mock/` (ou `output_finetune_SEU_DATASET_ID/` correspondente). Você pode verificar os arquivos `log.txt` e `log_detail.txt` para confirmar que a execução foi bem-sucedida.
-
-### **Passo 6: Fine-Tuning para o cenário `cross_domain_FAS`**
-
-Esta seção descreve como executar o fine-tuning para o cenário de "Face Anti-Spoofing" (FAS).
-
-1.  **Execute o script de fine-tuning FAS dentro do container:**
-    Para garantir que os parâmetros sejam utilizados corretamente, execute o `run_finetune_fas.sh` passando o `DATASET_ID` correspondente à pasta do seu dataset (`set_1_lfw_mock`).
-    ```bash
-    docker exec fsfm_container /app/run_finetune_fas.sh set_1_lfw_mock
-    ```
-    *   **Saída**: O script irá gerar logs e checkpoints no diretório `./src/fsfm-3c/finuetune/cross_domain_FAS/output_finetune_set_1_lfw_mock/` (ou `output_finetune_SEU_DATASET_ID/` correspondente). Você pode verificar os arquivos `log.txt` e `log_detail.txt` para confirmar que a execução foi bem-sucedida.
+Com isso, você pode executar tanto o pré-treinamento quanto os diferentes cenários de fine-tuning do modelo FSFM em seu próprio ambiente, de forma simplificada e sem a necessidade de hardware especializado.
