@@ -11,7 +11,7 @@ fi
 
 # Define os caminhos de dados e saída dinamicamente, com base no DATASET_ID
 # O caminho para o dataset será relativo à raiz do projeto.
-FT_DATA_PATH="../../../../datasets/finetune/DfD/${DATASET_ID}"
+FT_DATA_PATH="/app/datasets/finetune/DfD/${DATASET_ID}"
 # O diretório de saída será relativo à raiz do projeto.
 FT_OUTPUT_DIR="./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_${DATASET_ID}"
 
@@ -30,7 +30,7 @@ echo "Num Workers: ${FT_NUM_WORKERS}"
 # Ensure output directory exists and set correct ownership
 mkdir -p "${FT_OUTPUT_DIR}"
 chown -R 1000:1000 "${FT_OUTPUT_DIR}"
-python main_finetune_DfD.py \
+python src/fsfm-3c/finuetune/cross_dataset_DfD/main_finetune_DfD.py \
   --batch_size "${FT_BATCH_SIZE}" \
   --epochs "${FT_EPOCHS}" \
   --finetune "${FT_FINETUNE_CHECKPOINT}" \

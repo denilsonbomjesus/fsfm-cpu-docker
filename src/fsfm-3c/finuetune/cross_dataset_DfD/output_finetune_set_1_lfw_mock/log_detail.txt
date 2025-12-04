@@ -1,1 +1,423 @@
-python: can't open file '/app/main_finetune_DfD.py': [Errno 2] No such file or directory
+/app/src/fsfm-3c/finuetune/cross_dataset_DfD/main_finetune_DfD.py:307: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(args.finetune, map_location='cpu')
+Not using distributed mode
+[12:54:17.898219] job dir: /app/src/fsfm-3c/finuetune/cross_dataset_DfD
+[12:54:17.898309] Namespace(batch_size=4,
+epochs=5,
+accum_iter=1,
+model='vit_base_patch16',
+input_size=224,
+normalize_from_IMN=False,
+apply_simple_augment=False,
+drop_path=0.1,
+clip_grad=None,
+weight_decay=0.05,
+lr=None,
+blr=0.001,
+layer_decay=0.75,
+min_lr=1e-06,
+warmup_epochs=5,
+color_jitter=None,
+aa='rand-m9-mstd0.5-inc1',
+smoothing=0.1,
+reprob=0.25,
+remode='pixel',
+recount=1,
+resplit=False,
+mixup=0,
+cutmix=0,
+cutmix_minmax=None,
+mixup_prob=1.0,
+mixup_switch_prob=0.5,
+mixup_mode='batch',
+finetune='/app/src/fsfm-3c/pretrain/output_cpu_test/checkpoint-4.pth',
+global_pool=True,
+data_path=['/app/datasets/finetune/DfD/set_1_lfw_mock'],
+nb_classes=2,
+train_split=None,
+val_split=None,
+dataset_abs_path=None,
+delimiter_in_spilt=' ',
+output_dir='./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock',
+log_dir='./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock',
+device='cpu',
+seed=0,
+resume='',
+start_epoch=0,
+eval=False,
+dist_eval=False,
+num_workers=0,
+pin_mem=True,
+world_size=1,
+local_rank=-1,
+dist_on_itp=False,
+dist_url='env://',
+distributed=False)
+[12:54:17.899631] Dataset ImageFolder
+    Number of datapoints: 8
+    Root location: /app/datasets/finetune/DfD/set_1_lfw_mock/train
+    StandardTransform
+Transform: Compose(
+               Resize(size=(224, 224), interpolation=bicubic, max_size=None, antialias=True)
+               ToTensor()
+               Normalize(mean=[0.4025145471096039, 0.3492843806743622, 0.29918381571769714], std=[0.2830813229084015, 0.25276339054107666, 0.24832025170326233])
+           )
+[12:54:17.899894] Dataset ImageFolder
+    Number of datapoints: 8
+    Root location: /app/datasets/finetune/DfD/set_1_lfw_mock/val
+    StandardTransform
+Transform: Compose(
+               Resize(size=(224, 224), interpolation=bicubic, max_size=None, antialias=True)
+               ToTensor()
+               Normalize(mean=[0.4025145471096039, 0.3492843806743622, 0.29918381571769714], std=[0.2830813229084015, 0.25276339054107666, 0.24832025170326233])
+           )
+[12:54:17.899927] len(dataset_train):8
+[12:54:17.899930] len(dataset_val):8
+[12:54:17.899950] Sampler_train = <torch.utils.data.distributed.DistributedSampler object at 0x72bcedf4f550>
+[12:54:17.899974] [INFO]log dir: %./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock
+[12:54:20.815402] Load pre-trained checkpoint from: /app/src/fsfm-3c/pretrain/output_cpu_test/checkpoint-4.pth
+[12:54:20.902832] _IncompatibleKeys(missing_keys=['head.weight', 'head.bias', 'fc_norm.weight', 'fc_norm.bias'], unexpected_keys=['mask_token', 'rep_decoder_pos_embed', 'decoder_pos_embed', 'norm.weight', 'norm.bias', 'projector.projection_head.0.weight', 'projector.projection_head.0.bias', 'projector.projection_head.1.weight', 'projector.projection_head.1.bias', 'projector.projection_head.3.weight', 'projector.projection_head.3.bias', 'predictor.projection_head.0.weight', 'predictor.projection_head.0.bias', 'predictor.projection_head.1.weight', 'predictor.projection_head.1.bias', 'predictor.projection_head.3.weight', 'predictor.projection_head.3.bias', 'rep_decoder_embed.weight', 'rep_decoder_embed.bias', 'rep_decoder_blocks.0.norm1.weight', 'rep_decoder_blocks.0.norm1.bias', 'rep_decoder_blocks.0.attn.qkv.weight', 'rep_decoder_blocks.0.attn.qkv.bias', 'rep_decoder_blocks.0.attn.proj.weight', 'rep_decoder_blocks.0.attn.proj.bias', 'rep_decoder_blocks.0.norm2.weight', 'rep_decoder_blocks.0.norm2.bias', 'rep_decoder_blocks.0.mlp.fc1.weight', 'rep_decoder_blocks.0.mlp.fc1.bias', 'rep_decoder_blocks.0.mlp.fc2.weight', 'rep_decoder_blocks.0.mlp.fc2.bias', 'rep_decoder_blocks.1.norm1.weight', 'rep_decoder_blocks.1.norm1.bias', 'rep_decoder_blocks.1.attn.qkv.weight', 'rep_decoder_blocks.1.attn.qkv.bias', 'rep_decoder_blocks.1.attn.proj.weight', 'rep_decoder_blocks.1.attn.proj.bias', 'rep_decoder_blocks.1.norm2.weight', 'rep_decoder_blocks.1.norm2.bias', 'rep_decoder_blocks.1.mlp.fc1.weight', 'rep_decoder_blocks.1.mlp.fc1.bias', 'rep_decoder_blocks.1.mlp.fc2.weight', 'rep_decoder_blocks.1.mlp.fc2.bias', 'rep_decoder_norm.weight', 'rep_decoder_norm.bias', 'rep_decoder_pred.weight', 'rep_decoder_pred.bias', 'decoder_embed.weight', 'decoder_embed.bias', 'decoder_blocks.0.norm1.weight', 'decoder_blocks.0.norm1.bias', 'decoder_blocks.0.attn.qkv.weight', 'decoder_blocks.0.attn.qkv.bias', 'decoder_blocks.0.attn.proj.weight', 'decoder_blocks.0.attn.proj.bias', 'decoder_blocks.0.norm2.weight', 'decoder_blocks.0.norm2.bias', 'decoder_blocks.0.mlp.fc1.weight', 'decoder_blocks.0.mlp.fc1.bias', 'decoder_blocks.0.mlp.fc2.weight', 'decoder_blocks.0.mlp.fc2.bias', 'decoder_blocks.1.norm1.weight', 'decoder_blocks.1.norm1.bias', 'decoder_blocks.1.attn.qkv.weight', 'decoder_blocks.1.attn.qkv.bias', 'decoder_blocks.1.attn.proj.weight', 'decoder_blocks.1.attn.proj.bias', 'decoder_blocks.1.norm2.weight', 'decoder_blocks.1.norm2.bias', 'decoder_blocks.1.mlp.fc1.weight', 'decoder_blocks.1.mlp.fc1.bias', 'decoder_blocks.1.mlp.fc2.weight', 'decoder_blocks.1.mlp.fc2.bias', 'decoder_blocks.2.norm1.weight', 'decoder_blocks.2.norm1.bias', 'decoder_blocks.2.attn.qkv.weight', 'decoder_blocks.2.attn.qkv.bias', 'decoder_blocks.2.attn.proj.weight', 'decoder_blocks.2.attn.proj.bias', 'decoder_blocks.2.norm2.weight', 'decoder_blocks.2.norm2.bias', 'decoder_blocks.2.mlp.fc1.weight', 'decoder_blocks.2.mlp.fc1.bias', 'decoder_blocks.2.mlp.fc2.weight', 'decoder_blocks.2.mlp.fc2.bias', 'decoder_blocks.3.norm1.weight', 'decoder_blocks.3.norm1.bias', 'decoder_blocks.3.attn.qkv.weight', 'decoder_blocks.3.attn.qkv.bias', 'decoder_blocks.3.attn.proj.weight', 'decoder_blocks.3.attn.proj.bias', 'decoder_blocks.3.norm2.weight', 'decoder_blocks.3.norm2.bias', 'decoder_blocks.3.mlp.fc1.weight', 'decoder_blocks.3.mlp.fc1.bias', 'decoder_blocks.3.mlp.fc2.weight', 'decoder_blocks.3.mlp.fc2.bias', 'decoder_blocks.4.norm1.weight', 'decoder_blocks.4.norm1.bias', 'decoder_blocks.4.attn.qkv.weight', 'decoder_blocks.4.attn.qkv.bias', 'decoder_blocks.4.attn.proj.weight', 'decoder_blocks.4.attn.proj.bias', 'decoder_blocks.4.norm2.weight', 'decoder_blocks.4.norm2.bias', 'decoder_blocks.4.mlp.fc1.weight', 'decoder_blocks.4.mlp.fc1.bias', 'decoder_blocks.4.mlp.fc2.weight', 'decoder_blocks.4.mlp.fc2.bias', 'decoder_blocks.5.norm1.weight', 'decoder_blocks.5.norm1.bias', 'decoder_blocks.5.attn.qkv.weight', 'decoder_blocks.5.attn.qkv.bias', 'decoder_blocks.5.attn.proj.weight', 'decoder_blocks.5.attn.proj.bias', 'decoder_blocks.5.norm2.weight', 'decoder_blocks.5.norm2.bias', 'decoder_blocks.5.mlp.fc1.weight', 'decoder_blocks.5.mlp.fc1.bias', 'decoder_blocks.5.mlp.fc2.weight', 'decoder_blocks.5.mlp.fc2.bias', 'decoder_blocks.6.norm1.weight', 'decoder_blocks.6.norm1.bias', 'decoder_blocks.6.attn.qkv.weight', 'decoder_blocks.6.attn.qkv.bias', 'decoder_blocks.6.attn.proj.weight', 'decoder_blocks.6.attn.proj.bias', 'decoder_blocks.6.norm2.weight', 'decoder_blocks.6.norm2.bias', 'decoder_blocks.6.mlp.fc1.weight', 'decoder_blocks.6.mlp.fc1.bias', 'decoder_blocks.6.mlp.fc2.weight', 'decoder_blocks.6.mlp.fc2.bias', 'decoder_blocks.7.norm1.weight', 'decoder_blocks.7.norm1.bias', 'decoder_blocks.7.attn.qkv.weight', 'decoder_blocks.7.attn.qkv.bias', 'decoder_blocks.7.attn.proj.weight', 'decoder_blocks.7.attn.proj.bias', 'decoder_blocks.7.norm2.weight', 'decoder_blocks.7.norm2.bias', 'decoder_blocks.7.mlp.fc1.weight', 'decoder_blocks.7.mlp.fc1.bias', 'decoder_blocks.7.mlp.fc2.weight', 'decoder_blocks.7.mlp.fc2.bias', 'decoder_norm.weight', 'decoder_norm.bias', 'decoder_pred.weight', 'decoder_pred.bias'])
+[12:54:21.916564] ----------------------------------------------------------------
+[12:54:21.916601]         Layer (type)               Output Shape         Param #
+[12:54:21.916604] ================================================================
+[12:54:21.917702]             Conv2d-1          [-1, 768, 14, 14]         590,592
+[12:54:21.917759]         PatchEmbed-2             [-1, 196, 768]               0
+[12:54:21.917772]            Dropout-3             [-1, 197, 768]               0
+[12:54:21.917794]          LayerNorm-4             [-1, 197, 768]           1,536
+[12:54:21.918041]             Linear-5            [-1, 197, 2304]       1,771,776
+[12:54:21.918073]            Dropout-6         [-1, 12, 197, 197]               0
+[12:54:21.918088]             Linear-7             [-1, 197, 768]         590,592
+[12:54:21.918098]            Dropout-8             [-1, 197, 768]               0
+[12:54:21.918107]          Attention-9             [-1, 197, 768]               0
+[12:54:21.918117]          Identity-10             [-1, 197, 768]               0
+[12:54:21.918127]         LayerNorm-11             [-1, 197, 768]           1,536
+[12:54:21.918161]            Linear-12            [-1, 197, 3072]       2,362,368
+[12:54:21.918174]              GELU-13            [-1, 197, 3072]               0
+[12:54:21.918184]           Dropout-14            [-1, 197, 3072]               0
+[12:54:21.918195]            Linear-15             [-1, 197, 768]       2,360,064
+[12:54:21.918205]           Dropout-16             [-1, 197, 768]               0
+[12:54:21.918214]               Mlp-17             [-1, 197, 768]               0
+[12:54:21.918223]          Identity-18             [-1, 197, 768]               0
+[12:54:21.918233]             Block-19             [-1, 197, 768]               0
+[12:54:21.918243]         LayerNorm-20             [-1, 197, 768]           1,536
+[12:54:21.918254]            Linear-21            [-1, 197, 2304]       1,771,776
+[12:54:21.918263]           Dropout-22         [-1, 12, 197, 197]               0
+[12:54:21.918273]            Linear-23             [-1, 197, 768]         590,592
+[12:54:21.918282]           Dropout-24             [-1, 197, 768]               0
+[12:54:21.918291]         Attention-25             [-1, 197, 768]               0
+[12:54:21.918299]          DropPath-26             [-1, 197, 768]               0
+[12:54:21.918309]         LayerNorm-27             [-1, 197, 768]           1,536
+[12:54:21.918319]            Linear-28            [-1, 197, 3072]       2,362,368
+[12:54:21.918328]              GELU-29            [-1, 197, 3072]               0
+[12:54:21.918337]           Dropout-30            [-1, 197, 3072]               0
+[12:54:21.918346]            Linear-31             [-1, 197, 768]       2,360,064
+[12:54:21.918356]           Dropout-32             [-1, 197, 768]               0
+[12:54:21.918364]               Mlp-33             [-1, 197, 768]               0
+[12:54:21.918373]          DropPath-34             [-1, 197, 768]               0
+[12:54:21.918381]             Block-35             [-1, 197, 768]               0
+[12:54:21.918391]         LayerNorm-36             [-1, 197, 768]           1,536
+[12:54:21.918402]            Linear-37            [-1, 197, 2304]       1,771,776
+[12:54:21.918410]           Dropout-38         [-1, 12, 197, 197]               0
+[12:54:21.918420]            Linear-39             [-1, 197, 768]         590,592
+[12:54:21.918429]           Dropout-40             [-1, 197, 768]               0
+[12:54:21.918437]         Attention-41             [-1, 197, 768]               0
+[12:54:21.918446]          DropPath-42             [-1, 197, 768]               0
+[12:54:21.918469]         LayerNorm-43             [-1, 197, 768]           1,536
+[12:54:21.918489]            Linear-44            [-1, 197, 3072]       2,362,368
+[12:54:21.918500]              GELU-45            [-1, 197, 3072]               0
+[12:54:21.918510]           Dropout-46            [-1, 197, 3072]               0
+[12:54:21.918520]            Linear-47             [-1, 197, 768]       2,360,064
+[12:54:21.918529]           Dropout-48             [-1, 197, 768]               0
+[12:54:21.918538]               Mlp-49             [-1, 197, 768]               0
+[12:54:21.918547]          DropPath-50             [-1, 197, 768]               0
+[12:54:21.918555]             Block-51             [-1, 197, 768]               0
+[12:54:21.918566]         LayerNorm-52             [-1, 197, 768]           1,536
+[12:54:21.918575]            Linear-53            [-1, 197, 2304]       1,771,776
+[12:54:21.918584]           Dropout-54         [-1, 12, 197, 197]               0
+[12:54:21.918594]            Linear-55             [-1, 197, 768]         590,592
+[12:54:21.918603]           Dropout-56             [-1, 197, 768]               0
+[12:54:21.918612]         Attention-57             [-1, 197, 768]               0
+[12:54:21.918620]          DropPath-58             [-1, 197, 768]               0
+[12:54:21.918630]         LayerNorm-59             [-1, 197, 768]           1,536
+[12:54:21.918640]            Linear-60            [-1, 197, 3072]       2,362,368
+[12:54:21.918649]              GELU-61            [-1, 197, 3072]               0
+[12:54:21.918658]           Dropout-62            [-1, 197, 3072]               0
+[12:54:21.918668]            Linear-63             [-1, 197, 768]       2,360,064
+[12:54:21.918676]           Dropout-64             [-1, 197, 768]               0
+[12:54:21.918685]               Mlp-65             [-1, 197, 768]               0
+[12:54:21.918694]          DropPath-66             [-1, 197, 768]               0
+[12:54:21.918702]             Block-67             [-1, 197, 768]               0
+[12:54:21.918712]         LayerNorm-68             [-1, 197, 768]           1,536
+[12:54:21.918722]            Linear-69            [-1, 197, 2304]       1,771,776
+[12:54:21.918731]           Dropout-70         [-1, 12, 197, 197]               0
+[12:54:21.918741]            Linear-71             [-1, 197, 768]         590,592
+[12:54:21.918750]           Dropout-72             [-1, 197, 768]               0
+[12:54:21.918758]         Attention-73             [-1, 197, 768]               0
+[12:54:21.918767]          DropPath-74             [-1, 197, 768]               0
+[12:54:21.918777]         LayerNorm-75             [-1, 197, 768]           1,536
+[12:54:21.918787]            Linear-76            [-1, 197, 3072]       2,362,368
+[12:54:21.918795]              GELU-77            [-1, 197, 3072]               0
+[12:54:21.918804]           Dropout-78            [-1, 197, 3072]               0
+[12:54:21.918813]            Linear-79             [-1, 197, 768]       2,360,064
+[12:54:21.918822]           Dropout-80             [-1, 197, 768]               0
+[12:54:21.918830]               Mlp-81             [-1, 197, 768]               0
+[12:54:21.918839]          DropPath-82             [-1, 197, 768]               0
+[12:54:21.918848]             Block-83             [-1, 197, 768]               0
+[12:54:21.918858]         LayerNorm-84             [-1, 197, 768]           1,536
+[12:54:21.918868]            Linear-85            [-1, 197, 2304]       1,771,776
+[12:54:21.918877]           Dropout-86         [-1, 12, 197, 197]               0
+[12:54:21.918887]            Linear-87             [-1, 197, 768]         590,592
+[12:54:21.918895]           Dropout-88             [-1, 197, 768]               0
+[12:54:21.918904]         Attention-89             [-1, 197, 768]               0
+[12:54:21.918913]          DropPath-90             [-1, 197, 768]               0
+[12:54:21.918923]         LayerNorm-91             [-1, 197, 768]           1,536
+[12:54:21.918932]            Linear-92            [-1, 197, 3072]       2,362,368
+[12:54:21.918941]              GELU-93            [-1, 197, 3072]               0
+[12:54:21.918950]           Dropout-94            [-1, 197, 3072]               0
+[12:54:21.918960]            Linear-95             [-1, 197, 768]       2,360,064
+[12:54:21.918968]           Dropout-96             [-1, 197, 768]               0
+[12:54:21.918977]               Mlp-97             [-1, 197, 768]               0
+[12:54:21.918986]          DropPath-98             [-1, 197, 768]               0
+[12:54:21.918994]             Block-99             [-1, 197, 768]               0
+[12:54:21.919004]        LayerNorm-100             [-1, 197, 768]           1,536
+[12:54:21.919014]           Linear-101            [-1, 197, 2304]       1,771,776
+[12:54:21.919023]          Dropout-102         [-1, 12, 197, 197]               0
+[12:54:21.919033]           Linear-103             [-1, 197, 768]         590,592
+[12:54:21.919041]          Dropout-104             [-1, 197, 768]               0
+[12:54:21.919103]        Attention-105             [-1, 197, 768]               0
+[12:54:21.919115]         DropPath-106             [-1, 197, 768]               0
+[12:54:21.919129]        LayerNorm-107             [-1, 197, 768]           1,536
+[12:54:21.919139]           Linear-108            [-1, 197, 3072]       2,362,368
+[12:54:21.919148]             GELU-109            [-1, 197, 3072]               0
+[12:54:21.919157]          Dropout-110            [-1, 197, 3072]               0
+[12:54:21.919168]           Linear-111             [-1, 197, 768]       2,360,064
+[12:54:21.919177]          Dropout-112             [-1, 197, 768]               0
+[12:54:21.919186]              Mlp-113             [-1, 197, 768]               0
+[12:54:21.919195]         DropPath-114             [-1, 197, 768]               0
+[12:54:21.919204]            Block-115             [-1, 197, 768]               0
+[12:54:21.919214]        LayerNorm-116             [-1, 197, 768]           1,536
+[12:54:21.919224]           Linear-117            [-1, 197, 2304]       1,771,776
+[12:54:21.919234]          Dropout-118         [-1, 12, 197, 197]               0
+[12:54:21.919244]           Linear-119             [-1, 197, 768]         590,592
+[12:54:21.919253]          Dropout-120             [-1, 197, 768]               0
+[12:54:21.919261]        Attention-121             [-1, 197, 768]               0
+[12:54:21.919270]         DropPath-122             [-1, 197, 768]               0
+[12:54:21.919280]        LayerNorm-123             [-1, 197, 768]           1,536
+[12:54:21.919290]           Linear-124            [-1, 197, 3072]       2,362,368
+[12:54:21.919298]             GELU-125            [-1, 197, 3072]               0
+[12:54:21.919307]          Dropout-126            [-1, 197, 3072]               0
+[12:54:21.919316]           Linear-127             [-1, 197, 768]       2,360,064
+[12:54:21.919325]          Dropout-128             [-1, 197, 768]               0
+[12:54:21.919334]              Mlp-129             [-1, 197, 768]               0
+[12:54:21.919343]         DropPath-130             [-1, 197, 768]               0
+[12:54:21.919409]            Block-131             [-1, 197, 768]               0
+[12:54:21.919461]        LayerNorm-132             [-1, 197, 768]           1,536
+[12:54:21.919474]           Linear-133            [-1, 197, 2304]       1,771,776
+[12:54:21.919490]          Dropout-134         [-1, 12, 197, 197]               0
+[12:54:21.919502]           Linear-135             [-1, 197, 768]         590,592
+[12:54:21.919512]          Dropout-136             [-1, 197, 768]               0
+[12:54:21.919521]        Attention-137             [-1, 197, 768]               0
+[12:54:21.919530]         DropPath-138             [-1, 197, 768]               0
+[12:54:21.919540]        LayerNorm-139             [-1, 197, 768]           1,536
+[12:54:21.919550]           Linear-140            [-1, 197, 3072]       2,362,368
+[12:54:21.919574]             GELU-141            [-1, 197, 3072]               0
+[12:54:21.919588]          Dropout-142            [-1, 197, 3072]               0
+[12:54:21.919600]           Linear-143             [-1, 197, 768]       2,360,064
+[12:54:21.919657]          Dropout-144             [-1, 197, 768]               0
+[12:54:21.919769]              Mlp-145             [-1, 197, 768]               0
+[12:54:21.919792]         DropPath-146             [-1, 197, 768]               0
+[12:54:21.919803]            Block-147             [-1, 197, 768]               0
+[12:54:21.919818]        LayerNorm-148             [-1, 197, 768]           1,536
+[12:54:21.919829]           Linear-149            [-1, 197, 2304]       1,771,776
+[12:54:21.919839]          Dropout-150         [-1, 12, 197, 197]               0
+[12:54:21.919849]           Linear-151             [-1, 197, 768]         590,592
+[12:54:21.919858]          Dropout-152             [-1, 197, 768]               0
+[12:54:21.919867]        Attention-153             [-1, 197, 768]               0
+[12:54:21.919876]         DropPath-154             [-1, 197, 768]               0
+[12:54:21.919887]        LayerNorm-155             [-1, 197, 768]           1,536
+[12:54:21.919897]           Linear-156            [-1, 197, 3072]       2,362,368
+[12:54:21.919906]             GELU-157            [-1, 197, 3072]               0
+[12:54:21.919914]          Dropout-158            [-1, 197, 3072]               0
+[12:54:21.919925]           Linear-159             [-1, 197, 768]       2,360,064
+[12:54:21.919933]          Dropout-160             [-1, 197, 768]               0
+[12:54:21.920043]              Mlp-161             [-1, 197, 768]               0
+[12:54:21.920075]         DropPath-162             [-1, 197, 768]               0
+[12:54:21.920088]            Block-163             [-1, 197, 768]               0
+[12:54:21.920105]        LayerNorm-164             [-1, 197, 768]           1,536
+[12:54:21.920115]           Linear-165            [-1, 197, 2304]       1,771,776
+[12:54:21.920125]          Dropout-166         [-1, 12, 197, 197]               0
+[12:54:21.920136]           Linear-167             [-1, 197, 768]         590,592
+[12:54:21.920144]          Dropout-168             [-1, 197, 768]               0
+[12:54:21.920153]        Attention-169             [-1, 197, 768]               0
+[12:54:21.920162]         DropPath-170             [-1, 197, 768]               0
+[12:54:21.920172]        LayerNorm-171             [-1, 197, 768]           1,536
+[12:54:21.920182]           Linear-172            [-1, 197, 3072]       2,362,368
+[12:54:21.920191]             GELU-173            [-1, 197, 3072]               0
+[12:54:21.920200]          Dropout-174            [-1, 197, 3072]               0
+[12:54:21.920210]           Linear-175             [-1, 197, 768]       2,360,064
+[12:54:21.920219]          Dropout-176             [-1, 197, 768]               0
+[12:54:21.920229]              Mlp-177             [-1, 197, 768]               0
+[12:54:21.920237]         DropPath-178             [-1, 197, 768]               0
+[12:54:21.920246]            Block-179             [-1, 197, 768]               0
+[12:54:21.920257]        LayerNorm-180             [-1, 197, 768]           1,536
+[12:54:21.920267]           Linear-181            [-1, 197, 2304]       1,771,776
+[12:54:21.920276]          Dropout-182         [-1, 12, 197, 197]               0
+[12:54:21.920286]           Linear-183             [-1, 197, 768]         590,592
+[12:54:21.920295]          Dropout-184             [-1, 197, 768]               0
+[12:54:21.920304]        Attention-185             [-1, 197, 768]               0
+[12:54:21.920312]         DropPath-186             [-1, 197, 768]               0
+[12:54:21.920322]        LayerNorm-187             [-1, 197, 768]           1,536
+[12:54:21.920332]           Linear-188            [-1, 197, 3072]       2,362,368
+[12:54:21.920341]             GELU-189            [-1, 197, 3072]               0
+[12:54:21.920350]          Dropout-190            [-1, 197, 3072]               0
+[12:54:21.920360]           Linear-191             [-1, 197, 768]       2,360,064
+[12:54:21.920369]          Dropout-192             [-1, 197, 768]               0
+[12:54:21.920378]              Mlp-193             [-1, 197, 768]               0
+[12:54:21.920386]         DropPath-194             [-1, 197, 768]               0
+[12:54:21.920395]            Block-195             [-1, 197, 768]               0
+[12:54:21.920411]        LayerNorm-196                  [-1, 768]           1,536
+[12:54:21.920421]           Linear-197                    [-1, 2]           1,538
+[12:54:21.920492] ================================================================
+[12:54:21.920497] Total params: 85,648,130
+[12:54:21.920501] Trainable params: 85,648,130
+[12:54:21.920535] Non-trainable params: 0
+[12:54:21.920538] ----------------------------------------------------------------
+[12:54:21.920543] Input size (MB): 0.57
+[12:54:21.920546] Forward/backward pass size (MB): 406.23
+[12:54:21.920550] Params size (MB): 326.72
+[12:54:21.920552] /app/src/fsfm-3c/util/misc.py:259: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  self._scaler = torch.cuda.amp.GradScaler()
+/usr/local/lib/python3.9/site-packages/torch/amp/grad_scaler.py:132: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+Estimated Total Size (MB): 733.53
+[12:54:21.920619] ----------------------------------------------------------------
+[12:54:21.920741] None
+[12:54:21.921638] Model = VisionTransformer(
+  (patch_embed): PatchEmbed(
+    (proj): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+  )
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (blocks): ModuleList(
+    (0): Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (1-11): 11 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (pre_logits): Identity()
+  (head): Linear(in_features=768, out_features=2, bias=True)
+  (fc_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+)
+[12:54:21.921647] number of params (M): 85.80
+[12:54:21.921656] base lr: 1.00e-03
+[12:54:21.921658] actual lr: 1.56e-05
+[12:54:21.921661] accumulate grad iterations: 1
+[12:54:21.921663] effective batch size: 4
+[12:54:21.924614] criterion = LabelSmoothingCrossEntropy()
+[12:54:21.924626] Start training for 5 epochs
+[12:54:21.925582] log_dir: ./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock
+[12:54:27.586265] Epoch: [0]  [0/2]  eta: 0:00:11  lr: 0.000000  loss: 0.6932 (0.6932)  time: 5.6597  data: 0.0171
+[12:54:32.654183] Epoch: [0]  [1/2]  eta: 0:00:05  lr: 0.000002  loss: 0.6930 (0.6931)  time: 5.3635  data: 0.0136
+[12:54:32.654343] Epoch: [0] Total time: 0:00:10 (5.3644 s / it)
+[12:54:32.654357] Averaged stats: lr: 0.000002  loss: 0.6930 (0.6931)
+[12:54:34.263978] Test:  [0/2]  eta: 0:00:03  loss: 0.6931 (0.6931)  auc: nan (nan)  time: 1.6078  data: 0.0251
+[12:54:35.856611] Test:  [1/2]  eta: 0:00:01  loss: 0.6931 (0.6931)  auc: nan (nan)  time: 1.6001  data: 0.0172
+[12:54:35.856757] Test: Total time: 0:00:03 (1.6004 s / it)
+[12:54:35.856774] * Auc nan  loss 0.693
+[12:54:35.856801] AUC of the network on the 8 val images: nan%
+[12:54:35.856805] Max auc: 0.00%
+[12:54:35.856811] Save model with min_val_loss at epoch: 0
+[12:54:37.312022] log_dir: ./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock
+[12:54:43.000814] Epoch: [1]  [0/2]  eta: 0:00:11  lr: 0.000003  loss: 0.6932 (0.6932)  time: 5.6878  data: 0.0098
+[12:54:47.013903] Epoch: [1]  [1/2]  eta: 0:00:04  lr: 0.000005  loss: 0.6927 (0.6929)  time: 4.8503  data: 0.0120
+[12:54:47.014056] Epoch: [1] Total time: 0:00:09 (4.8510 s / it)
+[12:54:47.014070] Averaged stats: lr: 0.000005  loss: 0.6927 (0.6929)
+[12:54:48.964239] Test:  [0/2]  eta: 0:00:03  loss: 0.6932 (0.6932)  auc: nan (nan)  time: 1.9341  data: 0.0096
+[12:54:50.925530] Test:  [1/2]  eta: 0:00:01  loss: 0.6931 (0.6931)  auc: nan (nan)  time: 1.9475  data: 0.0094
+[12:54:50.925694] Test: Total time: 0:00:03 (1.9479 s / it)
+[12:54:50.925714] * Auc nan  loss 0.693
+[12:54:50.925748] AUC of the network on the 8 val images: nan%
+[12:54:50.925753] Max auc: 0.00%
+[12:54:50.927343] log_dir: ./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock
+[12:54:56.885012] Epoch: [2]  [0/2]  eta: 0:00:11  lr: 0.000006  loss: 0.6933 (0.6933)  time: 5.9565  data: 0.0102
+[12:55:03.074032] Epoch: [2]  [1/2]  eta: 0:00:06  lr: 0.000008  loss: 0.6917 (0.6925)  time: 6.0724  data: 0.0094
+[12:55:03.074168] Epoch: [2] Total time: 0:00:12 (6.0734 s / it)
+[12:55:03.074179] Averaged stats: lr: 0.000008  loss: 0.6917 (0.6925)
+[12:55:05.026554] Test:  [0/2]  eta: 0:00:03  loss: 0.6933 (0.6933)  auc: nan (nan)  time: 1.9412  data: 0.0113
+[12:55:07.029480] Test:  [1/2]  eta: 0:00:01  loss: 0.6931 (0.6932)  auc: nan (nan)  time: 1.9720  data: 0.0101
+[12:55:07.029623] Test: Total time: 0:00:03 (1.9723 s / it)
+[12:55:07.029642] * Auc nan  loss 0.693
+[12:55:07.029674] AUC of the network on the 8 val images: nan%
+[12:55:07.029679] Max auc: 0.00%
+[12:55:07.031051] log_dir: ./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock
+[12:55:13.282253] Epoch: [3]  [0/2]  eta: 0:00:12  lr: 0.000009  loss: 0.6936 (0.6936)  time: 6.2503  data: 0.0091
+[12:55:17.054649] Epoch: [3]  [1/2]  eta: 0:00:05  lr: 0.000011  loss: 0.6898 (0.6917)  time: 5.0112  data: 0.0096
+[12:55:17.054824] Epoch: [3] Total time: 0:00:10 (5.0119 s / it)
+[12:55:17.054839] Averaged stats: lr: 0.000011  loss: 0.6898 (0.6917)
+[12:55:18.960629] Test:  [0/2]  eta: 0:00:03  loss: 0.6938 (0.6938)  auc: nan (nan)  time: 1.8944  data: 0.0117
+[12:55:20.960191] Test:  [1/2]  eta: 0:00:01  loss: 0.6927 (0.6932)  auc: nan (nan)  time: 1.9468  data: 0.0109
+[12:55:20.960367] Test: Total time: 0:00:03 (1.9472 s / it)
+[12:55:20.960389] * Auc nan  loss 0.693
+[12:55:20.960421] AUC of the network on the 8 val images: nan%
+[12:55:20.960426] Max auc: 0.00%
+[12:55:20.962085] log_dir: ./src/fsfm-3c/finuetune/cross_dataset_DfD/output_finetune_set_1_lfw_mock
+[12:55:26.908568] Epoch: [4]  [0/2]  eta: 0:00:11  lr: 0.000013  loss: 0.6937 (0.6937)  time: 5.9459  data: 0.0091
+[12:55:32.971519] Epoch: [4]  [1/2]  eta: 0:00:06  lr: 0.000014  loss: 0.6876 (0.6906)  time: 6.0040  data: 0.0091
+[12:55:32.971644] Epoch: [4] Total time: 0:00:12 (6.0048 s / it)
+[12:55:32.971655] Averaged stats: lr: 0.000014  loss: 0.6876 (0.6906)
+[12:55:34.858856] Test:  [0/2]  eta: 0:00:03  loss: 0.6941 (0.6941)  auc: nan (nan)  time: 1.8788  data: 0.0083
+[12:55:36.875455] Test:  [1/2]  eta: 0:00:01  loss: 0.6924 (0.6932)  auc: nan (nan)  time: 1.9476  data: 0.0085
+[12:55:36.875598] Test: Total time: 0:00:03 (1.9479 s / it)
+[12:55:36.875617] * Auc nan  loss 0.693
+[12:55:36.875644] AUC of the network on the 8 val images: nan%
+[12:55:36.875660] Max auc: 0.00%
+[12:55:38.109374] Training time 0:01:16

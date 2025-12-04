@@ -20,12 +20,12 @@ Transform: Compose(
            )
 loading ImageNet pretrained weights....
 Start training for 1 epochs
-Epoch: [0]  [0/2]  eta: 0:00:53  lr: 0.000100  loss: 1.2286 (1.2286)  time: 26.8061  data: 0.0175
-Epoch: [0]  [1/2]  eta: 0:00:26  lr: 0.000100  loss: 1.2286 (1.4149)  time: 26.6585  data: 0.0229
-Epoch: [0] Total time: 0:00:53 (26.6587 s / it)
-Averaged stats: lr: 0.000100  loss: 1.2286 (1.4149)
-Test:  [0/2]  eta: 0:00:21  loss: 3.0767 (3.0767)  acc1: 0.0000 (0.0000)  time: 10.8288  data: 0.0288
-Test:  [1/2]  eta: 0:00:10  loss: 0.0147 (1.5457)  acc1: 0.0000 (50.0000)  time: 10.5571  data: 0.0192
-Test: Total time: 0:00:21 (10.5573 s / it)
-* Acc@1 50.000 loss 1.546
-Training time 00:01:14
+Epoch: [0]  [0/2]  eta: 0:01:01  lr: 0.000100  loss: 0.5586 (0.5586)  time: 30.9922  data: 0.0379
+Epoch: [0]  [1/2]  eta: 0:00:32  lr: 0.000100  loss: 0.5586 (2.1077)  time: 32.7503  data: 0.0338
+Epoch: [0] Total time: 0:01:05 (32.7510 s / it)
+Averaged stats: lr: 0.000100  loss: 0.5586 (2.1077)
+Test:  [0/2]  eta: 0:00:25  loss: 0.1560 (0.1560)  acc1: 100.0000 (100.0000)  time: 12.7075  data: 0.0291
+Test:  [1/2]  eta: 0:00:13  loss: 0.1560 (1.0230)  acc1: 0.0000 (50.0000)  time: 13.5215  data: 0.0283
+Test: Total time: 0:00:27 (13.5219 s / it)
+* Acc@1 50.000 loss 1.023
+Training time 00:01:33
